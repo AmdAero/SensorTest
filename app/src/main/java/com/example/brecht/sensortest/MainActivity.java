@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        defaultToast = Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT);
+        defaultToast = Toast.makeText(this, "Brecht heeft iets fout geprogged, zijn fout (dit is als test bedoeld)", Toast.LENGTH_SHORT);
 
         String[] choices = getResources().getStringArray(R.array.SensorList);
         ArrayAdapter<String> ListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, choices);
