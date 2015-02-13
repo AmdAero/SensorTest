@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SensorTest</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="SensorList">
+        <item>Accelerometer</item>
+        <item>Gyroscope</item>
+        <item>Magnetometer</item>
+    </string-array>
+
+
+</resources>
