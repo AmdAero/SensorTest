@@ -23,13 +23,16 @@ import org.w3c.dom.Text;
 public class MainActivity extends ActionBarActivity {
 
     private Toast defaultToast;
+    private Toast notImplementedToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        defaultToast = Toast.makeText(this, "Brecht heeft iets fout geprogged, zijn fout (dit is als test bedoeld)", Toast.LENGTH_SHORT);
+
+        defaultToast = Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT);
+        notImplementedToast = Toast.makeText(this, "Not implemented yet!", Toast.LENGTH_SHORT);
 
         String[] choices = getResources().getStringArray(R.array.SensorList);
         ArrayAdapter<String> ListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, choices);
@@ -44,16 +47,37 @@ public class MainActivity extends ActionBarActivity {
                 switch(position)
                 {
                     case 0:
+                        //i = new Intent(MainActivity.this , Stopwatch.class);
+                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
+                            notImplementedToast.show();
+                        return;
+                    // break;
+                    case 1:
+                        //i = new Intent(MainActivity.this , Login.class);
+                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
+                            notImplementedToast.show();
+                        return;
+                    // break;
+                    case 2:
                         i = new Intent(MainActivity.this , Accelero.class);
                         break;
-                    /*case 1:
-                        i = new Intent(MainActivity.this , Gyroscope.class);
-                        break;*/
-                    /*case 2:
-                        i = new Intent(MainActivity.this , Magnetometer.class);
-                        break;*/
+                    case 3:
+                        //i = new Intent(MainActivity.this , Gyroscope.class);
+                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
+                            notImplementedToast.show();
+                        return;
+                        // break;
+                    case 4:
+                        //i = new Intent(MainActivity.this , Magnetometer.class);
+                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
+                            notImplementedToast.show();
+                        return;
+                        //break;
+                    case 5:
+                        i = new Intent(MainActivity.this , Rotation.class);
+                        break;
                     default:
-                        if(!defaultToast.getView().isShown())
+                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
                            defaultToast.show();
                         return;
                 }

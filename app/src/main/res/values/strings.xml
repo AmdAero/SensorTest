@@ -1,11 +1,14 @@
 <resources>
-    <string name="app_name">SensorTest</string>
+    <string name="app_name">DevTool</string>
     <string name="action_settings">Settings</string>
 
     <string-array name="SensorList">
+        <item>Stopwatch</item>
+        <item>Login</item>
         <item>Accelerometer</item>
         <item>Gyroscope</item>
         <item>Magnetometer</item>
+        <item>Rotation</item>
     </string-array>
 
 

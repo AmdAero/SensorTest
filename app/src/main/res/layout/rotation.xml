@@ -18,7 +18,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            android:text="Gravity (RAW)"
+            android:text="Rotation"
+            android:layout_marginBottom="20dp"
             />
 
         <TextView android:text="x" android:layout_width="wrap_content"
@@ -51,46 +52,6 @@
             android:layout_height="wrap_content"
             android:textColor="#ffff0000"
             android:id="@+id/z"/>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text="Acceleration (FILTER)"
-            android:layout_marginTop="50dp"
-            />
-        <TextView android:text="x" android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/x2"
-            android:textColor="#ffff0000"
-            />
-
-        <TextView android:text="y" android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/y2"
-            android:textColor="#ffff0000"
-            />
-
-        <TextView android:text="z" android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"/>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ffff0000"
-            android:id="@+id/z2"/>
 
     </LinearLayout>
     </ScrollView>

@@ -17,9 +17,12 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Stopwatch"></activity>
+        <activity android:name=".Login"></activity>
         <activity android:name=".Accelero"></activity>
         <activity android:name=".Gyroscope"></activity>
         <activity android:name=".Magnetometer"></activity>
+        <activity android:name=".Rotation"></activity>
     </application>
 
 </manifest>

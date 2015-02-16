@@ -15,34 +15,28 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
-    private float gravity[] = new float[3];
-    private float linear_acceleration[] = new float[3];
+    private float orientation[] = new float[3];
+    private float rotation[] = new float[16];
 
-    //TODO: Better names!
-    private TextView x;
-    private TextView y;
-    private TextView z;
-    private TextView x2;
-    private TextView y2;
-    private TextView z2;
+    private TextView azimuth;
+    private TextView pitch;
+    private TextView roll;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.accelerometer);
+        setContentView(R.layout.rotation);
 
-        x = (TextView) findViewById(R.id.x);
-        y = (TextView) findViewById(R.id.y);
-        z = (TextView) findViewById(R.id.z);
-        x2 = (TextView) findViewById(R.id.x2);
-        y2 = (TextView) findViewById(R.id.y2);
-        z2 = (TextView) findViewById(R.id.z2);
+        //TODO: Change ID's
+        azimuth = (TextView) findViewById(R.id.x);
+        pitch = (TextView) findViewById(R.id.y);
+        roll = (TextView) findViewById(R.id.z);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
-            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null){
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+            mSensorManager.registerListener(this, mSensor, 150000);
         }
         else {
             //DO SHIT
@@ -56,28 +50,15 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
 
     public void onSensorChanged(SensorEvent event)
     {
-        // alpha is calculated as t / (t + dT)
-        // with t, the low-pass filter's time-constant
-        // and dT, the event delivery rate
+        SensorManager.getRotationMatrixFromVector(rotation, event.values);
+        SensorManager.getOrientation(rotation, orientation);
+        orientation[0]=(float)Math.toDegrees(orientation[0]);
+        orientation[1]=(float)Math.toDegrees(orientation[1]);
+        orientation[2]=(float)Math.toDegrees(orientation[2]);
 
-        final float alpha = 0.8f;
-
-        gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-        gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-        gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
-
-        linear_acceleration[0] = event.values[0] - gravity[0];
-        linear_acceleration[1] = event.values[1] - gravity[1];
-        linear_acceleration[2] = event.values[2] - gravity[2];
-
-        x.setText(String.valueOf(gravity[0]));
-        y.setText(String.valueOf(gravity[1]));
-        z.setText(String.valueOf(gravity[2]));
-
-        x2.setText(String.valueOf(linear_acceleration[0]));
-        y2.setText(String.valueOf(linear_acceleration[1]));
-        z2.setText(String.valueOf(linear_acceleration[2]));
-
+        azimuth.setText(String.valueOf(orientation[0]));
+        pitch.setText(String.valueOf(orientation[1]));
+        roll.setText(String.valueOf(orientation[2]));
 
     }
 
