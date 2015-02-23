@@ -33,6 +33,9 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         pitch = (TextView) findViewById(R.id.y);
         roll = (TextView) findViewById(R.id.z);
 
+        FileWriter.setFileName("Rotation.txt", getApplicationContext());
+        FileWriter.Write(getApplicationContext(),"Rotation:");
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null){
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
@@ -59,6 +62,11 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         azimuth.setText(String.valueOf(orientation[0]));
         pitch.setText(String.valueOf(orientation[1]));
         roll.setText(String.valueOf(orientation[2]));
+
+        FileWriter.Write(getApplicationContext(), "Azimuth: " + String.valueOf(orientation[0]));
+        FileWriter.Write(getApplicationContext(), "Pitch: " + String.valueOf(orientation[1]));
+        FileWriter.Write(getApplicationContext(), "Roll: " + String.valueOf(orientation[2]));
+
 
     }
 

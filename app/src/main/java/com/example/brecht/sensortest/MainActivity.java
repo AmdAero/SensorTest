@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case 6:
                         FileWriter.setFileName("Test2.txt", getApplicationContext());
-                        FileWriter.Write(getApplicationContext());
+                        FileWriter.Write(getApplicationContext(), "Testing the filewrite functionality!");
                         return;
                     default:
                         if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())

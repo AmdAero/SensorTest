@@ -2,9 +2,11 @@ package com.example.brecht.sensortest;
 
 import android.content.Context;
 import android.os.Environment;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by Brecht on 23/02/2015.
@@ -17,16 +19,27 @@ public class FileWriter {
     public static void setFileName(String fileWriter, Context context) {
         fileName = fileWriter;
         file = new File(context.getExternalFilesDir(null), fileName);
+        if(file.exists())
+            file.delete();
     }
 
-    public static void Write(Context c)
+    public static void Write(Context c, String string)
     {
-        String string = "Hello world!";
         FileOutputStream outputStream;
+        OutputStreamWriter osw;
+
+        if(isExternalStorageWritable() ==  false) {
+            Toast.makeText(c, "No access to file", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         try {
-            outputStream = new FileOutputStream(file);
-            outputStream.write(string.getBytes());
+            outputStream = new FileOutputStream(file, true);
+            osw = new OutputStreamWriter(outputStream);
+            osw.append(string);
+            osw.append(System.getProperty("line.separator"));
+            osw.flush();
+            osw.close();
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,7 +47,7 @@ public class FileWriter {
     }
 
     /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
+    private static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
@@ -42,8 +55,9 @@ public class FileWriter {
         return false;
     }
 
-    /* Checks if external storage is available to at least read */
-    public boolean isExternalStorageReadable() {
+    /* Not necessarily at the moment!
+    Checks if external storage is available to at least read
+    private static boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
@@ -51,7 +65,7 @@ public class FileWriter {
         }
         return false;
     }
-
+    */
 
 
 
