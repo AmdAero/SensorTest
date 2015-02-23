@@ -62,11 +62,11 @@ public class MainActivity extends ActionBarActivity {
                         i = new Intent(MainActivity.this , Accelero.class);
                         break;
                     case 3:
-                        //i = new Intent(MainActivity.this , Gyroscope.class);
-                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
+                        i = new Intent(MainActivity.this , Gyroscope.class);
+                       /* if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
                             notImplementedToast.show();
-                        return;
-                        // break;
+                        return;*/
+                         break;
                     case 4:
                         i = new Intent(MainActivity.this , Magnetometer.class);
                         /*if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())

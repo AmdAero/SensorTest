@@ -16,20 +16,29 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
     private SensorManager mSensorManager;
     private Sensor mSensor;
 
-    //TODO: Better names!
-    private TextView x;
-    private TextView y;
-    private TextView z;
-    private TextView x2;
-    private TextView y2;
-    private TextView z2;
+    private TextView GyroscopeX;
+    private TextView GyroscopeY;
+    private TextView GyroscopeZ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO: Add setContentView
-        //TODO: Add Sensorlogic
+        setContentView(R.layout.gyroscope);
+
+        GyroscopeX=(TextView) findViewById(R.id.GyroscopeX);
+        GyroscopeY=(TextView) findViewById(R.id.GyroscopeY);
+        GyroscopeZ=(TextView) findViewById(R.id.GyroscopeZ);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+            mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else {
+            //DO SHIT
+        }
+
     }
 
     @Override
@@ -40,8 +49,10 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
 
     public void onSensorChanged(SensorEvent event)
     {
-        //TODO: Add logic to put sensor values on screen!
-
+        //TODO: Add logic to put sensor values on screen
+        GyroscopeX.setText(String.valueOf(event.values[0]/Math.PI*180) + " graden");
+        GyroscopeY.setText(String.valueOf(event.values[1]/Math.PI*180) + " graden");
+        GyroscopeZ.setText(String.valueOf(event.values[2]/Math.PI*180) + " graden");
 
     }
 
