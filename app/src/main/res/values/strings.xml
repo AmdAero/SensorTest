@@ -9,6 +9,7 @@
         <item>Gyroscope</item>
         <item>Magnetometer</item>
         <item>Rotation</item>
+        <item>Save Hello World</item>
     </string-array>
 
 

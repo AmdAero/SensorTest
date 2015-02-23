@@ -76,6 +76,10 @@ public class MainActivity extends ActionBarActivity {
                     case 5:
                         i = new Intent(MainActivity.this , Rotation.class);
                         break;
+                    case 6:
+                        FileWriter.setFileName("Test2.txt", getApplicationContext());
+                        FileWriter.Write(getApplicationContext());
+                        return;
                     default:
                         if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
                            defaultToast.show();

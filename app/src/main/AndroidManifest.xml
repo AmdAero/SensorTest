@@ -23,6 +23,10 @@
         <activity android:name=".Gyroscope"></activity>
         <activity android:name=".Magnetometer"></activity>
         <activity android:name=".Rotation"></activity>
+
+
+
     </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
