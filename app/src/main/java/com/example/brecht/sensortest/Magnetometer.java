@@ -23,6 +23,8 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,9 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         xMagnetometer = (TextView) findViewById(R.id.xMagnetometer);
         yMagnetometer = (TextView) findViewById(R.id.yMagnetometer);
         zMagnetometer = (TextView) findViewById(R.id.zMagnetometer);
+
+        FileWriter.setFileName("Magnetometer.txt", getApplicationContext());
+        FileWriter.Write(getApplicationContext(),"Magnetism:");
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null) {
@@ -54,6 +59,10 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         xMagnetometer.setText(String.valueOf(event.values[0]) + " µT");
         yMagnetometer.setText(String.valueOf(event.values[1]) + " µT");
         zMagnetometer.setText(String.valueOf(event.values[2]) + " µT");
+
+        FileWriter.Write(getApplicationContext(), "X: " + String.valueOf(event.values[0]));
+        FileWriter.Write(getApplicationContext(), "Y: " + String.valueOf(event.values[1]));
+        FileWriter.Write(getApplicationContext(), "Z: " + String.valueOf(event.values[2]));
     }
 
 }
