@@ -37,7 +37,6 @@ public class FileWriter {
             outputStream = new FileOutputStream(file, true);
             osw = new OutputStreamWriter(outputStream);
             osw.append(string);
-            osw.append(System.getProperty("line.separator"));
             osw.flush();
             osw.close();
             outputStream.close();
