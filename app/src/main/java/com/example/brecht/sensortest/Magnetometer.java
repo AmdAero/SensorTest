@@ -16,14 +16,9 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
     private SensorManager mSensorManager;
     private Sensor mSensor;
 
-    //TODO: Better names!
     private TextView xMagnetometer;
     private TextView yMagnetometer;
     private TextView zMagnetometer;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
