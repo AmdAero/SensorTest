@@ -26,6 +26,8 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gyroscope);
 
+        FileWriter.setFileName("Gyroscope.txt", getApplicationContext());
+
         GyroscopeX=(TextView) findViewById(R.id.GyroscopeX);
         GyroscopeY=(TextView) findViewById(R.id.GyroscopeY);
         GyroscopeZ=(TextView) findViewById(R.id.GyroscopeZ);
@@ -53,6 +55,11 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
         GyroscopeX.setText(String.valueOf(event.values[0]/Math.PI*180) + " graden");
         GyroscopeY.setText(String.valueOf(event.values[1]/Math.PI*180) + " graden");
         GyroscopeZ.setText(String.valueOf(event.values[2]/Math.PI*180) + " graden");
+
+        FileWriter.Write(getApplicationContext(), "X: " + String.valueOf(event.values[0]/Math.PI*180) + ";");
+        FileWriter.Write(getApplicationContext(), "Y: " + String.valueOf(event.values[1]/Math.PI*180) + ";");
+        FileWriter.Write(getApplicationContext(), "Z: " + String.valueOf(event.values[2]/Math.PI*180) + ";");
+        FileWriter.Write(getApplicationContext(), System.getProperty("line.separator"));
 
     }
 
