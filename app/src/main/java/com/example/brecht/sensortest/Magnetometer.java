@@ -1,5 +1,6 @@
 package com.example.brecht.sensortest;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,19 +17,30 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
     private Sensor mSensor;
 
     //TODO: Better names!
-    private TextView x;
-    private TextView y;
-    private TextView z;
-    private TextView x2;
-    private TextView y2;
-    private TextView z2;
+    private TextView xMagnetometer;
+    private TextView yMagnetometer;
+    private TextView zMagnetometer;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO: Add setContentView
-        //TODO: Add Sensorlogic
+        setContentView(R.layout.magnetometer);
+
+        xMagnetometer = (TextView) findViewById(R.id.xMagnetometer);
+        yMagnetometer = (TextView) findViewById(R.id.yMagnetometer);
+        zMagnetometer = (TextView) findViewById(R.id.zMagnetometer);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null) {
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+            mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else {
+            //DO SHIT
+        }
+
     }
 
     @Override
@@ -39,9 +51,9 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
 
     public void onSensorChanged(SensorEvent event)
     {
-        //TODO: Add logic to put sensor values on screen!
-
-
+        xMagnetometer.setText(String.valueOf(event.values[0]) + " µT");
+        yMagnetometer.setText(String.valueOf(event.values[1]) + " µT");
+        zMagnetometer.setText(String.valueOf(event.values[2]) + " µT");
     }
 
 }

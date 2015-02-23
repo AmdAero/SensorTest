@@ -68,11 +68,11 @@ public class MainActivity extends ActionBarActivity {
                         return;
                         // break;
                     case 4:
-                        //i = new Intent(MainActivity.this , Magnetometer.class);
-                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
-                            notImplementedToast.show();
-                        return;
-                        //break;
+                        i = new Intent(MainActivity.this , Magnetometer.class);
+                        /*if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
+                            notImplementedToast.show();*/
+
+                        break;
                     case 5:
                         i = new Intent(MainActivity.this , Rotation.class);
                         break;
