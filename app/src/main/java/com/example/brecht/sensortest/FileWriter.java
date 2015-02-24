@@ -19,6 +19,7 @@ public class FileWriter {
     public static void setFileName(String fileWriter, Context context) {
         fileName = fileWriter;
         file = new File(context.getExternalFilesDir(null), fileName);
+
         if(file.exists())
             file.delete();
     }

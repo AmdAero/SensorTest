@@ -39,6 +39,8 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
         y2 = (TextView) findViewById(R.id.y2);
         z2 = (TextView) findViewById(R.id.z2);
 
+        FileWriter.setFileName("Accelerometer.txt", getApplicationContext());
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -77,6 +79,12 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
         x2.setText(String.valueOf(linear_acceleration[0]));
         y2.setText(String.valueOf(linear_acceleration[1]));
         z2.setText(String.valueOf(linear_acceleration[2]));
+
+        FileWriter.Write(getApplicationContext(), "x: " + String.valueOf(gravity[0]) + ";");
+        FileWriter.Write(getApplicationContext(), "y: " + String.valueOf(gravity[1]) + ";");
+        FileWriter.Write(getApplicationContext(), "z: " + String.valueOf(gravity[2]) + ";");
+        FileWriter.Write(getApplicationContext(), System.getProperty("line.separator"));
+
 
 
     }

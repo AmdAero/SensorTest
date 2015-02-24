@@ -77,6 +77,9 @@ public class MainActivity extends ActionBarActivity {
                         i = new Intent(MainActivity.this , Rotation.class);
                         break;
                     case 6:
+                        i = new Intent(MainActivity.this, Gravity.class);
+                        break;
+                    case 7:
                         FileWriter.setFileName("Test2.txt", getApplicationContext());
                         FileWriter.Write(getApplicationContext(), "Testing the filewrite functionality!");
                         return;
