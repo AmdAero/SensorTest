@@ -1,17 +1,7 @@
 package com.example.brecht.sensortest;
 
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-
-
-public class Login extends ActionBarActivity {
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setContentView();
-
-    }
-
+/**
+ * Created by Brecht on 24/02/2015.
+ */
+public class Login {
 }

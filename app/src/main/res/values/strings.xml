@@ -4,12 +4,13 @@
 
     <string-array name="SensorList">
         <item>Stopwatch</item>
+        <item>JSON</item>
         <item>Login</item>
+        <item>Gravity(RAW)</item>
         <item>Accelerometer</item>
         <item>Gyroscope</item>
         <item>Magnetometer</item>
         <item>Rotation</item>
-        <item>Gravity(RAW)</item>
         <item>Save Hello World</item>
     </string-array>
 
