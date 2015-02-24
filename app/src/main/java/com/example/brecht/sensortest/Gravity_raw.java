@@ -12,7 +12,7 @@ import android.widget.TextView;
 /**
  * Created by Arne on 24/02/2015.
  */
-public class Gravity extends ActionBarActivity implements SensorEventListener {
+public class Gravity_raw extends ActionBarActivity implements SensorEventListener {
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
