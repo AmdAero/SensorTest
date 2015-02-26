@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 
 
+
 public class Accelero extends ActionBarActivity implements SensorEventListener {
 
 
@@ -88,5 +89,6 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
 
 
     }
+
 
 }
