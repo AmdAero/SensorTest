@@ -22,6 +22,8 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
     private TextView pitch;
     private TextView roll;
 
+    private long startTime;
+    private long elapsedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         roll = (TextView) findViewById(R.id.z);
 
         FileWriter.setFileName("Rotation.txt", getApplicationContext());
+        startTime = System.currentTimeMillis();
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null){
@@ -62,6 +65,9 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         pitch.setText(String.valueOf(orientation[1]));
         roll.setText(String.valueOf(orientation[2]));
 
+        elapsedTime = System.currentTimeMillis() - startTime ;
+
+        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
         FileWriter.Write(getApplicationContext(), "Azimuth: " + String.valueOf(orientation[0]) + ";");
         FileWriter.Write(getApplicationContext(), "Pitch: " + String.valueOf(orientation[1]) + ";");
         FileWriter.Write(getApplicationContext(), "Roll: " + String.valueOf(orientation[2]) + ";");

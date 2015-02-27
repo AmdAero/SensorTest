@@ -20,6 +20,8 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
     private TextView GyroscopeY;
     private TextView GyroscopeZ;
 
+    private long startTime;
+    private long elapsedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
         setContentView(R.layout.gyroscope);
 
         FileWriter.setFileName("Gyroscope.txt", getApplicationContext());
+
+        startTime = System.currentTimeMillis();
 
         GyroscopeX=(TextView) findViewById(R.id.GyroscopeX);
         GyroscopeY=(TextView) findViewById(R.id.GyroscopeY);
@@ -51,11 +55,14 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
 
     public void onSensorChanged(SensorEvent event)
     {
-        //TODO: Add logic to put sensor values on screen
         GyroscopeX.setText(String.valueOf(event.values[0]/Math.PI*180) + " graden");
         GyroscopeY.setText(String.valueOf(event.values[1]/Math.PI*180) + " graden");
         GyroscopeZ.setText(String.valueOf(event.values[2]/Math.PI*180) + " graden");
 
+        elapsedTime = System.currentTimeMillis() - startTime ;
+        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
+
+        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
         FileWriter.Write(getApplicationContext(), "X: " + String.valueOf(event.values[0]/Math.PI*180) + ";");
         FileWriter.Write(getApplicationContext(), "Y: " + String.valueOf(event.values[1]/Math.PI*180) + ";");
         FileWriter.Write(getApplicationContext(), "Z: " + String.valueOf(event.values[2]/Math.PI*180) + ";");

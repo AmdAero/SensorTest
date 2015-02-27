@@ -21,10 +21,15 @@ public class Gravity_raw extends ActionBarActivity implements SensorEventListene
     private TextView y;
     private TextView z;
 
+    private long startTime;
+    private long elapsedTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gravity_raw);
+
+        startTime = System.currentTimeMillis();
 
         x = (TextView) findViewById(R.id.x);
         y = (TextView) findViewById(R.id.y);
@@ -47,6 +52,11 @@ public class Gravity_raw extends ActionBarActivity implements SensorEventListene
         x.setText(String.valueOf(event.values[0]));
         y.setText(String.valueOf(event.values[1]));
         z.setText(String.valueOf(event.values[2]));
+
+        elapsedTime = System.currentTimeMillis() - startTime ;
+
+        //TODO ADD FileWrite (init) --> ARNE!!!!
+        //FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
 
     }
 

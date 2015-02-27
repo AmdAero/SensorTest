@@ -26,6 +26,9 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
     private TextView y2;
     private TextView z2;
 
+    private long startTime;
+    private long elapsedTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
         z2 = (TextView) findViewById(R.id.z2);
 
         FileWriter.setFileName("Accelerometer.txt", getApplicationContext());
+        startTime = System.currentTimeMillis();
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
@@ -80,6 +84,9 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
         y2.setText(String.valueOf(linear_acceleration[1]));
         z2.setText(String.valueOf(linear_acceleration[2]));
 
+        elapsedTime = System.currentTimeMillis() - startTime ;
+
+        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
         FileWriter.Write(getApplicationContext(), "x: " + String.valueOf(gravity[0]) + ";");
         FileWriter.Write(getApplicationContext(), "y: " + String.valueOf(gravity[1]) + ";");
         FileWriter.Write(getApplicationContext(), "z: " + String.valueOf(gravity[2]) + ";");

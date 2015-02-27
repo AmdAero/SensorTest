@@ -23,6 +23,9 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
     private TextView yMagnetometer;
     private TextView zMagnetometer;
 
+    private long startTime;
+    private long elapsedTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,7 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         yMagnetometer = (TextView) findViewById(R.id.yMagnetometer);
         zMagnetometer = (TextView) findViewById(R.id.zMagnetometer);
 
+        startTime = System.currentTimeMillis();
         FileWriter.setFileName("Magnetometer.txt", getApplicationContext());
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -57,6 +61,9 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         yMagnetometer.setText(String.valueOf(event.values[1]) + " µT");
         zMagnetometer.setText(String.valueOf(event.values[2]) + " µT");
 
+        elapsedTime = System.currentTimeMillis() - startTime ;
+
+        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
         FileWriter.Write(getApplicationContext(), "X: " + String.valueOf(event.values[0]) + ";");
         FileWriter.Write(getApplicationContext(), "Y: " + String.valueOf(event.values[1]) + ";");
         FileWriter.Write(getApplicationContext(), "Z: " + String.valueOf(event.values[2]) + ";");
