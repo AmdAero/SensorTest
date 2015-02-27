@@ -55,9 +55,9 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
 
     public void onSensorChanged(SensorEvent event)
     {
-        GyroscopeX.setText(String.valueOf(event.values[0]/Math.PI*180) + " graden");
-        GyroscopeY.setText(String.valueOf(event.values[1]/Math.PI*180) + " graden");
-        GyroscopeZ.setText(String.valueOf(event.values[2]/Math.PI*180) + " graden");
+        GyroscopeX.setText(String.valueOf(event.values[0]/Math.PI*180) + " degrees/s");
+        GyroscopeY.setText(String.valueOf(event.values[1]/Math.PI*180) + " degrees/s");
+        GyroscopeZ.setText(String.valueOf(event.values[2]/Math.PI*180) + " degrees/s");
 
         elapsedTime = System.currentTimeMillis() - startTime ;
         FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
