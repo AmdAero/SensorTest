@@ -3,23 +3,26 @@ package com.example.brecht.sensortest;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+
 
 public class MainActivity extends ActionBarActivity {
 
     private Toast defaultToast;
     private Toast notImplementedToast;
+    private FileWriter f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         defaultToast = Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT);
         notImplementedToast = Toast.makeText(this, "Not implemented yet!", Toast.LENGTH_SHORT);
@@ -67,8 +70,8 @@ public class MainActivity extends ActionBarActivity {
                         i = new Intent(MainActivity.this , Rotation.class);
                         break;
                     case 8:
-                        FileWriter.setFileName("Test2.txt", getApplicationContext());
-                        FileWriter.Write(getApplicationContext(), "Testing the filewrite functionality!");
+                        f = new FileWriter("HelloWorld.txt", getApplicationContext());
+                        f.Write(getApplicationContext(), "Testing the filewrite functionality!");
                         return;
                     default:
                         if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
@@ -76,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
                         return;
                 }
 
+                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
             }
         });

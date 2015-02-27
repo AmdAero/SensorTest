@@ -7,7 +7,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.widget.TextView;
+
+import java.io.File;
 
 
 public class Rotation extends ActionBarActivity implements SensorEventListener {
@@ -22,8 +25,10 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
     private TextView pitch;
     private TextView roll;
 
-    private long startTime;
-    private long elapsedTime;
+    private double startTime;
+    private double elapsedTime;
+
+    private FileWriter f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +40,14 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         pitch = (TextView) findViewById(R.id.y);
         roll = (TextView) findViewById(R.id.z);
 
-        FileWriter.setFileName("Rotation.txt", getApplicationContext());
-        startTime = System.currentTimeMillis();
+        f = new FileWriter("Rotation.txt", getApplicationContext());
+        startTime = (System.currentTimeMillis() / 1000.0);
+
+        f.Write(getApplicationContext(), "Time;");
+        f.Write(getApplicationContext(), "Azimuth;");
+        f.Write(getApplicationContext(), "Pitch;");
+        f.Write(getApplicationContext(), "Roll;");
+        f.Write(getApplicationContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null){
@@ -46,6 +57,17 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         else {
             //DO SHIT
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) || (keyCode == KeyEvent.KEYCODE_HOME) || (keyCode == KeyEvent.KEYCODE_APP_SWITCH ))
+        {
+            //finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -65,13 +87,13 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         pitch.setText(String.valueOf(orientation[1]));
         roll.setText(String.valueOf(orientation[2]));
 
-        elapsedTime = System.currentTimeMillis() - startTime ;
+        elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
 
-        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
-        FileWriter.Write(getApplicationContext(), "Azimuth: " + String.valueOf(orientation[0]) + ";");
-        FileWriter.Write(getApplicationContext(), "Pitch: " + String.valueOf(orientation[1]) + ";");
-        FileWriter.Write(getApplicationContext(), "Roll: " + String.valueOf(orientation[2]) + ";");
-        FileWriter.Write(getApplicationContext(), System.getProperty("line.separator"));
+        f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(orientation[0]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(orientation[1]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(orientation[2]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), System.getProperty("line.separator"));
 
 
     }

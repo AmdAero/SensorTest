@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 /**
@@ -21,19 +22,28 @@ public class Gravity_raw extends ActionBarActivity implements SensorEventListene
     private TextView y;
     private TextView z;
 
-    private long startTime;
-    private long elapsedTime;
+    private double startTime;
+    private double elapsedTime;
+
+    private FileWriter f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gravity_raw);
 
-        startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis() / 1000.0;
 
         x = (TextView) findViewById(R.id.x);
         y = (TextView) findViewById(R.id.y);
         z = (TextView) findViewById(R.id.z);
+
+        f = new FileWriter("Gravity_raw.txt", getApplicationContext());
+        f.Write(getApplicationContext(), "Time;");
+        f.Write(getApplicationContext(), "X;");
+        f.Write(getApplicationContext(), "Y;");
+        f.Write(getApplicationContext(), "Z;");
+        f.Write(getApplicationContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
@@ -45,6 +55,18 @@ public class Gravity_raw extends ActionBarActivity implements SensorEventListene
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            //finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 
 
     @Override
@@ -53,10 +75,13 @@ public class Gravity_raw extends ActionBarActivity implements SensorEventListene
         y.setText(String.valueOf(event.values[1]));
         z.setText(String.valueOf(event.values[2]));
 
-        elapsedTime = System.currentTimeMillis() - startTime ;
+        elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
 
-        //TODO ADD FileWrite (init) --> ARNE!!!!
-        //FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
+        f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), System.getProperty("line.separator"));
 
     }
 

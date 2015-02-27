@@ -13,10 +13,10 @@ import java.io.OutputStreamWriter;
  */
 public class FileWriter {
 
-    private static String fileName;
-    private static File file;
+    private String fileName;
+    private  File file;
 
-    public static void setFileName(String fileWriter, Context context) {
+    public FileWriter(String fileWriter, Context context) {
         fileName = fileWriter;
         file = new File(context.getExternalFilesDir(null), fileName);
 
@@ -24,7 +24,7 @@ public class FileWriter {
             file.delete();
     }
 
-    public static void Write(Context c, String string)
+    public void Write(Context c, String string)
     {
         FileOutputStream outputStream;
         OutputStreamWriter osw;

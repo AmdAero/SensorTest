@@ -7,7 +7,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.widget.TextView;
+
+import java.io.File;
 
 
 public class Gyroscope extends ActionBarActivity implements SensorEventListener {
@@ -20,17 +23,24 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
     private TextView GyroscopeY;
     private TextView GyroscopeZ;
 
-    private long startTime;
-    private long elapsedTime;
+    private double startTime;
+    private double elapsedTime;
+
+    private FileWriter f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gyroscope);
 
-        FileWriter.setFileName("Gyroscope.txt", getApplicationContext());
+        f = new FileWriter("Gyroscope.txt", getApplicationContext());
+        f.Write(getApplicationContext(), "Time;");
+        f.Write(getApplicationContext(), "X;");
+        f.Write(getApplicationContext(), "Y;");
+        f.Write(getApplicationContext(), "Z;");
+        f.Write(getApplicationContext(), System.getProperty("line.separator"));
 
-        startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis() / 1000.0;
 
         GyroscopeX=(TextView) findViewById(R.id.GyroscopeX);
         GyroscopeY=(TextView) findViewById(R.id.GyroscopeY);
@@ -48,6 +58,18 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            //finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
     public final void onAccuracyChanged(Sensor sensor, int accuracy) {
         // Do something here if sensor accuracy changes.
         //Brecht: For now nothing...
@@ -59,14 +81,13 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
         GyroscopeY.setText(String.valueOf(event.values[1]/Math.PI*180) + " degrees/s");
         GyroscopeZ.setText(String.valueOf(event.values[2]/Math.PI*180) + " degrees/s");
 
-        elapsedTime = System.currentTimeMillis() - startTime ;
-        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
+        elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
 
-        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
-        FileWriter.Write(getApplicationContext(), "X: " + String.valueOf(event.values[0]/Math.PI*180) + ";");
-        FileWriter.Write(getApplicationContext(), "Y: " + String.valueOf(event.values[1]/Math.PI*180) + ";");
-        FileWriter.Write(getApplicationContext(), "Z: " + String.valueOf(event.values[2]/Math.PI*180) + ";");
-        FileWriter.Write(getApplicationContext(), System.getProperty("line.separator"));
+        f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[0]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[1]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[2]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), System.getProperty("line.separator"));
 
     }
 

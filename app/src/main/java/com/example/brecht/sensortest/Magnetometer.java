@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
     private TextView yMagnetometer;
     private TextView zMagnetometer;
 
-    private long startTime;
-    private long elapsedTime;
+    private double startTime;
+    private double elapsedTime;
+
+    private FileWriter f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,14 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         yMagnetometer = (TextView) findViewById(R.id.yMagnetometer);
         zMagnetometer = (TextView) findViewById(R.id.zMagnetometer);
 
-        startTime = System.currentTimeMillis();
-        FileWriter.setFileName("Magnetometer.txt", getApplicationContext());
+        startTime = System.currentTimeMillis() / 1000.0;
+        f = new FileWriter("Magnetometer.txt", getApplicationContext());
+
+        f.Write(getApplicationContext(), "Time;");
+        f.Write(getApplicationContext(), "X;");
+        f.Write(getApplicationContext(), "Y;");
+        f.Write(getApplicationContext(), "Z;");
+        f.Write(getApplicationContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null) {
@@ -50,6 +59,18 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            //finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
     public final void onAccuracyChanged(Sensor sensor, int accuracy) {
         // Do something here if sensor accuracy changes.
         //Brecht: For now nothing...
@@ -61,13 +82,13 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         yMagnetometer.setText(String.valueOf(event.values[1]) + " µT");
         zMagnetometer.setText(String.valueOf(event.values[2]) + " µT");
 
-        elapsedTime = System.currentTimeMillis() - startTime ;
+        elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
 
-        FileWriter.Write(getApplicationContext(), "Time: " + String.valueOf(elapsedTime) + ";");
-        FileWriter.Write(getApplicationContext(), "X: " + String.valueOf(event.values[0]) + ";");
-        FileWriter.Write(getApplicationContext(), "Y: " + String.valueOf(event.values[1]) + ";");
-        FileWriter.Write(getApplicationContext(), "Z: " + String.valueOf(event.values[2]) + ";");
-        FileWriter.Write(getApplicationContext(), System.getProperty("line.separator"));
+        f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
+        f.Write(getApplicationContext(), System.getProperty("line.separator"));
     }
 
 }

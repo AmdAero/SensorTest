@@ -24,7 +24,7 @@
         <activity android:name=".Gyroscope"></activity>
         <activity android:name=".Magnetometer"></activity>
         <activity android:name=".Rotation"></activity>
-        <activity android:name=".Gravity_raw"></activity>
+        <activity android:name=".Gravity_raw" android:launchMode="singleInstance"></activity>
 
 
     </application>
