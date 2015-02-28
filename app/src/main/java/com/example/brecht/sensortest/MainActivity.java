@@ -49,11 +49,11 @@ public class MainActivity extends ActionBarActivity {
                         i = new Intent(MainActivity.this , JSON.class);
                         break;
                     case 2:
-                        //i = new Intent(MainActivity.this , Login.class);
-                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
+                        i = new Intent(MainActivity.this , Login.class);
+                        /*if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
                             notImplementedToast.show();
-                        return;
-                    // break;
+                        return;*/
+                        break;
                     case 3:
                         i = new Intent(MainActivity.this, Gravity_raw.class);
                         break;
