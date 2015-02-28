@@ -46,30 +46,24 @@ public class MainActivity extends ActionBarActivity {
                         return;
                     // break;
                     case 1:
-                        i = new Intent(MainActivity.this , JSON.class);
+                        i = new Intent(MainActivity.this , Login.class);
                         break;
                     case 2:
-                        i = new Intent(MainActivity.this , Login.class);
-                        /*if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
-                            notImplementedToast.show();
-                        return;*/
-                        break;
-                    case 3:
                         i = new Intent(MainActivity.this, Gravity_raw.class);
                         break;
-                    case 4:
+                    case 3:
                         i = new Intent(MainActivity.this , Accelero.class);
                         break;
-                    case 5:
+                    case 4:
                         i = new Intent(MainActivity.this , Gyroscope.class);
                          break;
-                    case 6:
+                    case 5:
                         i = new Intent(MainActivity.this , Magnetometer.class);
                         break;
-                    case 7:
+                    case 6:
                         i = new Intent(MainActivity.this , Rotation.class);
                         break;
-                    case 8:
+                    case 7:
                         f = new FileWriter("HelloWorld.txt", getApplicationContext());
                         f.Write(getApplicationContext(), "Testing the filewrite functionality!");
                         return;

@@ -4,7 +4,6 @@
 
     <string-array name="SensorList">
         <item>Stopwatch</item>
-        <item>JSON</item>
         <item>Login</item>
         <item>Gravity(RAW)</item>
         <item>Accelerometer</item>

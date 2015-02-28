@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class register extends ActionBarActivity {
+public class Register extends ActionBarActivity {
 
     Button btnRegister;
 
@@ -62,7 +60,7 @@ public class register extends ActionBarActivity {
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(register.this);
+        private ProgressDialog progressDialog = new ProgressDialog(Register.this);
         InputStream inputStream = null;
         String result = "";
 
@@ -146,7 +144,7 @@ public class register extends ActionBarActivity {
                 if (jsonResponse.optString("success").toString().equals("1")) {
                     Toast.makeText(getApplicationContext(), "you have created an account", Toast.LENGTH_SHORT).show();
                     super.onPostExecute(v);
-                    Intent intent = new Intent(register.this, MainActivity.class);
+                    Intent intent = new Intent(Register.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(intent);
                 }

@@ -18,14 +18,13 @@
         </activity>
 
         <activity android:name=".Stopwatch"></activity>
-        <activity android:name=".JSON"></activity>
         <activity android:name=".Login"></activity>
         <activity android:name=".Accelero"></activity>
         <activity android:name=".Gyroscope"></activity>
         <activity android:name=".Magnetometer"></activity>
         <activity android:name=".Rotation"></activity>
-        <activity android:name=".welkom"></activity>
-        <activity android:name=".register"></activity>
+        <activity android:name=".Welkom"></activity>
+        <activity android:name=".Register"></activity>
         <activity android:name=".Gravity_raw" android:launchMode="singleInstance"></activity>
 
 

@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class welkom extends ActionBarActivity {
+public class Welkom extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
