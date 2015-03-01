@@ -44,5 +44,6 @@ Thumbs.db
 .idea
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/vcs.xml
 .gradle
 build/
