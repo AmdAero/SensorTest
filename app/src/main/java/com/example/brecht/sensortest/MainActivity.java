@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
                 {
                     case 0:
                         i = new Intent(MainActivity.this , Stopwatch.class);
-                    break;
+                        break;
                     case 1:
                         i = new Intent(MainActivity.this , Login.class);
                         break;
