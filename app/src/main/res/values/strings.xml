@@ -13,5 +13,10 @@
         <item>Save Hello World</item>
     </string-array>
 
+    <string name="timer">00:00:00</string>
+    <string name="startText">start</string>
+    <string name="resetText">reset</string>
+    <string name="stopText">stop</string>
+
 
 </resources>

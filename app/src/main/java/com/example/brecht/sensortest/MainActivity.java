@@ -40,11 +40,8 @@ public class MainActivity extends ActionBarActivity {
                 switch(position)
                 {
                     case 0:
-                        //i = new Intent(MainActivity.this , Stopwatch.class);
-                        if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
-                            notImplementedToast.show();
-                        return;
-                    // break;
+                        i = new Intent(MainActivity.this , Stopwatch.class);
+                    break;
                     case 1:
                         i = new Intent(MainActivity.this , Login.class);
                         break;
