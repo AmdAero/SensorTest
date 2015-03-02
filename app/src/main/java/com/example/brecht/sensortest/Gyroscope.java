@@ -22,9 +22,13 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
     private TextView GyroscopeX;
     private TextView GyroscopeY;
     private TextView GyroscopeZ;
+    private TextView sampleRateText;
 
     private double startTime;
     private double elapsedTime;
+
+    private double oldElapsedTime;
+    private double sampleRate;
 
     private FileWriter f;
 
@@ -45,6 +49,7 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
         GyroscopeX=(TextView) findViewById(R.id.GyroscopeX);
         GyroscopeY=(TextView) findViewById(R.id.GyroscopeY);
         GyroscopeZ=(TextView) findViewById(R.id.GyroscopeZ);
+        sampleRateText = (TextView) findViewById(R.id.sampling);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
@@ -82,12 +87,15 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
         GyroscopeZ.setText(String.valueOf(event.values[2]/Math.PI*180) + " degrees/s");
 
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
+        sampleRate = 1 / (elapsedTime - oldElapsedTime);
+        sampleRateText.setText(String.valueOf(sampleRate));
 
         f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(event.values[0]/Math.PI*180).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(event.values[1]/Math.PI*180).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(event.values[2]/Math.PI*180).replace(".", ",") + ";");
         f.Write(getApplicationContext(), System.getProperty("line.separator"));
+        oldElapsedTime = elapsedTime;
 
     }
 

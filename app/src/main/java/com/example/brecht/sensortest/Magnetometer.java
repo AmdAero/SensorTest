@@ -23,9 +23,13 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
     private TextView xMagnetometer;
     private TextView yMagnetometer;
     private TextView zMagnetometer;
+    private TextView sampleRateText;
 
     private double startTime;
     private double elapsedTime;
+
+    private double oldElapsedTime;
+    private double sampleRate;
 
     private FileWriter f;
 
@@ -37,6 +41,7 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         xMagnetometer = (TextView) findViewById(R.id.xMagnetometer);
         yMagnetometer = (TextView) findViewById(R.id.yMagnetometer);
         zMagnetometer = (TextView) findViewById(R.id.zMagnetometer);
+        sampleRateText = (TextView) findViewById(R.id.sampling);
 
         startTime = System.currentTimeMillis() / 1000.0;
         f = new FileWriter("Magnetometer.txt", getApplicationContext());
@@ -83,12 +88,15 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         zMagnetometer.setText(String.valueOf(event.values[2]) + " µT");
 
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
+        sampleRate = 1 / (elapsedTime - oldElapsedTime);
+        sampleRateText.setText(String.valueOf(sampleRate));
 
         f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), System.getProperty("line.separator"));
+        oldElapsedTime = elapsedTime;
     }
 
 }

@@ -28,9 +28,12 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
     private TextView x2;
     private TextView y2;
     private TextView z2;
+    private TextView sampleRateText;
 
     private double startTime;
     private double elapsedTime;
+    private double oldElapsedTime;
+    private double sampleRate;
 
     private FileWriter f;
 
@@ -45,6 +48,7 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
         x2 = (TextView) findViewById(R.id.x2);
         y2 = (TextView) findViewById(R.id.y2);
         z2 = (TextView) findViewById(R.id.z2);
+        sampleRateText = (TextView) findViewById(R.id.sampling);
 
         f = new FileWriter("Accelerometer.txt", getApplicationContext());
         f.Write(getApplicationContext(), "Time;");
@@ -108,14 +112,17 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
         y2.setText(String.valueOf(linear_acceleration[1]));
         z2.setText(String.valueOf(linear_acceleration[2]));
 
+
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
+        sampleRate = 1 / (elapsedTime - oldElapsedTime);
+        sampleRateText.setText(String.valueOf(sampleRate));
 
         f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(gravity[0]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(gravity[1]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(gravity[2]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), System.getProperty("line.separator"));
-
+        oldElapsedTime = elapsedTime;
 
 
     }

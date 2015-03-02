@@ -24,9 +24,13 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
     private TextView azimuth;
     private TextView pitch;
     private TextView roll;
+    private TextView sampleRateText;
 
     private double startTime;
     private double elapsedTime;
+
+    private double oldElapsedTime;
+    private double sampleRate;
 
     private FileWriter f;
 
@@ -39,6 +43,7 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         azimuth = (TextView) findViewById(R.id.x);
         pitch = (TextView) findViewById(R.id.y);
         roll = (TextView) findViewById(R.id.z);
+        sampleRateText = (TextView) findViewById(R.id.sampling);
 
         f = new FileWriter("Rotation.txt", getApplicationContext());
         startTime = (System.currentTimeMillis() / 1000.0);
@@ -88,12 +93,15 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
         roll.setText(String.valueOf(orientation[2]));
 
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
+        sampleRate = 1 / (elapsedTime - oldElapsedTime);
+        sampleRateText.setText(String.valueOf(sampleRate));
 
         f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(orientation[0]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(orientation[1]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), String.valueOf(orientation[2]).replace(".", ",") + ";");
         f.Write(getApplicationContext(), System.getProperty("line.separator"));
+        oldElapsedTime = elapsedTime;
 
 
     }
