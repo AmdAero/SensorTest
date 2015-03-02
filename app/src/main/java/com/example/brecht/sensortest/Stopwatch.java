@@ -7,12 +7,16 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Locale;
 
 
 public class Stopwatch extends ActionBarActivity {
@@ -23,14 +27,25 @@ public class Stopwatch extends ActionBarActivity {
     private long startTime;
     private long elapsedTime;
     private final int REFRESH_RATE = 100;
-    private String hours,minutes,seconds,milliseconds;
+    private String hours,minutes,seconds,milliseconds, currentmin, lastmin="00";
     private long secs,mins,hrs,msecs;
     private boolean stopped = false;
+    private TextToSpeech SayTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stopwatch);
+
+        SayTime=new TextToSpeech(getApplicationContext(),
+                new TextToSpeech.OnInitListener() {
+                    @Override
+                    public void onInit(int status) {
+                        if(status != TextToSpeech.ERROR){
+                            SayTime.setLanguage(Locale.US);
+                        }
+                    }
+                });
     }
 
 
@@ -148,6 +163,15 @@ public class Stopwatch extends ActionBarActivity {
 
 		/* Setting the timer text to the elapsed time */
         ((TextView)findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
+
+
+        currentmin=String.valueOf(mins);
+        if(lastmin!=currentmin) {
+            speakText();
+        }
+        lastmin=currentmin;
+
+
     }
 
 
@@ -158,4 +182,11 @@ public class Stopwatch extends ActionBarActivity {
             mHandler.postDelayed(this,REFRESH_RATE);
         }
     };
+
+    public void speakText(){
+        String toSpeak = "You have been climbing for "+minutes+" minutes";
+        Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+        SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+
+    }
 }
