@@ -47,16 +47,13 @@ public class Register extends ActionBarActivity {
         Email = (EditText) findViewById(R.id.email);
         Password = (EditText) findViewById(R.id.password);
 
-
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new MyAsyncTask().execute();
             }
         });
-
     }
-
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
@@ -114,15 +111,13 @@ public class Register extends ActionBarActivity {
             }
 
             catch (Exception e) {
-                Log.e("StringBuilding & BufferedReader", "Error converting result " + e.toString());
+                Log.e("StringBuilding", "Error converting result " + e.toString());
             }
             return null;
         }
 
         protected void onPostExecute(Void v) {
             //parse JSON data
-            String OutputData = "";
-
 
             try {
                 jsonResponse = new JSONObject(result);
@@ -132,17 +127,10 @@ public class Register extends ActionBarActivity {
                 String error = jsonResponse.optString("error").toString();
                 String error_msg = jsonResponse.optString("error_msg").toString();
 
-                OutputData += "Node:\n"+ tag +" | "
-                        + success +" | "
-                        + error +  " | " + error_msg +  " \n\n";
-
-                //Show Output on screen/activity
-
-
                 //Close the progressDialog!
                 this.progressDialog.dismiss();
                 if (jsonResponse.optString("success").toString().equals("1")) {
-                    Toast.makeText(getApplicationContext(), "you have created an account", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "You have created a new account", Toast.LENGTH_SHORT).show();
                     super.onPostExecute(v);
                     Intent intent = new Intent(Register.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
