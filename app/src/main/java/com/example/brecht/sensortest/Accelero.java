@@ -1,6 +1,7 @@
 package com.example.brecht.sensortest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,6 +10,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 
@@ -21,7 +25,7 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
     private float linear_acceleration[] = new float[3];
 
     //TODO: Better names!
-    private TextView x;
+    private TextView x = (TextView) findViewById(R.id.x);
     private TextView y;
     private TextView z;
     private TextView x2;
@@ -36,15 +40,59 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
 
     private FileWriter f;
 
+    ActionBar actionBar = getSupportActionBar();
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_screens, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = null;
+        switch (item.getItemId()) {
+            case R.id.stopwatch:
+                i = new Intent(Accelero.this , Stopwatch.class);
+                startActivity(i);
+                return true;
+            case R.id.login:
+                i = new Intent(Accelero.this , Login.class);
+                startActivity(i);
+                return true;
+            case R.id.gravityR:
+                i = new Intent(Accelero.this , Gravity_raw.class);
+                startActivity(i);
+                return true;
+            case R.id.gyroscope:
+                i = new Intent(Accelero.this , Gyroscope.class);
+                startActivity(i);
+                return true;
+            case R.id.magneetometer:
+                i = new Intent(Accelero.this , Magnetometer.class);
+                startActivity(i);
+                return true;
+            case R.id.rotation:
+                i = new Intent(Accelero.this , Rotation.class);
+                startActivity(i);
+                return true;
+            case R.id.fileWriter:
+                i = new Intent(Accelero.this , FileWriter.class);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accelerometer);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        x = (TextView) findViewById(R.id.x);
         y = (TextView) findViewById(R.id.y);
         z = (TextView) findViewById(R.id.z);
         x2 = (TextView) findViewById(R.id.x2);
@@ -128,5 +176,6 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
 
 
     }
+
 
 }

@@ -10,6 +10,7 @@
         >
         <activity
             android:name=".MainActivity"
+            android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,25 +19,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Stopwatch" android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-        <activity android:name=".Login" android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-        <activity android:name=".Accelero" android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-        <activity android:name=".Gyroscope" android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-        <activity android:name=".Magnetometer" android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-        <activity android:name=".Rotation" android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-        <activity android:name=".Welkom" android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-        <activity android:name=".Register" android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-        <activity android:name=".Gravity_raw" android:parentActivityName=".MainActivity" android:launchMode="singleInstance">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/> </activity>
-
+        <activity android:name=".Stopwatch"/>
+        <activity android:name=".Login" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity android:name=".Accelero" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity android:name=".Gyroscope" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity android:name=".Magnetometer" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity android:name=".Rotation" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity android:name=".Welkom" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity android:name=".Register" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity android:name=".Gravity_raw" android:theme="@style/Theme.AppCompat.Light.DarkActionBar" android:launchMode="singleInstance"/>
 
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

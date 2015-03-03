@@ -1,6 +1,7 @@
 package com.example.brecht.sensortest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,6 +10,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 
@@ -33,13 +37,55 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
 
     private FileWriter f;
 
+    public ActionBar actionBar = getSupportActionBar();
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_screens, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = null;
+        switch (item.getItemId()) {
+            case R.id.stopwatch:
+                i = new Intent(Rotation.this , Stopwatch.class);
+                startActivity(i);
+                return true;
+            case R.id.login:
+                i = new Intent(Rotation.this , Login.class);
+                startActivity(i);
+                return true;
+            case R.id.gravityR:
+                i = new Intent(Rotation.this , Gravity_raw.class);
+                startActivity(i);
+                return true;
+            case R.id.gyroscope:
+                i = new Intent(Rotation.this , Gyroscope.class);
+                startActivity(i);
+                return true;
+            case R.id.magneetometer:
+                i = new Intent(Rotation.this , Magnetometer.class);
+                startActivity(i);
+                return true;
+            case R.id.fileWriter:
+                i = new Intent(Rotation.this , FileWriter.class);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rotation);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         //TODO: Change ID's
         azimuth = (TextView) findViewById(R.id.x);

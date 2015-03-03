@@ -1,11 +1,13 @@
 package com.example.brecht.sensortest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,13 +30,55 @@ public class Stopwatch extends ActionBarActivity {
     private boolean stopped = false;
     private TextToSpeech SayTime;
 
+    public ActionBar actionBar = getSupportActionBar();
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_screens, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = null;
+        switch (item.getItemId()) {
+            case R.id.login:
+                i = new Intent(Stopwatch.this , Login.class);
+                startActivity(i);
+                return true;
+            case R.id.gravityR:
+                i = new Intent(Stopwatch.this , Gravity_raw.class);
+                startActivity(i);
+                return true;
+            case R.id.gyroscope:
+                i = new Intent(Stopwatch.this , Gyroscope.class);
+                startActivity(i);
+                return true;
+            case R.id.magneetometer:
+                i = new Intent(Stopwatch.this , Magnetometer.class);
+                startActivity(i);
+                return true;
+            case R.id.rotation:
+                i = new Intent(Stopwatch.this , Rotation.class);
+                startActivity(i);
+                return true;
+            case R.id.fileWriter:
+                i = new Intent(Stopwatch.this , FileWriter.class);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stopwatch);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         SayTime=new TextToSpeech(getApplicationContext(),
                 new TextToSpeech.OnInitListener() {
@@ -48,27 +92,6 @@ public class Stopwatch extends ActionBarActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void startClick (View view){
         showStopButton();

@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,14 +43,55 @@ public class Login extends ActionBarActivity {
 
     JSONObject jsonResponse;
 
+    public ActionBar actionBar = getSupportActionBar();
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_screens, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = null;
+        switch (item.getItemId()) {
+            case R.id.stopwatch:
+                i = new Intent(Login.this , Stopwatch.class);
+                startActivity(i);
+                return true;
+            case R.id.gravityR:
+                i = new Intent(Login.this , Gravity_raw.class);
+                startActivity(i);
+                return true;
+            case R.id.gyroscope:
+                i = new Intent(Login.this , Gyroscope.class);
+                startActivity(i);
+                return true;
+            case R.id.magneetometer:
+                i = new Intent(Login.this , Magnetometer.class);
+                startActivity(i);
+                return true;
+            case R.id.rotation:
+                i = new Intent(Login.this , Rotation.class);
+                startActivity(i);
+                return true;
+            case R.id.fileWriter:
+                i = new Intent(Login.this , FileWriter.class);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Email = (EditText) findViewById(R.id.email);
         Password = (EditText) findViewById(R.id.password);
