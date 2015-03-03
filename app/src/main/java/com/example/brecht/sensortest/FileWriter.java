@@ -1,7 +1,11 @@
 package com.example.brecht.sensortest;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Environment;
+import android.os.PersistableBundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
 import java.io.File;
@@ -11,7 +15,14 @@ import java.io.OutputStreamWriter;
 /**
  * Created by Brecht on 23/02/2015.
  */
-public class FileWriter {
+public class FileWriter extends ActionBarActivity{
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+    }
 
     private String fileName;
     private  File file;

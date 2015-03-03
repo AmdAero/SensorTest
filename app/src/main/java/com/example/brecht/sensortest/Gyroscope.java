@@ -6,11 +6,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.widget.TextView;
-
-import java.io.File;
 
 
 public class Gyroscope extends ActionBarActivity implements SensorEventListener {
@@ -36,6 +35,9 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gyroscope);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         f = new FileWriter("Gyroscope.txt", getApplicationContext());
         f.Write(getApplicationContext(), "Time;");

@@ -6,11 +6,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.widget.TextView;
-
-import java.io.File;
 
 
 public class Accelero extends ActionBarActivity implements SensorEventListener {
@@ -41,6 +40,9 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accelerometer);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         x = (TextView) findViewById(R.id.x);
         y = (TextView) findViewById(R.id.y);

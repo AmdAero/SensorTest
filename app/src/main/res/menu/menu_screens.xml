@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:id="@+id/stopwatch" android:title="Stop Watch" android:icon="@drawable/stopwatch" app:showAsAction="always"/>
+    <item android:id="@+id/login" android:title="Log In" android:icon="@drawable/login_in" app:showAsAction="always"/>
+    <item android:id="@+id/gravityR" android:title="Gravity Raw" android:icon="@drawable/gravity" app:showAsAction="always"/>
+    <item android:id="@+id/accelo" android:title="Accelerometer" android:icon="@drawable/accelerometer" app:showAsAction="always"/>
+    <item android:id="@+id/gyroscope" android:title="Gyroscope" android:icon="@drawable/gyroscope" app:showAsAction="always"/>
+    <item android:id="@+id/magneetometer" android:title="Magnetometer" android:icon="@drawable/magneet" app:showAsAction="always"/>
+    <item android:id="@+id/rotation" android:title="Rotation" android:icon="@drawable/rotation" app:showAsAction="always"/>
+    <item android:id="@+id/fileWriter" android:title="File Writer" android:icon="@drawable/writer" app:showAsAction="always"/>
+</menu>
