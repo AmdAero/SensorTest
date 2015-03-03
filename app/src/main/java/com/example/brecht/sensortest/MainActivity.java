@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
-    private Toast defaultToast;
-    private Toast notImplementedToast;
     private FileWriter f;
     ActionBar actionBar = getSupportActionBar();
 
@@ -60,7 +58,6 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.fileWriter:
                 i = new Intent(MainActivity.this , FileWriter.class);
-                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -73,8 +70,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
     }
 
 }

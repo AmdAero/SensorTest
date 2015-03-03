@@ -183,9 +183,16 @@ public class Stopwatch extends ActionBarActivity {
     };
 
     public void speakText(){
-        String toSpeak = "You have been climbing for "+minutes+" minutes";
-        Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-        SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+        if (mins > 0) {
+            String toSpeak;
+            if (mins == 1)
+                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute";
+            else
+                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
+
+            Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+            SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+        }
 
     }
 }

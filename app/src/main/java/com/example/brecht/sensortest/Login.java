@@ -51,8 +51,8 @@ public class Login extends ActionBarActivity {
 
         Email = (EditText) findViewById(R.id.email);
         Password = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.Login);
-        btnRegister = (Button) findViewById(R.id.Register);
+        btnLogin = (Button) findViewById(R.id.LoginButton);
+        btnRegister = (Button) findViewById(R.id.RegisterButton);
 
         btnRegister.setOnClickListener(new View.OnClickListener(){
            public void onClick(View v){
