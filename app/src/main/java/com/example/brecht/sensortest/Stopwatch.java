@@ -1,6 +1,5 @@
 package com.example.brecht.sensortest;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
@@ -20,7 +19,7 @@ import java.util.Locale;
  */
 public class Stopwatch extends Fragment implements View.OnClickListener {
 
-    private View v;
+    private View view;
 
     private Button startButton;
     private Button stopButton;
@@ -37,12 +36,12 @@ public class Stopwatch extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.stopwatch, container, false);
-        startButton = (Button) v.findViewById(R.id.startButton);
+        view = inflater.inflate(R.layout.stopwatch, container, false);
+        startButton = (Button) view.findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
-        stopButton = (Button) v.findViewById(R.id.stopButton);
+        stopButton = (Button) view.findViewById(R.id.stopButton);
         stopButton.setOnClickListener(this);
-        resetButton = (Button) v.findViewById(R.id.resetButton);
+        resetButton = (Button) view.findViewById(R.id.resetButton);
         resetButton.setOnClickListener(this);
 
         SayTime=new TextToSpeech(getActivity().getApplicationContext(),
@@ -55,7 +54,7 @@ public class Stopwatch extends Fragment implements View.OnClickListener {
                     }
                 });
 
-        return v;
+        return view;
     }
 
     @Override
@@ -85,20 +84,17 @@ public class Stopwatch extends Fragment implements View.OnClickListener {
         }
         mHandler.removeCallbacks(startTimer);
         mHandler.postDelayed(startTimer, 0);
-
     }
 
     public void stopClick (){
         hideStopButton();
         mHandler.removeCallbacks(startTimer);
         stopped = true;
-
     }
 
     public void resetClick (){
         stopped = false;
         ((TextView)getView().findViewById(R.id.timer)).setText("00:00:00");
-
     }
 
     private void showStopButton(){
@@ -166,7 +162,7 @@ public class Stopwatch extends Fragment implements View.OnClickListener {
         milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-2);
 
 		/* Setting the timer text to the elapsed time */
-        ((TextView)v.findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
+        ((TextView) view.findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
 
 
         currentmin=String.valueOf(mins);
@@ -174,8 +170,6 @@ public class Stopwatch extends Fragment implements View.OnClickListener {
             speakText();
         }
         lastmin=currentmin;
-
-
     }
 
 
@@ -198,6 +192,5 @@ public class Stopwatch extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
             SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         }
-
     }
 }

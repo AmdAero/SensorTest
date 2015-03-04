@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionbar.addTab(StopwatchTab);
         actionbar.addTab(LoginTab);
-        //actionbar.addTab(RotationTab);
+        actionbar.addTab(RotationTab);
 
 
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {

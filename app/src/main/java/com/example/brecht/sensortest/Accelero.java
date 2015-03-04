@@ -75,7 +75,7 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
                 startActivity(i);
                 return true;
             case R.id.rotation:
-                i = new Intent(Accelero.this , Rotation.class);
+                i = new Intent(Accelero.this , RotationFragment.class);
                 startActivity(i);
                 return true;
             case R.id.fileWriter:

@@ -19,8 +19,8 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
                 return new Stopwatch();
             case 1:
                 return new RootLoginFragment();
-            //case 2:
-                //return new Rotation();
+            case 2:
+                return new RotationFragment();
             default:
                 break;
         }
@@ -30,6 +30,6 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }

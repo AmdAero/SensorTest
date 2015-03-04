@@ -66,7 +66,7 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
                 startActivity(i);
                 return true;
             case R.id.rotation:
-                i = new Intent(Magnetometer.this , Rotation.class);
+                i = new Intent(Magnetometer.this , RotationFragment.class);
                 startActivity(i);
                 return true;
             case R.id.fileWriter:

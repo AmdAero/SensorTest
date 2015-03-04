@@ -66,7 +66,7 @@ public class Gravity_raw extends ActionBarActivity implements SensorEventListene
                 startActivity(i);
                 return true;
             case R.id.rotation:
-                i = new Intent(Gravity_raw.this , Rotation.class);
+                i = new Intent(Gravity_raw.this , RotationFragment.class);
                 startActivity(i);
                 return true;
             case R.id.fileWriter:

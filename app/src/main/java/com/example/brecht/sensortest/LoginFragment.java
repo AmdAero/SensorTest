@@ -35,7 +35,7 @@ import java.util.List;
 
 public class LoginFragment extends Fragment implements View.OnClickListener{
 
-    private View v;
+    private View view;
 
     Button btnLogin;
     Button btnRegister;
@@ -47,17 +47,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.login, container, false);
+        view = inflater.inflate(R.layout.login, container, false);
 
-        Email = (EditText) v.findViewById(R.id.email);
-        Password = (EditText) v.findViewById(R.id.password);
-        btnLogin = (Button) v.findViewById(R.id.LoginButton);
-        btnRegister = (Button) v.findViewById(R.id.RegisterButton);
+        Email = (EditText) view.findViewById(R.id.email);
+        Password = (EditText) view.findViewById(R.id.password);
+        btnLogin = (Button) view.findViewById(R.id.LoginButton);
+        btnRegister = (Button) view.findViewById(R.id.RegisterButton);
 
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
 
-        return v;
+        return view;
     }
 
     @Override

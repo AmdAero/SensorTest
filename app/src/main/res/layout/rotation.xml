@@ -12,15 +12,32 @@
         android:orientation="vertical"
         >
 
-
-
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:text="@string/rotation_head"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             />
+
+        <RelativeLayout
+            android:layout_marginBottom="30dp"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/startText"
+                android:id="@+id/btnStart"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stopText"
+                android:layout_alignParentRight="true"
+                android:id="@+id/btnStop"/>
+        </RelativeLayout>
 
         <TextView android:text="x" android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -55,7 +72,7 @@
 
         <TextView android:text="@string/sensor_samplerate" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="30dp"/>
 
         <TextView
             android:layout_width="fill_parent"
