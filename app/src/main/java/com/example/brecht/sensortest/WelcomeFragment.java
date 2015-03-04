@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 public class WelcomeFragment extends Fragment{
 
-    View v;
+    View view;
 
     Intent intent;
     String Username;
@@ -27,11 +27,11 @@ public class WelcomeFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.activity_welkom, container, false);
+        view = inflater.inflate(R.layout.activity_welkom, container, false);
 
         Username = this.getArguments().getString("username");
-        Welkom = (TextView) v.findViewById(R.id.Welcome_textview);
-        UsernameTextView = (TextView) v.findViewById(R.id.Username);
+        Welkom = (TextView) view.findViewById(R.id.Welcome_textview);
+        UsernameTextView = (TextView) view.findViewById(R.id.Username);
 
         UsernameTextView.setText(String.valueOf(Username));
 
@@ -49,7 +49,7 @@ public class WelcomeFragment extends Fragment{
             }
         }, 100);
 
-        return v;
+        return view;
 
     }
 }

@@ -55,6 +55,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         btnRegister = (Button) v.findViewById(R.id.RegisterButton);
 
         btnLogin.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
 
         return v;
     }
@@ -68,11 +69,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             case R.id.LoginButton:
                 new MyAsyncTask().execute();
                 break;
-            case R.id.stopButton:
-                //stopClick();
-                break;
-            case R.id.resetButton:
-               // resetClick();
+            case R.id.RegisterButton:
+                RegisterFragment registerFragment = new RegisterFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+
+                transaction.replace(R.id.root_login, registerFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
                 break;
             default:
                 break;
@@ -83,14 +91,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         /*
         btnRegister.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+            public void onClick(View view){
                 Intent i = new Intent(Login.this, register.class);
                 startActivity(i);
             }
         });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 new MyAsyncTask().execute();
             }
         });
