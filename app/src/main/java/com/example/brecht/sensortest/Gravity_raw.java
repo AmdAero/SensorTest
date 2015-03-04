@@ -14,10 +14,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-=======
 import android.view.ViewConfiguration;
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
@@ -42,61 +39,17 @@ public class Gravity_raw extends ActionBarActivity implements SensorEventListene
 
     private FileWriter f;
 
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-    public ActionBar actionBar = getSupportActionBar();
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.stopwatch:
-                i = new Intent(Gravity_raw.this , Stopwatch.class);
-                startActivity(i);
-                return true;
-            case R.id.login:
-                i = new Intent(Gravity_raw.this , Login.class);
-                startActivity(i);
-                return true;
-            case R.id.gyroscope:
-                i = new Intent(Gravity_raw.this , Gyroscope.class);
-                startActivity(i);
-                return true;
-            case R.id.magneetometer:
-                i = new Intent(Gravity_raw.this , Magnetometer.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Gravity_raw.this , Rotation.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Gravity_raw.this , FileWriter.class);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-
-    }
-=======
     ActionBar actionBar = getSupportActionBar();
     public static final String TAG = MainActivity.class.getSimpleName();
 
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gravity_raw);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         startTime = System.currentTimeMillis() / 1000.0;
 

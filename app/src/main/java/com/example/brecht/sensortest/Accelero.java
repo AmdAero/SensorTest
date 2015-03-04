@@ -14,10 +14,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-=======
 import android.view.ViewConfiguration;
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
@@ -32,7 +29,7 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
     private float linear_acceleration[] = new float[3];
 
     //TODO: Better names!
-    private TextView x = (TextView) findViewById(R.id.x);
+    private TextView x;
     private TextView y;
     private TextView z;
     private TextView x2;
@@ -48,62 +45,18 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
     private FileWriter f;
 
     ActionBar actionBar = getSupportActionBar();
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-=======
     public static final String TAG = MainActivity.class.getSimpleName();
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.stopwatch:
-                i = new Intent(Accelero.this , Stopwatch.class);
-                startActivity(i);
-                return true;
-            case R.id.login:
-                i = new Intent(Accelero.this , Login.class);
-                startActivity(i);
-                return true;
-            case R.id.gravityR:
-                i = new Intent(Accelero.this , Gravity_raw.class);
-                startActivity(i);
-                return true;
-            case R.id.gyroscope:
-                i = new Intent(Accelero.this , Gyroscope.class);
-                startActivity(i);
-                return true;
-            case R.id.magneetometer:
-                i = new Intent(Accelero.this , Magnetometer.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Accelero.this , Rotation.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Accelero.this , FileWriter.class);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accelerometer);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        x = (TextView) findViewById(R.id.x);
         y = (TextView) findViewById(R.id.y);
         z = (TextView) findViewById(R.id.z);
         x2 = (TextView) findViewById(R.id.x2);
@@ -190,8 +143,6 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
 
     }
 
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-=======
     private void makeActionOverflowMenuShown() {
         //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
         try {
@@ -257,6 +208,5 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
 
     }
 
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 
 }

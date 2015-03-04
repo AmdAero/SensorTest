@@ -14,10 +14,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-=======
 import android.view.ViewConfiguration;
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
@@ -42,60 +39,16 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
 
     private FileWriter f;
 
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-    public ActionBar actionBar = getSupportActionBar();
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.stopwatch:
-                i = new Intent(Gyroscope.this , Stopwatch.class);
-                startActivity(i);
-                return true;
-            case R.id.login:
-                i = new Intent(Gyroscope.this , Login.class);
-                startActivity(i);
-                return true;
-            case R.id.gravityR:
-                i = new Intent(Gyroscope.this , Gravity_raw.class);
-                startActivity(i);
-                return true;
-            case R.id.magneetometer:
-                i = new Intent(Gyroscope.this , Magnetometer.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Gyroscope.this , Rotation.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Gyroscope.this , FileWriter.class);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-
-    }
-=======
     ActionBar actionBar = getSupportActionBar();
     public static final String TAG = MainActivity.class.getSimpleName();
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gyroscope);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         f = new FileWriter("Gyroscope.txt", getApplicationContext());
         f.Write(getApplicationContext(), "Time;");

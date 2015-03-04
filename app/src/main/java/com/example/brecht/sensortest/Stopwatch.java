@@ -33,61 +33,17 @@ public class Stopwatch extends ActionBarActivity {
     private boolean stopped = false;
     private TextToSpeech SayTime;
 
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-    public ActionBar actionBar = getSupportActionBar();
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.login:
-                i = new Intent(Stopwatch.this , Login.class);
-                startActivity(i);
-                return true;
-            case R.id.gravityR:
-                i = new Intent(Stopwatch.this , Gravity_raw.class);
-                startActivity(i);
-                return true;
-            case R.id.gyroscope:
-                i = new Intent(Stopwatch.this , Gyroscope.class);
-                startActivity(i);
-                return true;
-            case R.id.magneetometer:
-                i = new Intent(Stopwatch.this , Magnetometer.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Stopwatch.this , Rotation.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Stopwatch.this , FileWriter.class);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-
-    }
-=======
     ActionBar actionBar = getSupportActionBar();
     public static final String TAG = MainActivity.class.getSimpleName();
 
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stopwatch);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         SayTime=new TextToSpeech(getApplicationContext(),
                 new TextToSpeech.OnInitListener() {
@@ -99,12 +55,9 @@ public class Stopwatch extends ActionBarActivity {
                     }
                 });
 
-<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
-=======
         makeActionOverflowMenuShown();
     }
 
->>>>>>> 107e860016947a801cef68c84a2bca083084851b
 
     public void startClick (View view){
         showStopButton();
@@ -219,16 +172,9 @@ public class Stopwatch extends ActionBarActivity {
     };
 
     public void speakText(){
-        if (mins > 0) {
-            String toSpeak;
-            if (mins == 1)
-                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute";
-            else
-                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
-
-            Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-            SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
-        }
+        String toSpeak = "You have been climbing for "+minutes+" minutes";
+        Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+        SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
 
     }
 
