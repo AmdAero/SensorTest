@@ -2,18 +2,13 @@ package com.example.brecht.sensortest;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Login extends Fragment implements View.OnClickListener{
+public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private View v;
 
@@ -59,26 +54,43 @@ public class Login extends Fragment implements View.OnClickListener{
         btnLogin = (Button) v.findViewById(R.id.LoginButton);
         btnRegister = (Button) v.findViewById(R.id.RegisterButton);
 
+        btnLogin.setOnClickListener(this);
+
         return v;
     }
 
     @Override
     public void onClick(View v)
     {
-        /*
+
         switch (v.getId())
         {
-            /*case R.id.startButton:
-                startClick();
+            case R.id.LoginButton:
+                WelcomeFragment wut = new WelcomeFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+
+                transaction.replace(R.id.root_login, wut);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                //transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+
+                //new MyAsyncTask().execute();
                 break;
             case R.id.stopButton:
-                stopClick();
+                //stopClick();
                 break;
             case R.id.resetButton:
-                resetClick();
+               // resetClick();
+                break;
+            default:
                 break;
         }
-        */
+
 
 
 
@@ -164,20 +176,26 @@ public class Login extends Fragment implements View.OnClickListener{
 
                 try {
                     jsonResponse = new JSONObject(result);
-
-                    String tag = jsonResponse.optString("tag").toString();
-                    String success = jsonResponse.optString("success").toString();
-                    String error = jsonResponse.optString("error").toString();
-                    String error_msg = jsonResponse.optString("error_msg").toString();
-
                     //Close the progressDialog!
                     this.progressDialog.dismiss();
+
+                    //Check if login succeeded
                     if (jsonResponse.optString("success").toString().equals("1")) {
-                        super.onPostExecute(v);
-                        Intent intent = new Intent(getActivity(), welkom.class);
+                        //super.onPostExecute(v);
+                        WelcomeFragment wut = new WelcomeFragment();
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                        // Replace whatever is in the fragment_container view with this fragment,
+                        // and add the transaction to the back stack
+                        transaction.replace(R.id.root_login, wut);
+                        transaction.addToBackStack(null);
+
+                        // Commit the transaction
+                        transaction.commit();
+                        /*Intent intent = new Intent(getActivity(), welkom.class);
                         intent.putExtra("Username", String.valueOf(Email.getText()));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().getApplicationContext().startActivity(intent);
+                        getActivity().getApplicationContext().startActivity(intent);*/
                     }
                     else if(jsonResponse.optString("error").toString().equals("1")){
                         Toast.makeText(getActivity().getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();

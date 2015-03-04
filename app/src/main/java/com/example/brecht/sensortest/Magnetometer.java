@@ -54,7 +54,7 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
                 startActivity(i);
                 return true;
             case R.id.login:
-                i = new Intent(Magnetometer.this , Login.class);
+                i = new Intent(Magnetometer.this , LoginFragment.class);
                 startActivity(i);
                 return true;
             case R.id.gravityR:

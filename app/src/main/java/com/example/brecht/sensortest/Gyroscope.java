@@ -54,7 +54,7 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
                 startActivity(i);
                 return true;
             case R.id.login:
-                i = new Intent(Gyroscope.this , Login.class);
+                i = new Intent(Gyroscope.this , LoginFragment.class);
                 startActivity(i);
                 return true;
             case R.id.gravityR:

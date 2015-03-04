@@ -56,7 +56,7 @@ public class Rotation extends ActionBarActivity implements SensorEventListener {
                 startActivity(i);
                 return true;
             case R.id.login:
-                i = new Intent(Rotation.this , Login.class);
+                i = new Intent(Rotation.this , LoginFragment.class);
                 startActivity(i);
                 return true;
             case R.id.gravityR:

@@ -54,7 +54,7 @@ public class Gravity_raw extends ActionBarActivity implements SensorEventListene
                 startActivity(i);
                 return true;
             case R.id.login:
-                i = new Intent(Gravity_raw.this , Login.class);
+                i = new Intent(Gravity_raw.this , LoginFragment.class);
                 startActivity(i);
                 return true;
             case R.id.gyroscope:

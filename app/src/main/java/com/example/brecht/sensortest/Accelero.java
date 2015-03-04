@@ -59,7 +59,7 @@ public class Accelero extends ActionBarActivity implements SensorEventListener {
                 startActivity(i);
                 return true;
             case R.id.login:
-                i = new Intent(Accelero.this , Login.class);
+                i = new Intent(Accelero.this , LoginFragment.class);
                 startActivity(i);
                 return true;
             case R.id.gravityR:

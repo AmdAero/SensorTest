@@ -19,14 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Login"/>
-        <activity android:name=".Accelero"/>
-        <activity android:name=".Gyroscope"/>
-        <activity android:name=".Magnetometer"/>
-        <activity android:name=".Rotation"/>
-        <activity android:name=".welkom"/>
-        <activity android:name=".register"/>
-        <activity android:name=".Gravity_raw"/>
 
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

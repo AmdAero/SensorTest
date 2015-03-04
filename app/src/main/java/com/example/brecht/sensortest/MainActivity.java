@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener{
     ActionBar actionbar;
     ViewPager viewPager;
-    FragmentPageAdapter ft;
+    SwipePageAdapter swipe;
     ActionBar.Tab StopwatchTab;
     ActionBar.Tab RotationTab;
     ActionBar.Tab LoginTab;
@@ -30,9 +30,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         viewPager = (ViewPager) findViewById(R.id.pager);
-        ft = new FragmentPageAdapter(getSupportFragmentManager());
+        swipe = new SwipePageAdapter(getSupportFragmentManager());
         actionbar = getActionBar();
-        viewPager.setAdapter(ft);
+        viewPager.setAdapter(swipe);
 
         StopwatchTab = actionbar.newTab();
         StopwatchTab.setIcon(R.drawable.stopwatch);

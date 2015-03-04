@@ -1,15 +1,20 @@
 package com.example.brecht.sensortest;
 
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class welkom extends ActionBarActivity {
+public class WelcomeFragment extends Fragment{
+
+    View v;
 
     Intent intent;
     String Username;
@@ -21,22 +26,18 @@ public class welkom extends ActionBarActivity {
     int j = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welkom);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        v = inflater.inflate(R.layout.activity_welkom, container, false);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        intent = getIntent();
-        Username = intent.getStringExtra("Username");
-        Welkom = (TextView) findViewById(R.id.Welcome_textview);
-        UsernameTextView = (TextView) findViewById(R.id.Username);
+        Username = "Test";
+        //Username = intent.getStringExtra("Username");
+        Welkom = (TextView) v.findViewById(R.id.Welcome_textview);
+        UsernameTextView = (TextView) v.findViewById(R.id.Username);
 
         UsernameTextView.setText(String.valueOf(Username));
 
         mHandler.postDelayed(new Runnable() {
-            public void run() {
+                public void run() {
                 i = i + j;
                 Welkom.setShadowLayer(i, 0,0, Color.BLACK);
 
@@ -48,6 +49,8 @@ public class welkom extends ActionBarActivity {
                 mHandler.postDelayed(this, 150);
             }
         }, 100);
+
+        return v;
 
     }
 }

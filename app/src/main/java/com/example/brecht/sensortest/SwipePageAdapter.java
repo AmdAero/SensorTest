@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 /**
  * Created by Brecht on 3/03/2015.
  */
-public class FragmentPageAdapter extends FragmentPagerAdapter {
-    public FragmentPageAdapter(FragmentManager fm) {
+public class SwipePageAdapter extends FragmentPagerAdapter {
+    public SwipePageAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -18,7 +18,7 @@ public class FragmentPageAdapter extends FragmentPagerAdapter {
             case 0:
                 return new Stopwatch();
             case 1:
-                return new Login();
+                return new RootLoginFragment();
             //case 2:
                 //return new Rotation();
             default:
