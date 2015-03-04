@@ -29,8 +29,7 @@ public class WelcomeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.activity_welkom, container, false);
 
-        Username = "Test";
-        //Username = intent.getStringExtra("Username");
+        Username = this.getArguments().getString("username");
         Welkom = (TextView) v.findViewById(R.id.Welcome_textview);
         UsernameTextView = (TextView) v.findViewById(R.id.Username);
 
@@ -41,12 +40,12 @@ public class WelcomeFragment extends Fragment{
                 i = i + j;
                 Welkom.setShadowLayer(i, 0,0, Color.BLACK);
 
-                if(i > 11)
+                if(i > 8)
                     j = -1;
                 else if (i < 2)
                     j = 1;
 
-                mHandler.postDelayed(this, 150);
+                mHandler.postDelayed(this, 200);
             }
         }, 100);
 

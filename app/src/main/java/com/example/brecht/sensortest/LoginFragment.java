@@ -66,20 +66,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         switch (v.getId())
         {
             case R.id.LoginButton:
-                WelcomeFragment wut = new WelcomeFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
-
-                transaction.replace(R.id.root_login, wut);
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                //transaction.addToBackStack(null);
-
-                // Commit the transaction
-                transaction.commit();
-
-                //new MyAsyncTask().execute();
+                new MyAsyncTask().execute();
                 break;
             case R.id.stopButton:
                 //stopClick();
@@ -181,21 +168,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
                     //Check if login succeeded
                     if (jsonResponse.optString("success").toString().equals("1")) {
-                        //super.onPostExecute(v);
                         WelcomeFragment wut = new WelcomeFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("username", String.valueOf(Email.getText()));
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                         // Replace whatever is in the fragment_container view with this fragment,
                         // and add the transaction to the back stack
+
                         transaction.replace(R.id.root_login, wut);
+                        wut.setArguments(bundle);
                         transaction.addToBackStack(null);
 
                         // Commit the transaction
                         transaction.commit();
-                        /*Intent intent = new Intent(getActivity(), welkom.class);
-                        intent.putExtra("Username", String.valueOf(Email.getText()));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().getApplicationContext().startActivity(intent);*/
                     }
                     else if(jsonResponse.optString("error").toString().equals("1")){
                         Toast.makeText(getActivity().getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
