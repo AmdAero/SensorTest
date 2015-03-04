@@ -7,19 +7,29 @@ import android.os.Environment;
 import android.os.PersistableBundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+=======
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.ViewConfiguration;
+>>>>>>> 107e860016947a801cef68c84a2bca083084851b
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
 
 /**
  * Created by Brecht on 23/02/2015.
  */
 public class FileWriter extends ActionBarActivity{
+<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
     public ActionBar actionBar = getSupportActionBar();
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,6 +81,70 @@ public class FileWriter extends ActionBarActivity{
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+=======
+
+    ActionBar actionBar = getSupportActionBar();
+    public static final String TAG = MainActivity.class.getSimpleName();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        makeActionOverflowMenuShown();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_screens, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = null;
+        switch (item.getItemId()) {
+            case R.id.stopwatch:
+                i = new Intent(FileWriter.this , Stopwatch.class);
+                startActivity(i);
+                return true;
+            case R.id.login:
+                i = new Intent(FileWriter.this , Login.class);
+                startActivity(i);
+                return true;
+            case R.id.gravityR:
+                i = new Intent(FileWriter.this , Gravity_raw.class);
+                startActivity(i);
+                return true;
+            case R.id.accelo:
+                i = new Intent(FileWriter.this , Accelero.class);
+                startActivity(i);
+                return true;
+            case R.id.gyroscope:
+                i = new Intent(FileWriter.this , Gyroscope.class);
+                startActivity(i);
+                return true;
+            case R.id.magneetometer:
+                i = new Intent(FileWriter.this , Magnetometer.class);
+                startActivity(i);
+                return true;
+            case R.id.rotation:
+                i = new Intent(FileWriter.this , Rotation.class);
+                startActivity(i);
+                return true;
+            case R.id.fileWriter:
+                i = new Intent(FileWriter.this , FileWriter.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+>>>>>>> 107e860016947a801cef68c84a2bca083084851b
 
     }
 
@@ -127,6 +201,21 @@ public class FileWriter extends ActionBarActivity{
         return false;
     }
     */
+
+    private void makeActionOverflowMenuShown() {
+        //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.getLocalizedMessage());
+        }
+    }
+
 
 
 

@@ -9,11 +9,18 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
+=======
+import android.view.ViewConfiguration;
+>>>>>>> 107e860016947a801cef68c84a2bca083084851b
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 
 public class Gyroscope extends ActionBarActivity implements SensorEventListener {
@@ -35,6 +42,7 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
 
     private FileWriter f;
 
+<<<<<<< a30141b5eb32af90c2c1b6befc8117e82eabb2b5
     public ActionBar actionBar = getSupportActionBar();
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,6 +86,10 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
 
 
     }
+=======
+    ActionBar actionBar = getSupportActionBar();
+    public static final String TAG = MainActivity.class.getSimpleName();
+>>>>>>> 107e860016947a801cef68c84a2bca083084851b
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +120,9 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
             //DO SHIT
         }
 
+        makeActionOverflowMenuShown();
+
+
     }
 
     @Override
@@ -119,6 +134,59 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
             android.os.Process.killProcess(android.os.Process.myPid());
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_screens, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = null;
+        switch (item.getItemId()) {
+            case R.id.stopwatch:
+                i = new Intent(Gyroscope.this , Stopwatch.class);
+                startActivity(i);
+                return true;
+            case R.id.login:
+                i = new Intent(Gyroscope.this , Login.class);
+                startActivity(i);
+                return true;
+            case R.id.gravityR:
+                i = new Intent(Gyroscope.this , Gravity_raw.class);
+                startActivity(i);
+                return true;
+            case R.id.accelo:
+                i = new Intent(Gyroscope.this , Accelero.class);
+                startActivity(i);
+                return true;
+            case R.id.gyroscope:
+                i = new Intent(Gyroscope.this , Gyroscope.class);
+                startActivity(i);
+                return true;
+            case R.id.magneetometer:
+                i = new Intent(Gyroscope.this , Magnetometer.class);
+                startActivity(i);
+                return true;
+            case R.id.rotation:
+                i = new Intent(Gyroscope.this , Rotation.class);
+                startActivity(i);
+                return true;
+            case R.id.fileWriter:
+                i = new Intent(Gyroscope.this , FileWriter.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
     }
 
 
@@ -147,4 +215,18 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
 
     }
 
+
+    private void makeActionOverflowMenuShown() {
+        //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.getLocalizedMessage());
+        }
+    }
 }

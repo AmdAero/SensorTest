@@ -40,6 +40,7 @@
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_actionbar</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_actionbar</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Actionbar</item>
+
     </style>
 
     <style name="ActionBar.Transparent.Actionbar" parent="@android:style/Widget.Holo.ActionBar">

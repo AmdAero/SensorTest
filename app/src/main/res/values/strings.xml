@@ -36,5 +36,14 @@
     <string name="resetText">RESET</string>
     <string name="stopText">PAUSE</string>
 
+    <string name="filewriter">File Writer</string>
+    <string name="rotation">Rotation</string>
+    <string name="magneetomeeter">Magnetometer</string>
+    <string name="gyroscope">Gyroscope</string>
+    <string name="accelo">Accelerometer</string>
+    <string name="gravityR">Gravity Raw</string>
+    <string name="login">Login</string>
+    <string name="stopwatch">Stopwatch</string>
+
 
 </resources>
