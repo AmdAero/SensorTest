@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Register extends ActionBarActivity {
+public class register extends ActionBarActivity {
 
     Button btnRegister;
 
@@ -61,7 +61,7 @@ public class Register extends ActionBarActivity {
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(Register.this);
+        private ProgressDialog progressDialog = new ProgressDialog(register.this);
         InputStream inputStream = null;
         String result = "";
 
@@ -136,7 +136,7 @@ public class Register extends ActionBarActivity {
                 if (jsonResponse.optString("success").toString().equals("1")) {
                     Toast.makeText(getApplicationContext(), "You have created a new account", Toast.LENGTH_SHORT).show();
                     super.onPostExecute(v);
-                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    Intent intent = new Intent(register.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(intent);
                 }

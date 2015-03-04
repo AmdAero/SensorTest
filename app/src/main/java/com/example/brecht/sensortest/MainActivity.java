@@ -1,83 +1,95 @@
 package com.example.brecht.sensortest;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener{
+    ActionBar actionbar;
+    ViewPager viewPager;
+    FragmentPageAdapter ft;
+    ActionBar.Tab StopwatchTab;
+    ActionBar.Tab RotationTab;
+    ActionBar.Tab LoginTab;
 
-    private FileWriter f;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        ft = new FragmentPageAdapter(getSupportFragmentManager());
+        actionbar = getActionBar();
+        viewPager.setAdapter(ft);
+
+        StopwatchTab = actionbar.newTab();
+        StopwatchTab.setIcon(R.drawable.stopwatch);
+        StopwatchTab.setTabListener(this);
+
+        LoginTab = actionbar.newTab();
+        LoginTab.setIcon(R.drawable.login_in);
+        LoginTab.setTabListener(this);
+
+        RotationTab = actionbar.newTab();
+        RotationTab.setIcon(R.drawable.rotation);
+        RotationTab.setTabListener(this);
+
+        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionbar.addTab(StopwatchTab);
+        actionbar.addTab(LoginTab);
+        //actionbar.addTab(RotationTab);
 
 
+        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                actionbar.setSelectedNavigationItem(position);
+            }
+        });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-        private Toast defaultToast;
-        private Toast notImplementedToast;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-
-
-            defaultToast = Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT);
-            notImplementedToast = Toast.makeText(this, "Not implemented yet!", Toast.LENGTH_SHORT);
-
-            String[] choices = getResources().getStringArray(R.array.SensorList);
-            ArrayAdapter<String> ListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, choices);
-
-            ListView lv = (ListView) findViewById(R.id.TestList);
-            lv.setAdapter(ListAdapter);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    Intent i = null;
-                    switch(position)
-                    {
-                        case 0:
-                            i = new Intent(MainActivity.this , Stopwatch.class);
-                            break;
-                        case 1:
-                            i = new Intent(MainActivity.this , Login.class);
-                            break;
-                        case 2:
-                            i = new Intent(MainActivity.this , Gravity_raw.class);
-                            break;
-                        case 3:
-                            i = new Intent(MainActivity.this , Accelero.class);
-                            break;
-                        case 4:
-                            i = new Intent(MainActivity.this , Gyroscope.class);
-                            break;
-                        case 5:
-                            i = new Intent(MainActivity.this , Magnetometer.class);
-                            break;
-                        case 6:
-                            i = new Intent(MainActivity.this , Rotation.class);
-                            break;
-                        case 7:
-                            i = new Intent(MainActivity.this , FileWriter.class);
-                            break;
-                        default:
-                            if(!defaultToast.getView().isShown() && !notImplementedToast.getView().isShown())
-                                defaultToast.show();
-                            return;
-                    }
-
-                    startActivity(i);
-                }
-            });
-
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
 
+        return super.onOptionsItemSelected(item);
     }
 
 
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
 
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        //Method needs to be implemented (interface)
+        //But we don't need it! So it's empty
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        //Method needs to be implemented (interface)
+        //But we don't need it! So it's empty
+    }
+}

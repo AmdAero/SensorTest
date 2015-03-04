@@ -9,7 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 
 
-public class Welkom extends ActionBarActivity {
+public class welkom extends ActionBarActivity {
 
     Intent intent;
     String Username;

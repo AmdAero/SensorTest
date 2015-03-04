@@ -1,26 +1,31 @@
 package com.example.brecht.sensortest;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Locale;
 
+/**
+ * Created by Brecht on 3/03/2015.
+ */
+public class Stopwatch extends Fragment implements View.OnClickListener {
 
-public class Stopwatch extends ActionBarActivity {
+    private View v;
 
-    private TextView tempTextView; //Temporary TextView
-    private Button tempBtn; //Temporary Button
+    private Button startButton;
+    private Button stopButton;
+    private Button resetButton;
+
     private Handler mHandler = new Handler();
     private long startTime;
     private long elapsedTime;
@@ -30,57 +35,17 @@ public class Stopwatch extends ActionBarActivity {
     private boolean stopped = false;
     private TextToSpeech SayTime;
 
-    public ActionBar actionBar = getSupportActionBar();
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.login:
-                i = new Intent(Stopwatch.this , Login.class);
-                startActivity(i);
-                return true;
-            case R.id.gravityR:
-                i = new Intent(Stopwatch.this , Gravity_raw.class);
-                startActivity(i);
-                return true;
-            case R.id.gyroscope:
-                i = new Intent(Stopwatch.this , Gyroscope.class);
-                startActivity(i);
-                return true;
-            case R.id.magneetometer:
-                i = new Intent(Stopwatch.this , Magnetometer.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Stopwatch.this , Rotation.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Stopwatch.this , FileWriter.class);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        v = inflater.inflate(R.layout.stopwatch, container, false);
+        startButton = (Button) v.findViewById(R.id.startButton);
+        startButton.setOnClickListener(this);
+        stopButton = (Button) v.findViewById(R.id.stopButton);
+        stopButton.setOnClickListener(this);
+        resetButton = (Button) v.findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(this);
 
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.stopwatch);
-
-
-        SayTime=new TextToSpeech(getApplicationContext(),
+        SayTime=new TextToSpeech(getActivity().getApplicationContext(),
                 new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int status) {
@@ -89,11 +54,28 @@ public class Stopwatch extends ActionBarActivity {
                         }
                     }
                 });
+
+        return v;
     }
 
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.startButton:
+                startClick();
+                break;
+            case R.id.stopButton:
+                stopClick();
+                break;
+            case R.id.resetButton:
+                resetClick();
+                break;
+        }
+    }
 
-
-    public void startClick (View view){
+    public void startClick (){
         showStopButton();
         if(stopped){
             startTime = System.currentTimeMillis() - elapsedTime;
@@ -106,29 +88,29 @@ public class Stopwatch extends ActionBarActivity {
 
     }
 
-    public void stopClick (View view){
+    public void stopClick (){
         hideStopButton();
         mHandler.removeCallbacks(startTimer);
         stopped = true;
 
     }
 
-    public void resetClick (View view){
+    public void resetClick (){
         stopped = false;
-        ((TextView)findViewById(R.id.timer)).setText("00:00:00");
+        ((TextView)getView().findViewById(R.id.timer)).setText("00:00:00");
 
     }
 
     private void showStopButton(){
-        ((Button)findViewById(R.id.startButton)).setVisibility(View.GONE);
-        ((Button)findViewById(R.id.resetButton)).setVisibility(View.GONE);
-        ((Button)findViewById(R.id.stopButton)).setVisibility(View.VISIBLE);
+        startButton.setVisibility(View.GONE);
+        resetButton.setVisibility(View.GONE);
+        stopButton.setVisibility(View.VISIBLE);
     }
 
     private void hideStopButton(){
-        ((Button)findViewById(R.id.startButton)).setVisibility(View.VISIBLE);
-        ((Button)findViewById(R.id.resetButton)).setVisibility(View.VISIBLE);
-        ((Button)findViewById(R.id.stopButton)).setVisibility(View.GONE);
+        startButton.setVisibility(View.VISIBLE);
+        resetButton.setVisibility(View.VISIBLE);
+        stopButton.setVisibility(View.GONE);
     }
 
 
@@ -184,7 +166,7 @@ public class Stopwatch extends ActionBarActivity {
         milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-2);
 
 		/* Setting the timer text to the elapsed time */
-        ((TextView)findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
+        ((TextView)v.findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
 
 
         currentmin=String.valueOf(mins);
@@ -213,7 +195,7 @@ public class Stopwatch extends ActionBarActivity {
             else
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
 
-            Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
             SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         }
 

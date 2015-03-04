@@ -5,13 +5,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,7 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Login extends ActionBarActivity {
+public class Login extends Fragment implements View.OnClickListener{
+
+    private View v;
 
     Button btnLogin;
     Button btnRegister;
@@ -43,66 +49,45 @@ public class Login extends ActionBarActivity {
 
     JSONObject jsonResponse;
 
-    public ActionBar actionBar = getSupportActionBar();
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.stopwatch:
-                i = new Intent(Login.this , Stopwatch.class);
-                startActivity(i);
-                return true;
-            case R.id.gravityR:
-                i = new Intent(Login.this , Gravity_raw.class);
-                startActivity(i);
-                return true;
-            case R.id.gyroscope:
-                i = new Intent(Login.this , Gyroscope.class);
-                startActivity(i);
-                return true;
-            case R.id.magneetometer:
-                i = new Intent(Login.this , Magnetometer.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Login.this , Rotation.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Login.this , FileWriter.class);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        v = inflater.inflate(R.layout.login, container, false);
+
+        Email = (EditText) v.findViewById(R.id.email);
+        Password = (EditText) v.findViewById(R.id.password);
+        btnLogin = (Button) v.findViewById(R.id.LoginButton);
+        btnRegister = (Button) v.findViewById(R.id.RegisterButton);
+
+        return v;
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        /*
+        switch (v.getId())
+        {
+            /*case R.id.startButton:
+                startClick();
+                break;
+            case R.id.stopButton:
+                stopClick();
+                break;
+            case R.id.resetButton:
+                resetClick();
+                break;
         }
+        */
 
 
-    }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
-
-        Email = (EditText) findViewById(R.id.email);
-        Password = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.LoginButton);
-        btnRegister = (Button) findViewById(R.id.RegisterButton);
-
+        /*
         btnRegister.setOnClickListener(new View.OnClickListener(){
-           public void onClick(View v){
-               Intent i = new Intent(Login.this, Register.class);
-               startActivity(i);
-           }
+            public void onClick(View v){
+                Intent i = new Intent(Login.this, register.class);
+                startActivity(i);
+            }
         });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -110,11 +95,12 @@ public class Login extends ActionBarActivity {
                 new MyAsyncTask().execute();
             }
         });
+        */
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(Login.this);
+        private ProgressDialog progressDialog = new ProgressDialog(getActivity());
         InputStream inputStream = null;
         String result = "";
 
@@ -188,13 +174,13 @@ public class Login extends ActionBarActivity {
                     this.progressDialog.dismiss();
                     if (jsonResponse.optString("success").toString().equals("1")) {
                         super.onPostExecute(v);
-                        Intent intent = new Intent(Login.this, Welkom.class);
+                        Intent intent = new Intent(getActivity(), welkom.class);
                         intent.putExtra("Username", String.valueOf(Email.getText()));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getApplicationContext().startActivity(intent);
+                        getActivity().getApplicationContext().startActivity(intent);
                     }
                     else if(jsonResponse.optString("error").toString().equals("1")){
-                        Toast.makeText(getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -203,7 +189,7 @@ public class Login extends ActionBarActivity {
 
         @Override
         protected void onCancelled() {
-            Toast.makeText(getApplicationContext(), "Can't login", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Can't login", Toast.LENGTH_SHORT).show();
         }
     }
 
