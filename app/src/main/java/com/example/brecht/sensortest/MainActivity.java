@@ -6,8 +6,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
+
+import java.lang.reflect.Field;
 
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener{
@@ -17,6 +21,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     ActionBar.Tab StopwatchTab;
     ActionBar.Tab RotationTab;
     ActionBar.Tab LoginTab;
+
+    public static final String TAG = MainActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 actionbar.setSelectedNavigationItem(position);
             }
         });
+
+        makeActionOverflowMenuShown();
     }
 
     @Override
@@ -75,6 +84,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         return super.onOptionsItemSelected(item);
     }
 
+    private void makeActionOverflowMenuShown() {
+        //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.getLocalizedMessage());
+        }
+    }
+
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -92,4 +115,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         //Method needs to be implemented (interface)
         //But we don't need it! So it's empty
     }
+
+
 }
