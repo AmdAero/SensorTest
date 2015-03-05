@@ -104,7 +104,8 @@ public class RotationFragment extends Fragment implements SensorEventListener, V
         pitch.setText("?");
         roll.setText("?");
         sampleRateText.setText("?");
-        mSensorManager.unregisterListener(this, mSensor);
+        if (mSensorManager != null)
+            mSensorManager.unregisterListener(this, mSensor);
     }
 
     @Override
