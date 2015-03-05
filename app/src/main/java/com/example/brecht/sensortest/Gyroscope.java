@@ -1,126 +1,63 @@
 package com.example.brecht.sensortest;
 
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class Gyroscope extends ActionBarActivity implements SensorEventListener {
+public class Gyroscope extends Fragment implements SensorEventListener {
 
+    private View v;
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
 
-    private TextView GyroscopeX;
-    private TextView GyroscopeY;
-    private TextView GyroscopeZ;
-    private TextView sampleRateText;
-
     private double startTime;
     private double elapsedTime;
-
     private double oldElapsedTime;
     private double sampleRate;
 
     private FileWriter f;
 
-    public ActionBar actionBar = getSupportActionBar();
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.stopwatch:
-                i = new Intent(Gyroscope.this , Stopwatch.class);
-                startActivity(i);
-                return true;
-            case R.id.login:
-                i = new Intent(Gyroscope.this , LoginFragment.class);
-                startActivity(i);
-                return true;
-            case R.id.gravityR:
-                i = new Intent(Gyroscope.this , Gravity_raw.class);
-                startActivity(i);
-                return true;
-            case R.id.magneetometer:
-                i = new Intent(Gyroscope.this , Magnetometer.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Gyroscope.this , RotationFragment.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Gyroscope.this , FileWriter.class);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        v=inflater.inflate(R.layout.gyroscope,container,false);
+        return v;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.gyroscope);
-
-
-        f = new FileWriter("Gyroscope.txt", getApplicationContext());
-        f.Write(getApplicationContext(), "Time;");
-        f.Write(getApplicationContext(), "X;");
-        f.Write(getApplicationContext(), "Y;");
-        f.Write(getApplicationContext(), "Z;");
-        f.Write(getApplicationContext(), System.getProperty("line.separator"));
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
+        f = new FileWriter("Gyroscope.txt", v.getContext());
+        f.Write(getView().getContext(), "Time;");
+        f.Write(getView().getContext(), "X;");
+        f.Write(getView().getContext(), "Y;");
+        f.Write(getView().getContext(), "Z;");
+        f.Write(getView().getContext(), System.getProperty("line.separator"));
 
         startTime = System.currentTimeMillis() / 1000.0;
 
-        GyroscopeX=(TextView) findViewById(R.id.GyroscopeX);
-        GyroscopeY=(TextView) findViewById(R.id.GyroscopeY);
-        GyroscopeZ=(TextView) findViewById(R.id.GyroscopeZ);
-        sampleRateText = (TextView) findViewById(R.id.sampling);
-
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
             mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
         }
         else {
-            //DO SHIT
+
         }
-
+        super.onActivityCreated(savedInstanceState);
     }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if ((keyCode == KeyEvent.KEYCODE_BACK))
-        {
-            //finish();
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
 
     @Override
     public final void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -128,23 +65,44 @@ public class Gyroscope extends ActionBarActivity implements SensorEventListener 
         //Brecht: For now nothing...
     }
 
+    @Override
     public void onSensorChanged(SensorEvent event)
     {
-        GyroscopeX.setText(String.valueOf(event.values[0]/Math.PI*180) + " degrees/s");
-        GyroscopeY.setText(String.valueOf(event.values[1]/Math.PI*180) + " degrees/s");
-        GyroscopeZ.setText(String.valueOf(event.values[2]/Math.PI*180) + " degrees/s");
-
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
-        sampleRateText.setText(String.valueOf(sampleRate));
 
-        f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
-        f.Write(getApplicationContext(), String.valueOf(event.values[0]/Math.PI*180).replace(".", ",") + ";");
-        f.Write(getApplicationContext(), String.valueOf(event.values[1]/Math.PI*180).replace(".", ",") + ";");
-        f.Write(getApplicationContext(), String.valueOf(event.values[2]/Math.PI*180).replace(".", ",") + ";");
-        f.Write(getApplicationContext(), System.getProperty("line.separator"));
+        ((TextView)v.findViewById(R.id.GyroscopeX)).setText(String.valueOf(event.values[0] / Math.PI * 180) + " degrees/s");
+        ((TextView)v.findViewById(R.id.GyroscopeY)).setText(String.valueOf(event.values[1] / Math.PI * 180) + " degrees/s");
+        ((TextView)v.findViewById(R.id.GyroscopeZ)).setText(String.valueOf(event.values[2] / Math.PI * 180) + " degrees/s");
+        ((TextView)v.findViewById(R.id.sampling)).setText(String.valueOf(sampleRate));
+
+        f.Write(v.getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[0]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[1]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[2]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(v.getContext(), System.getProperty("line.separator"));
+
         oldElapsedTime = elapsedTime;
+    }
 
+    @Override
+    public void onPause()
+    {
+        mSensorManager.unregisterListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        mSensorManager.registerListener(this,mSensor,mSensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
+    }
+
+    public static void OnKeyDown(int keyCode)
+    {
+        if(keyCode== KeyEvent.KEYCODE_BACK){
+            android.os.Process.killProcess(android.os.Process.myPid());}
     }
 
 }

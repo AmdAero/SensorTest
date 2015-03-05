@@ -1,32 +1,24 @@
 package com.example.brecht.sensortest;
 
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class Magnetometer extends ActionBarActivity implements SensorEventListener {
-
+public class Magnetometer extends Fragment implements SensorEventListener {
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
-
-    private TextView xMagnetometer;
-    private TextView yMagnetometer;
-    private TextView zMagnetometer;
-    private TextView sampleRateText;
-
     private double startTime;
     private double elapsedTime;
 
@@ -35,71 +27,29 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
 
     private FileWriter f;
 
-    public ActionBar actionBar = getSupportActionBar();
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
+    private View v;
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.stopwatch:
-                i = new Intent(Magnetometer.this , Stopwatch.class);
-                startActivity(i);
-                return true;
-            case R.id.login:
-                i = new Intent(Magnetometer.this , LoginFragment.class);
-                startActivity(i);
-                return true;
-            case R.id.gravityR:
-                i = new Intent(Magnetometer.this , Gravity_raw.class);
-                startActivity(i);
-                return true;
-            case R.id.gyroscope:
-                i = new Intent(Magnetometer.this , Gyroscope.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Magnetometer.this , RotationFragment.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Magnetometer.this , FileWriter.class);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        v=inflater.inflate(R.layout.magnetometer,container,false);
+        return v;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.magnetometer);
-
-
-        xMagnetometer = (TextView) findViewById(R.id.xMagnetometer);
-        yMagnetometer = (TextView) findViewById(R.id.yMagnetometer);
-        zMagnetometer = (TextView) findViewById(R.id.zMagnetometer);
-        sampleRateText = (TextView) findViewById(R.id.sampling);
-
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
         startTime = System.currentTimeMillis() / 1000.0;
-        f = new FileWriter("Magnetometer.txt", getApplicationContext());
 
-        f.Write(getApplicationContext(), "Time;");
-        f.Write(getApplicationContext(), "X;");
-        f.Write(getApplicationContext(), "Y;");
-        f.Write(getApplicationContext(), "Z;");
-        f.Write(getApplicationContext(), System.getProperty("line.separator"));
+        f = new FileWriter("Magnetometer.txt", getView().getContext());
 
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        f.Write(getView().getContext(), "Time;");
+        f.Write(getView().getContext(), "X;");
+        f.Write(getView().getContext(), "Y;");
+        f.Write(getView().getContext(), "Z;");
+        f.Write(getView().getContext(), System.getProperty("line.separator"));
+
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null) {
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
             mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
@@ -108,19 +58,8 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
             //DO SHIT
         }
 
+        super.onActivityCreated(savedInstanceState);
     }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if ((keyCode == KeyEvent.KEYCODE_BACK))
-        {
-            //finish();
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
 
     @Override
     public final void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -128,22 +67,42 @@ public class Magnetometer extends ActionBarActivity implements SensorEventListen
         //Brecht: For now nothing...
     }
 
+    @Override
     public void onSensorChanged(SensorEvent event)
     {
-        xMagnetometer.setText(String.valueOf(event.values[0]) + " µT");
-        yMagnetometer.setText(String.valueOf(event.values[1]) + " µT");
-        zMagnetometer.setText(String.valueOf(event.values[2]) + " µT");
-
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
-        sampleRateText.setText(String.valueOf(sampleRate));
 
-        f.Write(getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
-        f.Write(getApplicationContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
-        f.Write(getApplicationContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
-        f.Write(getApplicationContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
-        f.Write(getApplicationContext(), System.getProperty("line.separator"));
+        ((TextView)v.findViewById(R.id.xMagnetometer)).setText(String.valueOf(event.values[0]) + " µT");
+        ((TextView)v.findViewById(R.id.yMagnetometer)).setText(String.valueOf(event.values[1]) + " µT");
+        ((TextView)v.findViewById(R.id.zMagnetometer)).setText(String.valueOf(event.values[2]) + " µT");
+        ((TextView)v.findViewById(R.id.sampling)).setText(String.valueOf(sampleRate));
+
+        f.Write(v.getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
+        f.Write(v.getContext(), System.getProperty("line.separator"));
+
         oldElapsedTime = elapsedTime;
     }
+    @Override
+    public void onPause()
+    {
+        mSensorManager.unregisterListener(this);
+        super.onPause();
+    }
 
+    @Override
+    public void onResume()
+    {
+        mSensorManager.registerListener(this,mSensor,mSensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
+    }
+
+    public static void OnKeyDown(int keyCode)
+    {
+        if(keyCode== KeyEvent.KEYCODE_BACK){
+            android.os.Process.killProcess(android.os.Process.myPid());}
+    }
 }

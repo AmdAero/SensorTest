@@ -2,11 +2,11 @@ package com.example.brecht.sensortest;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
@@ -21,6 +21,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     ActionBar.Tab StopwatchTab;
     ActionBar.Tab RotationTab;
     ActionBar.Tab LoginTab;
+    ActionBar.Tab GyroscopeTab;
+    ActionBar.Tab GravityTab;
+    ActionBar.Tab MagnetometerTab;
+    ActionBar.Tab AccelerometerTab;
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -46,10 +50,30 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         RotationTab.setIcon(R.drawable.rotation);
         RotationTab.setTabListener(this);
 
+        GyroscopeTab=actionbar.newTab();
+        GyroscopeTab.setIcon(R.drawable.gyroscope);
+        GyroscopeTab.setTabListener(this);
+
+        GravityTab=actionbar.newTab();
+        GravityTab.setIcon(R.drawable.gravity);
+        GravityTab.setTabListener(this);
+
+        MagnetometerTab=actionbar.newTab();
+        MagnetometerTab.setIcon(R.drawable.magneet);
+        MagnetometerTab.setTabListener(this);
+
+        AccelerometerTab=actionbar.newTab();
+        AccelerometerTab.setIcon(R.drawable.accelerometer);
+        AccelerometerTab.setTabListener(this);
+
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionbar.addTab(StopwatchTab);
         actionbar.addTab(LoginTab);
         actionbar.addTab(RotationTab);
+        actionbar.addTab(GyroscopeTab);
+        actionbar.addTab(GravityTab);
+        actionbar.addTab(MagnetometerTab);
+        actionbar.addTab(AccelerometerTab);
 
 
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -96,6 +120,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         } catch (Exception e) {
             Log.d(TAG, e.getLocalizedMessage());
         }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            Gyroscope.OnKeyDown(keyCode);
+            Magnetometer.OnKeyDown(keyCode);
+            Gravity_raw.OnKeyDown(keyCode);
+            Accelero.OnKeyDown(keyCode);
+
+            //and so on...
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 
