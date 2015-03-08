@@ -16,7 +16,7 @@ public class RootLoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         /* Inflate the layout for this fragment */
-        View view = inflater.inflate(R.layout.rootlogin, container, false);
+        View view = inflater.inflate(R.layout.fragment_rootlogin, container, false);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         /*
@@ -24,7 +24,7 @@ public class RootLoginFragment extends Fragment {
         * "real" fragment! This will be the LoginFragment
         */
 
-        transaction.replace(R.id.root_login, new LoginFragment());
+        transaction.replace(R.id.flRootLogin, new LoginFragment());
         transaction.commit();
         return view;
     }

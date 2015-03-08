@@ -20,7 +20,7 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/email"
+            android:id="@+id/etEmail"
             />
         <TextView
             android:layout_width="fill_parent"
@@ -32,14 +32,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:id="@+id/password"
+            android:id="@+id/etPassword"
             />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register_button"
             android:layout_marginTop="20dp"
-            android:id="@+id/Register"/>
+            android:id="@+id/btnRegister"/>
 
     </LinearLayout>
 </ScrollView>

@@ -14,14 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-public class Magnetometer extends Fragment implements SensorEventListener {
+/**
+ * Created by Arne on 24/02/2015.
+ */
+public class GravityFragment extends Fragment implements SensorEventListener {
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
+
     private double startTime;
     private double elapsedTime;
-
     private double oldElapsedTime;
     private double sampleRate;
 
@@ -32,29 +34,27 @@ public class Magnetometer extends Fragment implements SensorEventListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        v=inflater.inflate(R.layout.magnetometer,container,false);
+        v=inflater.inflate(R.layout.fragment_gravity,container,false);
         return v;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
-        startTime = System.currentTimeMillis() / 1000.0;
-
-        f = new FileWriter("Magnetometer.txt", getView().getContext());
-
+        f = new FileWriter("Gravity_raw.txt", getView().getContext());
         f.Write(getView().getContext(), "Time;");
         f.Write(getView().getContext(), "X;");
         f.Write(getView().getContext(), "Y;");
         f.Write(getView().getContext(), "Z;");
         f.Write(getView().getContext(), System.getProperty("line.separator"));
 
+        startTime = System.currentTimeMillis() / 1000.0;
+
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null) {
-            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        }
-        else {
+        } else {
             //DO SHIT
         }
 
@@ -62,42 +62,38 @@ public class Magnetometer extends Fragment implements SensorEventListener {
     }
 
     @Override
-    public final void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Do something here if sensor accuracy changes.
-        //Brecht: For now nothing...
+    public void onSensorChanged(SensorEvent event)
+    {
+        elapsedTime = (System.currentTimeMillis() / 1000.0) - startTime;
+        sampleRate = 1 / (elapsedTime - oldElapsedTime);
+
+        oldElapsedTime = elapsedTime;
+
+        ((TextView)getView().findViewById(R.id.tvX)).setText(String.valueOf(event.values[0]));
+        ((TextView)getView().findViewById(R.id.tvY)).setText(String.valueOf(event.values[1]));
+        ((TextView)getView().findViewById(R.id.tvZ)).setText(String.valueOf(event.values[2]));
+        ((TextView)getView().findViewById(R.id.tvSampleRate)).setText(String.valueOf(sampleRate));
+
+
+        f.Write(getView().getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        f.Write(getView().getContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
+        f.Write(getView().getContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
+        f.Write(getView().getContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
+        f.Write(getView().getContext(), System.getProperty("line.separator"));
+
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event)
+    public void onAccuracyChanged(Sensor sensor, int accuracy)
     {
-        elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
-        sampleRate = 1 / (elapsedTime - oldElapsedTime);
 
-        ((TextView)v.findViewById(R.id.xMagnetometer)).setText(String.valueOf(event.values[0]) + " µT");
-        ((TextView)v.findViewById(R.id.yMagnetometer)).setText(String.valueOf(event.values[1]) + " µT");
-        ((TextView)v.findViewById(R.id.zMagnetometer)).setText(String.valueOf(event.values[2]) + " µT");
-        ((TextView)v.findViewById(R.id.sampling)).setText(String.valueOf(sampleRate));
-
-        f.Write(v.getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
-        f.Write(v.getContext(), System.getProperty("line.separator"));
-
-        oldElapsedTime = elapsedTime;
     }
+
     @Override
     public void onPause()
     {
-        mSensorManager.unregisterListener(this);
+        mSensorManager.unregisterListener(this,mSensor);
         super.onPause();
-    }
-
-    @Override
-    public void onResume()
-    {
-        mSensorManager.registerListener(this,mSensor,mSensorManager.SENSOR_DELAY_NORMAL);
-        super.onResume();
     }
 
     public static void OnKeyDown(int keyCode)
@@ -105,4 +101,5 @@ public class Magnetometer extends Fragment implements SensorEventListener {
         if(keyCode== KeyEvent.KEYCODE_BACK){
             android.os.Process.killProcess(android.os.Process.myPid());}
     }
+
 }

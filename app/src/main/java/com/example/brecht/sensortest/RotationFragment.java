@@ -1,7 +1,6 @@
 package com.example.brecht.sensortest;
 
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,13 +8,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,13 +41,13 @@ public class RotationFragment extends Fragment implements SensorEventListener, V
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.rotation, container, false);
+        View view = inflater.inflate(R.layout.fragment_rotation, container, false);
 
         //TODO: Change ID's
-        azimuth = (TextView) view.findViewById(R.id.x);
-        pitch = (TextView) view.findViewById(R.id.y);
-        roll = (TextView) view.findViewById(R.id.z);
-        sampleRateText = (TextView) view.findViewById(R.id.sampling);
+        azimuth = (TextView) view.findViewById(R.id.tvX);
+        pitch = (TextView) view.findViewById(R.id.tvY);
+        roll = (TextView) view.findViewById(R.id.tvZ);
+        sampleRateText = (TextView) view.findViewById(R.id.tvSampleRate);
         startButton = (Button) view.findViewById(R.id.btnStart);
         startButton.setOnClickListener(this);
         stopButton = (Button) view.findViewById(R.id.btnStop);

@@ -2,13 +2,11 @@ package com.example.brecht.sensortest;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +44,9 @@ public class RegisterFragment extends Fragment {
     JSONObject jsonResponse;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_register, container, false);
+        view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        btnRegister = (Button) view.findViewById(R.id.Register);
+        btnRegister = (Button) view.findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,8 +54,8 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        Email = (EditText) view.findViewById(R.id.email);
-        Password = (EditText) view.findViewById(R.id.password);
+        Email = (EditText) view.findViewById(R.id.etEmail);
+        Password = (EditText) view.findViewById(R.id.etPassword);
 
         return view;
     }
@@ -139,7 +137,7 @@ public class RegisterFragment extends Fragment {
                     // Replace whatever is in the fragment_container view with this fragment,
                     // and add the transaction to the back stack
 
-                    transaction.replace(R.id.root_login, loginFragment);
+                    transaction.replace(R.id.flRootLogin, loginFragment);
                     transaction.addToBackStack(null);
 
                     // Commit the transaction

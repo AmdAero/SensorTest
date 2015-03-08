@@ -14,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/**
- * Created by Arne on 24/02/2015.
- */
-public class Gravity_raw extends Fragment implements SensorEventListener {
+
+public class GyroscopeFragment extends Fragment implements SensorEventListener {
+
+    private View v;
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
@@ -29,19 +29,17 @@ public class Gravity_raw extends Fragment implements SensorEventListener {
 
     private FileWriter f;
 
-    private View v;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        v=inflater.inflate(R.layout.gravity_raw,container,false);
+        v=inflater.inflate(R.layout.fragment_gyroscope,container,false);
         return v;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
-        f = new FileWriter("Gravity_raw.txt", getView().getContext());
+        f = new FileWriter("Gyroscope.txt", v.getContext());
         f.Write(getView().getContext(), "Time;");
         f.Write(getView().getContext(), "X;");
         f.Write(getView().getContext(), "Y;");
@@ -51,49 +49,54 @@ public class Gravity_raw extends Fragment implements SensorEventListener {
         startTime = System.currentTimeMillis() / 1000.0;
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
-            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
             mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        } else {
-            //DO SHIT
         }
+        else {
 
+        }
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public final void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Do something here if sensor accuracy changes.
+        //Brecht: For now nothing...
     }
 
     @Override
     public void onSensorChanged(SensorEvent event)
     {
-        elapsedTime = (System.currentTimeMillis() / 1000.0) - startTime;
+        elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
 
+        ((TextView)v.findViewById(R.id.GyroscopeX)).setText(String.valueOf(event.values[0] / Math.PI * 180) + " degrees/s");
+        ((TextView)v.findViewById(R.id.GyroscopeY)).setText(String.valueOf(event.values[1] / Math.PI * 180) + " degrees/s");
+        ((TextView)v.findViewById(R.id.GyroscopeZ)).setText(String.valueOf(event.values[2] / Math.PI * 180) + " degrees/s");
+        ((TextView)v.findViewById(R.id.tvSampleRate)).setText(String.valueOf(sampleRate));
+
+        f.Write(v.getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[0]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[1]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(v.getContext(), String.valueOf(event.values[2]/Math.PI*180).replace(".", ",") + ";");
+        f.Write(v.getContext(), System.getProperty("line.separator"));
+
         oldElapsedTime = elapsedTime;
-
-        ((TextView)getView().findViewById(R.id.x)).setText(String.valueOf(event.values[0]));
-        ((TextView)getView().findViewById(R.id.y)).setText(String.valueOf(event.values[1]));
-        ((TextView)getView().findViewById(R.id.z)).setText(String.valueOf(event.values[2]));
-        ((TextView)getView().findViewById(R.id.sampling)).setText(String.valueOf(sampleRate));
-
-
-        f.Write(getView().getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
-        f.Write(getView().getContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
-        f.Write(getView().getContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
-        f.Write(getView().getContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
-        f.Write(getView().getContext(), System.getProperty("line.separator"));
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
-    {
-
     }
 
     @Override
     public void onPause()
     {
-        mSensorManager.unregisterListener(this,mSensor);
+        mSensorManager.unregisterListener(this);
         super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        mSensorManager.registerListener(this,mSensor,mSensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
     }
 
     public static void OnKeyDown(int keyCode)

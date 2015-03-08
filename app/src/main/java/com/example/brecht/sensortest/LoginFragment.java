@@ -47,12 +47,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.login, container, false);
+        view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        Email = (EditText) view.findViewById(R.id.email);
-        Password = (EditText) view.findViewById(R.id.password);
-        btnLogin = (Button) view.findViewById(R.id.LoginButton);
-        btnRegister = (Button) view.findViewById(R.id.RegisterButton);
+        Email = (EditText) view.findViewById(R.id.etEmail);
+        Password = (EditText) view.findViewById(R.id.etPassword);
+        btnLogin = (Button) view.findViewById(R.id.btnLogin);
+        btnRegister = (Button) view.findViewById(R.id.btnRegister);
 
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
@@ -66,17 +66,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         switch (v.getId())
         {
-            case R.id.LoginButton:
+            case R.id.btnLogin:
                 new MyAsyncTask().execute();
                 break;
-            case R.id.RegisterButton:
+            case R.id.btnRegister:
                 RegisterFragment registerFragment = new RegisterFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                 // Replace whatever is in the fragment_container view with this fragment,
                 // and add the transaction to the back stack
 
-                transaction.replace(R.id.root_login, registerFragment);
+                transaction.replace(R.id.flRootLogin, registerFragment);
                 transaction.addToBackStack(null);
 
                 // Commit the transaction
@@ -174,7 +174,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     //Close the progressDialog!
                     this.progressDialog.dismiss();
 
-                    //Check if login succeeded
+                    //Check if fragment_login succeeded
                     if (jsonResponse.optString("success").toString().equals("1")) {
                         WelcomeFragment wut = new WelcomeFragment();
                         Bundle bundle = new Bundle();
@@ -184,7 +184,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                         // Replace whatever is in the fragment_container view with this fragment,
                         // and add the transaction to the back stack
 
-                        transaction.replace(R.id.root_login, wut);
+                        transaction.replace(R.id.flRootLogin, wut);
                         wut.setArguments(bundle);
                         transaction.addToBackStack(null);
 

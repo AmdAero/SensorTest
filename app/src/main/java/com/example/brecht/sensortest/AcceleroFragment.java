@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class Accelero extends Fragment implements SensorEventListener {
+public class AcceleroFragment extends Fragment implements SensorEventListener {
 
 
     private SensorManager mSensorManager;
@@ -35,7 +35,7 @@ public class Accelero extends Fragment implements SensorEventListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v=inflater.inflate(R.layout.accelerometer,container,false);
+        v=inflater.inflate(R.layout.fragment_accelerometer,container,false);
         return v;
     }
 
@@ -85,15 +85,15 @@ public class Accelero extends Fragment implements SensorEventListener {
         linear_acceleration[1] = event.values[1] - gravity[1];
         linear_acceleration[2] = event.values[2] - gravity[2];
 
-        ((TextView)v.findViewById(R.id.x)).setText(String.valueOf(gravity[0]));
-        ((TextView)v.findViewById(R.id.y)).setText(String.valueOf(gravity[1]));
-        ((TextView)v.findViewById(R.id.z)).setText(String.valueOf(gravity[2]));
+        ((TextView)v.findViewById(R.id.tvX)).setText(String.valueOf(gravity[0]));
+        ((TextView)v.findViewById(R.id.tvY)).setText(String.valueOf(gravity[1]));
+        ((TextView)v.findViewById(R.id.tvZ)).setText(String.valueOf(gravity[2]));
 
         ((TextView)v.findViewById(R.id.x2)).setText(String.valueOf(linear_acceleration[0]));
         ((TextView)v.findViewById(R.id.y2)).setText(String.valueOf(linear_acceleration[1]));
         ((TextView)v.findViewById(R.id.z2)).setText(String.valueOf(linear_acceleration[2]));
 
-        ((TextView)v.findViewById(R.id.sampling)).setText(String.valueOf(sampleRate));
+        ((TextView)v.findViewById(R.id.tvSampleRate)).setText(String.valueOf(sampleRate));
 
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);

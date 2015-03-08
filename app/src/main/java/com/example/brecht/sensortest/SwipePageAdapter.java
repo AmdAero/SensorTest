@@ -16,19 +16,19 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return new Stopwatch();
+                return new StopwatchFragment();
             case 1:
                 return new RootLoginFragment();
             case 2:
                 return new RotationFragment();
             case 3:
-                return new Gyroscope();
+                return new GyroscopeFragment();
             case 4:
-                return new Gravity_raw();
+                return new GravityFragment();
             case 5:
-                return new Magnetometer();
+                return new MagnetometerFragment();
             case 6:
-                return new Accelero();
+                return new AcceleroFragment();
             default:
                 break;
         }

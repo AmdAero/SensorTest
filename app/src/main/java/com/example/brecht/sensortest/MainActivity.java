@@ -125,10 +125,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            Gyroscope.OnKeyDown(keyCode);
-            Magnetometer.OnKeyDown(keyCode);
-            Gravity_raw.OnKeyDown(keyCode);
-            Accelero.OnKeyDown(keyCode);
+            GyroscopeFragment.OnKeyDown(keyCode);
+            MagnetometerFragment.OnKeyDown(keyCode);
+            GravityFragment.OnKeyDown(keyCode);
+            AcceleroFragment.OnKeyDown(keyCode);
 
             //and so on...
         }

@@ -27,11 +27,11 @@ public class WelcomeFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_welkom, container, false);
+        view = inflater.inflate(R.layout.fragment_welkom, container, false);
 
         Username = this.getArguments().getString("username");
-        Welkom = (TextView) view.findViewById(R.id.Welcome_textview);
-        UsernameTextView = (TextView) view.findViewById(R.id.Username);
+        Welkom = (TextView) view.findViewById(R.id.tvWelcome);
+        UsernameTextView = (TextView) view.findViewById(R.id.tvUsername);
 
         UsernameTextView.setText(String.valueOf(Username));
 

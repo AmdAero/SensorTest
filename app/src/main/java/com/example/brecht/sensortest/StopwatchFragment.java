@@ -17,7 +17,7 @@ import java.util.Locale;
 /**
  * Created by Brecht on 3/03/2015.
  */
-public class Stopwatch extends Fragment implements View.OnClickListener {
+public class StopwatchFragment extends Fragment implements View.OnClickListener {
 
     private View view;
 
@@ -36,12 +36,12 @@ public class Stopwatch extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.stopwatch, container, false);
-        startButton = (Button) view.findViewById(R.id.startButton);
+        view = inflater.inflate(R.layout.fragment_stopwatch, container, false);
+        startButton = (Button) view.findViewById(R.id.btnStart);
         startButton.setOnClickListener(this);
         stopButton = (Button) view.findViewById(R.id.stopButton);
         stopButton.setOnClickListener(this);
-        resetButton = (Button) view.findViewById(R.id.resetButton);
+        resetButton = (Button) view.findViewById(R.id.btnReset);
         resetButton.setOnClickListener(this);
 
         SayTime=new TextToSpeech(getActivity().getApplicationContext(),
@@ -62,13 +62,13 @@ public class Stopwatch extends Fragment implements View.OnClickListener {
     {
         switch (v.getId())
         {
-            case R.id.startButton:
+            case R.id.btnStart:
                 startClick();
                 break;
             case R.id.stopButton:
                 stopClick();
                 break;
-            case R.id.resetButton:
+            case R.id.btnReset:
                 resetClick();
                 break;
         }
