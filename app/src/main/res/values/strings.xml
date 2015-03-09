@@ -3,8 +3,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="accelero_gravity_lowpass_head">Gravity (LOW PASS)</string>
-    <string name="accelero_acc_lowpass_head">Acceleration (LOW PASS)</string>
-    <string name="gravity_raw_head">Gravity(RAW)</string>
+    <string name="accelero_acc_lowpass_head">Accelero (LOW PASS)</string>
+    <string name="gravity_raw_head">Gravity (RAW)</string>
     <string name="gyroscoop_head">Gyroscoop</string>
     <string name="magnetometer_head">Magnetometer</string>
     <string name="rotation_head">Rotation</string>

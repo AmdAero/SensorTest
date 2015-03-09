@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:text="@string/accelero_gravity_lowpass_head"
+            android:layout_marginBottom="20dp"
             />
         <RelativeLayout
             android:layout_marginBottom="30dp"

@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:text="@string/magnetometer_head"
         android:textSize="30sp"
+        android:layout_marginBottom="20dp"
         />
     <RelativeLayout
         android:layout_marginBottom="30dp"
