@@ -17,6 +17,24 @@
                 android:text="@string/gyroscoop_head"
                 android:textSize="30sp"
                 />
+            <RelativeLayout
+                android:layout_marginBottom="30dp"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/startText"
+                    android:id="@+id/btnStartGy"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stopText"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/btnStopGy"/>
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -28,7 +46,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/GyroscopeX"
+                android:id="@+id/tvX"
                 android:textColor="#ffff0000"/>
 
             <TextView
@@ -40,7 +58,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/GyroscopeY"
+                android:id="@+id/tvY"
                 android:textColor="#ffff0000"/>
 
             <TextView
@@ -53,7 +71,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/GyroscopeZ"
+                android:id="@+id/tvZ"
                 android:textColor="#ffff0000"/>
 
             <TextView android:text="@string/sensor_samplerate" android:layout_width="wrap_content"

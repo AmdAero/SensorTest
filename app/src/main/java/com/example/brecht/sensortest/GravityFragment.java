@@ -12,12 +12,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
  * Created by Arne on 24/02/2015.
  */
-public class GravityFragment extends Fragment implements SensorEventListener {
+public class GravityFragment extends Fragment implements SensorEventListener , View.OnClickListener {
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
@@ -27,6 +28,15 @@ public class GravityFragment extends Fragment implements SensorEventListener {
     private double oldElapsedTime;
     private double sampleRate;
 
+
+    private TextView X;
+    private TextView Y;
+    private TextView Z;
+    private TextView sampleRateText;
+
+    private Button startButton;
+    private Button stopButton;
+
     private FileWriter f;
 
     private View v;
@@ -35,12 +45,33 @@ public class GravityFragment extends Fragment implements SensorEventListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         v=inflater.inflate(R.layout.fragment_gravity,container,false);
+
+        X = (TextView) v.findViewById(R.id.tvX);
+        Y = (TextView) v.findViewById(R.id.tvY);
+        Z = (TextView) v.findViewById(R.id.tvZ);
+
+        sampleRateText = (TextView) v.findViewById(R.id.tvSampleRate);
+
+        startButton = (Button) v.findViewById(R.id.btnStartG);
+        startButton.setOnClickListener(this);
+        stopButton = (Button) v.findViewById(R.id.btnStopG);
+        stopButton.setOnClickListener(this);
+
         return v;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+
+    private void Start()
     {
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else {
+            //DO SHIT
+        }
+
         f = new FileWriter("Gravity_raw.txt", getView().getContext());
         f.Write(getView().getContext(), "Time;");
         f.Write(getView().getContext(), "X;");
@@ -49,17 +80,33 @@ public class GravityFragment extends Fragment implements SensorEventListener {
         f.Write(getView().getContext(), System.getProperty("line.separator"));
 
         startTime = System.currentTimeMillis() / 1000.0;
+    }
+    private void Stop()
+    {
+        X.setText("?");
+        Y.setText("?");
+        Z.setText("?");
 
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
-            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        } else {
-            //DO SHIT
+        sampleRateText.setText("?");
+
+        if (mSensorManager != null)
+            mSensorManager.unregisterListener(this, mSensor);
+    }
+
+    public void onClick(View v)
+    {
+
+        switch (v.getId()) {
+            case R.id.btnStartG:
+                Start();
+                break;
+            case R.id.btnStopG:
+                Stop();
+                break;
         }
 
-        super.onActivityCreated(savedInstanceState);
     }
+
 
     @Override
     public void onSensorChanged(SensorEvent event)
@@ -69,10 +116,10 @@ public class GravityFragment extends Fragment implements SensorEventListener {
 
         oldElapsedTime = elapsedTime;
 
-        ((TextView)getView().findViewById(R.id.tvX)).setText(String.valueOf(event.values[0]));
-        ((TextView)getView().findViewById(R.id.tvY)).setText(String.valueOf(event.values[1]));
-        ((TextView)getView().findViewById(R.id.tvZ)).setText(String.valueOf(event.values[2]));
-        ((TextView)getView().findViewById(R.id.tvSampleRate)).setText(String.valueOf(sampleRate));
+        X.setText(String.valueOf(event.values[0]));
+        Y.setText(String.valueOf(event.values[1]));
+        Z.setText(String.valueOf(event.values[2]));
+        sampleRateText.setText(String.valueOf(sampleRate));
 
 
         f.Write(getView().getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
@@ -89,12 +136,6 @@ public class GravityFragment extends Fragment implements SensorEventListener {
 
     }
 
-    @Override
-    public void onPause()
-    {
-        mSensorManager.unregisterListener(this,mSensor);
-        super.onPause();
-    }
 
     public static void OnKeyDown(int keyCode)
     {

@@ -12,10 +12,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
-public class GyroscopeFragment extends Fragment implements SensorEventListener {
+public class GyroscopeFragment extends Fragment implements SensorEventListener ,View.OnClickListener{
 
     private View v;
 
@@ -27,18 +28,45 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
     private double oldElapsedTime;
     private double sampleRate;
 
+    private TextView X;
+    private TextView Y;
+    private TextView Z;
+    private TextView sampleRateText;
+
+    private Button startButton;
+    private Button stopButton;
+
     private FileWriter f;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         v=inflater.inflate(R.layout.fragment_gyroscope,container,false);
+
+        X = (TextView) v.findViewById(R.id.tvX);
+        Y = (TextView) v.findViewById(R.id.tvY);
+        Z = (TextView) v.findViewById(R.id.tvZ);
+
+        sampleRateText = (TextView) v.findViewById(R.id.tvSampleRate);
+
+        startButton = (Button) v.findViewById(R.id.btnStartGy);
+        startButton.setOnClickListener(this);
+        stopButton = (Button) v.findViewById(R.id.btnStopGy);
+        stopButton.setOnClickListener(this);
+
         return v;
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    private void Start()
     {
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null){
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else {
+            //DO SHIT
+        }
+
         f = new FileWriter("Gyroscope.txt", v.getContext());
         f.Write(getView().getContext(), "Time;");
         f.Write(getView().getContext(), "X;");
@@ -47,17 +75,33 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
         f.Write(getView().getContext(), System.getProperty("line.separator"));
 
         startTime = System.currentTimeMillis() / 1000.0;
-
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
-            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-            mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        }
-        else {
-
-        }
-        super.onActivityCreated(savedInstanceState);
     }
+    private void Stop()
+    {
+        X.setText("?");
+        Y.setText("?");
+        Z.setText("?");
+
+        sampleRateText.setText("?");
+
+        if (mSensorManager != null)
+            mSensorManager.unregisterListener(this, mSensor);
+    }
+
+    public void onClick(View v)
+    {
+
+        switch (v.getId()) {
+            case R.id.btnStartGy:
+                Start();
+                break;
+            case R.id.btnStopGy:
+                Stop();
+                break;
+        }
+
+    }
+
 
     @Override
     public final void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -71,10 +115,10 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
 
-        ((TextView)v.findViewById(R.id.GyroscopeX)).setText(String.valueOf(event.values[0] / Math.PI * 180) + " degrees/s");
-        ((TextView)v.findViewById(R.id.GyroscopeY)).setText(String.valueOf(event.values[1] / Math.PI * 180) + " degrees/s");
-        ((TextView)v.findViewById(R.id.GyroscopeZ)).setText(String.valueOf(event.values[2] / Math.PI * 180) + " degrees/s");
-        ((TextView)v.findViewById(R.id.tvSampleRate)).setText(String.valueOf(sampleRate));
+        X.setText(String.valueOf(event.values[0] / Math.PI * 180) + " degrees/s");
+        Y.setText(String.valueOf(event.values[1] / Math.PI * 180) + " degrees/s");
+        Z.setText(String.valueOf(event.values[2] / Math.PI * 180) + " degrees/s");
+        sampleRateText.setText(String.valueOf(sampleRate));
 
         f.Write(v.getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
         f.Write(v.getContext(), String.valueOf(event.values[0]/Math.PI*180).replace(".", ",") + ";");
@@ -85,19 +129,6 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
         oldElapsedTime = elapsedTime;
     }
 
-    @Override
-    public void onPause()
-    {
-        mSensorManager.unregisterListener(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onResume()
-    {
-        mSensorManager.registerListener(this,mSensor,mSensorManager.SENSOR_DELAY_NORMAL);
-        super.onResume();
-    }
 
     public static void OnKeyDown(int keyCode)
     {

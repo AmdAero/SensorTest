@@ -21,6 +21,24 @@
         android:text="@string/magnetometer_head"
         android:textSize="30sp"
         />
+    <RelativeLayout
+        android:layout_marginBottom="30dp"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/startText"
+            android:id="@+id/btnStartM"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stopText"
+            android:layout_alignParentRight="true"
+            android:id="@+id/btnStopM"/>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +50,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:id="@+id/xMagnetometer"
+        android:id="@+id/tvX"
         android:textColor="#ffff0000"/>
 
     <TextView
@@ -44,7 +62,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:id="@+id/yMagnetometer"
+        android:id="@+id/tvY"
         android:textColor="#ffff0000"/>
 
     <TextView
@@ -57,7 +75,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:id="@+id/zMagnetometer"
+        android:id="@+id/tvZ"
         android:textColor="#ffff0000"/>
 
     <TextView android:text="@string/sensor_samplerate" android:layout_width="wrap_content"

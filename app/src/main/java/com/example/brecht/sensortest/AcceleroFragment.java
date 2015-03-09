@@ -12,10 +12,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
-public class AcceleroFragment extends Fragment implements SensorEventListener {
+public class AcceleroFragment extends Fragment implements SensorEventListener,View.OnClickListener {
 
 
     private SensorManager mSensorManager;
@@ -23,11 +24,21 @@ public class AcceleroFragment extends Fragment implements SensorEventListener {
     private float gravity[] = new float[3];
     private float linear_acceleration[] = new float[3];
 
-
     private double startTime;
     private double elapsedTime;
     private double oldElapsedTime;
     private double sampleRate;
+
+    private TextView X;
+    private TextView Y;
+    private TextView Z;
+    private TextView X2;
+    private TextView Y2;
+    private TextView Z2;
+    private TextView sampleRateText;
+
+    private Button startButton;
+    private Button stopButton;
 
     private FileWriter f;
 
@@ -36,13 +47,35 @@ public class AcceleroFragment extends Fragment implements SensorEventListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v=inflater.inflate(R.layout.fragment_accelerometer,container,false);
+
+        X = (TextView) v.findViewById(R.id.tvX);
+        Y = (TextView) v.findViewById(R.id.tvY);
+        Z = (TextView) v.findViewById(R.id.tvZ);
+        X2 = (TextView) v.findViewById(R.id.x2);
+        Y2 = (TextView) v.findViewById(R.id.y2);
+        Z2 = (TextView) v.findViewById(R.id.z2);
+
+        sampleRateText = (TextView) v.findViewById(R.id.tvSampleRate);
+
+        startButton = (Button) v.findViewById(R.id.btnStartA);
+        startButton.setOnClickListener(this);
+        stopButton = (Button) v.findViewById(R.id.btnStopA);
+        stopButton.setOnClickListener(this);
+
         return v;
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    private void Start()
     {
-        f = new FileWriter("Accelerometer.txt", v.getContext());
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else {
+            //DO SHIT
+        }
+
+        f = new FileWriter("Accelerometer.txt", getActivity().getApplicationContext());
 
         f.Write(v.getContext(), "Time;");
         f.Write(v.getContext(), "X;");
@@ -51,17 +84,34 @@ public class AcceleroFragment extends Fragment implements SensorEventListener {
         f.Write(v.getContext(), System.getProperty("line.separator"));
 
         startTime = System.currentTimeMillis() / 1000;
+    }
+    private void Stop()
+    {
+        X.setText("?");
+        Y.setText("?");
+        Z.setText("?");
+        X2.setText("?");
+        Y2.setText("?");
+        Z2.setText("?");
 
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
-            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        }
-        else {
-            //DO SHIT
+        sampleRateText.setText("?");
+
+        if (mSensorManager != null)
+            mSensorManager.unregisterListener(this, mSensor);
+    }
+
+    public void onClick(View v)
+    {
+
+        switch (v.getId()) {
+            case R.id.btnStartA:
+                Start();
+                break;
+            case R.id.btnStopA:
+                Stop();
+                break;
         }
 
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -85,15 +135,15 @@ public class AcceleroFragment extends Fragment implements SensorEventListener {
         linear_acceleration[1] = event.values[1] - gravity[1];
         linear_acceleration[2] = event.values[2] - gravity[2];
 
-        ((TextView)v.findViewById(R.id.tvX)).setText(String.valueOf(gravity[0]));
-        ((TextView)v.findViewById(R.id.tvY)).setText(String.valueOf(gravity[1]));
-        ((TextView)v.findViewById(R.id.tvZ)).setText(String.valueOf(gravity[2]));
+        X.setText(String.valueOf(gravity[0]));
+        Y.setText(String.valueOf(gravity[1]));
+        Z.setText(String.valueOf(gravity[2]));
 
-        ((TextView)v.findViewById(R.id.x2)).setText(String.valueOf(linear_acceleration[0]));
-        ((TextView)v.findViewById(R.id.y2)).setText(String.valueOf(linear_acceleration[1]));
-        ((TextView)v.findViewById(R.id.z2)).setText(String.valueOf(linear_acceleration[2]));
+        X2.setText(String.valueOf(linear_acceleration[0]));
+        Y2.setText(String.valueOf(linear_acceleration[1]));
+        Z2.setText(String.valueOf(linear_acceleration[2]));
 
-        ((TextView)v.findViewById(R.id.tvSampleRate)).setText(String.valueOf(sampleRate));
+        sampleRateText.setText(String.valueOf(sampleRate));
 
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
@@ -105,19 +155,6 @@ public class AcceleroFragment extends Fragment implements SensorEventListener {
         f.Write(v.getContext(), System.getProperty("line.separator"));
         oldElapsedTime = elapsedTime;
 
-    }
-    @Override
-    public void onPause()
-    {
-        mSensorManager.unregisterListener(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onResume()
-    {
-        mSensorManager.registerListener(this,mSensor,mSensorManager.SENSOR_DELAY_NORMAL);
-        super.onResume();
     }
 
     public static void OnKeyDown(int keyCode)

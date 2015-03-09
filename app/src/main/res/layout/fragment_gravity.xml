@@ -21,6 +21,24 @@
             android:text="@string/gravity_raw_head"
             android:layout_marginBottom="20dp"
             />
+        <RelativeLayout
+            android:layout_marginBottom="30dp"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/startText"
+                android:id="@+id/btnStartG"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stopText"
+                android:layout_alignParentRight="true"
+                android:id="@+id/btnStopG"/>
+        </RelativeLayout>
 
         <TextView android:text="@string/sensor_x" android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
