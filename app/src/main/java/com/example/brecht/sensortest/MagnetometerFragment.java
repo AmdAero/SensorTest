@@ -62,7 +62,7 @@ public class MagnetometerFragment extends Fragment implements SensorEventListene
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null){
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_GAME);
         }
         else {
             //DO SHIT

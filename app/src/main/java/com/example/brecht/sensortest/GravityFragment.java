@@ -66,7 +66,7 @@ public class GravityFragment extends Fragment implements SensorEventListener , V
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_GAME);
         }
         else {
             //DO SHIT

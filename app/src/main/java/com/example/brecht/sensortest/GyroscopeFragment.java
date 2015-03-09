@@ -61,7 +61,7 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener ,
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null){
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_GAME);
         }
         else {
             //DO SHIT
