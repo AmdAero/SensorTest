@@ -2,13 +2,15 @@ package com.example.brecht.sensortest;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,7 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Register extends ActionBarActivity {
+public class RegisterFragment extends Fragment {
+
+    View view;
 
     Button btnRegister;
 
@@ -39,29 +43,26 @@ public class Register extends ActionBarActivity {
     EditText Password;
     JSONObject jsonResponse;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        btnRegister = (Button) findViewById(R.id.Register);
-
-        Email = (EditText) findViewById(R.id.email);
-        Password = (EditText) findViewById(R.id.password);
-
+        btnRegister = (Button) view.findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new MyAsyncTask().execute();
             }
         });
+
+        Email = (EditText) view.findViewById(R.id.etEmail);
+        Password = (EditText) view.findViewById(R.id.etPassword);
+
+        return view;
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(Register.this);
+        private ProgressDialog progressDialog = new ProgressDialog(getActivity());
         InputStream inputStream = null;
         String result = "";
 
@@ -126,22 +127,24 @@ public class Register extends ActionBarActivity {
             try {
                 jsonResponse = new JSONObject(result);
 
-                String tag = jsonResponse.optString("tag").toString();
-                String success = jsonResponse.optString("success").toString();
-                String error = jsonResponse.optString("error").toString();
-                String error_msg = jsonResponse.optString("error_msg").toString();
-
                 //Close the progressDialog!
                 this.progressDialog.dismiss();
                 if (jsonResponse.optString("success").toString().equals("1")) {
-                    Toast.makeText(getApplicationContext(), "You have created a new account", Toast.LENGTH_SHORT).show();
-                    super.onPostExecute(v);
-                    Intent intent = new Intent(Register.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getApplicationContext().startActivity(intent);
+                    Toast.makeText(getActivity().getApplicationContext(), "You have created a new account", Toast.LENGTH_SHORT).show();
+                    LoginFragment loginFragment = new LoginFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                    // Replace whatever is in the fragment_container view with this fragment,
+                    // and add the transaction to the back stack
+
+                    transaction.replace(R.id.flRootLogin, loginFragment);
+                    transaction.addToBackStack(null);
+
+                    // Commit the transaction
+                    transaction.commit();
                 }
                 else if(jsonResponse.optString("error").toString().equals("1")){
-                    Toast.makeText(getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -150,7 +153,7 @@ public class Register extends ActionBarActivity {
 
         @Override
         protected void onCancelled() {
-            Toast.makeText(getApplicationContext(), "Can't register", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Can't register", Toast.LENGTH_SHORT).show();
         }
     }
 }

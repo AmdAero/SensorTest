@@ -21,6 +21,24 @@
             android:text="@string/gravity_raw_head"
             android:layout_marginBottom="20dp"
             />
+        <RelativeLayout
+            android:layout_marginBottom="30dp"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/startText"
+                android:id="@+id/btnStartG"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stopText"
+                android:layout_alignParentRight="true"
+                android:id="@+id/btnStopG"/>
+        </RelativeLayout>
 
         <TextView android:text="@string/sensor_x" android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -28,7 +46,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/x"
+            android:id="@+id/tvX"
             android:textColor="#ffff0000"
             />
 
@@ -39,7 +57,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/y"
+            android:id="@+id/tvY"
             android:textColor="#ffff0000"
             />
 
@@ -51,7 +69,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#ffff0000"
-            android:id="@+id/z"/>
+            android:id="@+id/tvZ"/>
 
         <TextView android:text="@string/sensor_samplerate" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +79,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#ffff0000"
-            android:id="@+id/sampling"/>
+            android:id="@+id/tvSampleRate"/>
 
     </LinearLayout>
 </ScrollView>

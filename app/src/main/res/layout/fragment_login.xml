@@ -1,7 +1,3 @@
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -11,7 +7,6 @@
     android:orientation="vertical"
     >
 
-
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -20,7 +15,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/email"
+        android:id="@+id/etEmail"
         />
     <TextView
         android:layout_width="fill_parent"
@@ -32,8 +27,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:id="@+id/password"
+        android:id="@+id/etPassword"
         />
+
     <RelativeLayout
         android:layout_marginTop="20dp"
         android:layout_width="fill_parent"
@@ -44,14 +40,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_button"
-            android:id="@+id/LoginButton"/>
+            android:id="@+id/btnLogin"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register_button"
             android:layout_alignParentRight="true"
-            android:id="@+id/RegisterButton"/>
+            android:id="@+id/btnRegister"/>
     </RelativeLayout>
-
 </LinearLayout>
-</ScrollView>

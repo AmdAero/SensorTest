@@ -2,16 +2,15 @@ package com.example.brecht.sensortest;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,7 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Login extends ActionBarActivity {
+public class LoginFragment extends Fragment implements View.OnClickListener{
+
+    private View view;
 
     Button btnLogin;
     Button btnRegister;
@@ -43,78 +44,70 @@ public class Login extends ActionBarActivity {
 
     JSONObject jsonResponse;
 
-    public ActionBar actionBar = getSupportActionBar();
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_screens, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = null;
-        switch (item.getItemId()) {
-            case R.id.stopwatch:
-                i = new Intent(Login.this , Stopwatch.class);
-                startActivity(i);
-                return true;
-            case R.id.gravityR:
-                i = new Intent(Login.this , Gravity_raw.class);
-                startActivity(i);
-                return true;
-            case R.id.gyroscope:
-                i = new Intent(Login.this , Gyroscope.class);
-                startActivity(i);
-                return true;
-            case R.id.magneetometer:
-                i = new Intent(Login.this , Magnetometer.class);
-                startActivity(i);
-                return true;
-            case R.id.rotation:
-                i = new Intent(Login.this , Rotation.class);
-                startActivity(i);
-                return true;
-            case R.id.fileWriter:
-                i = new Intent(Login.this , FileWriter.class);
-                return true;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        Email = (EditText) view.findViewById(R.id.etEmail);
+        Password = (EditText) view.findViewById(R.id.etPassword);
+        btnLogin = (Button) view.findViewById(R.id.btnLogin);
+        btnRegister = (Button) view.findViewById(R.id.btnRegister);
+
+        btnLogin.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
+
+        return view;
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+
+        switch (v.getId())
+        {
+            case R.id.btnLogin:
+                new MyAsyncTask().execute();
+                break;
+            case R.id.btnRegister:
+                RegisterFragment registerFragment = new RegisterFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+
+                transaction.replace(R.id.flRootLogin, registerFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
 
 
-    }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
-
-        Email = (EditText) findViewById(R.id.email);
-        Password = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.LoginButton);
-        btnRegister = (Button) findViewById(R.id.RegisterButton);
-
+        /*
         btnRegister.setOnClickListener(new View.OnClickListener(){
-           public void onClick(View v){
-               Intent i = new Intent(Login.this, Register.class);
-               startActivity(i);
-           }
+            public void onClick(View view){
+                Intent i = new Intent(Login.this, register.class);
+                startActivity(i);
+            }
         });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 new MyAsyncTask().execute();
             }
         });
+        */
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(Login.this);
+        private ProgressDialog progressDialog = new ProgressDialog(getActivity());
         InputStream inputStream = null;
         String result = "";
 
@@ -178,23 +171,28 @@ public class Login extends ActionBarActivity {
 
                 try {
                     jsonResponse = new JSONObject(result);
-
-                    String tag = jsonResponse.optString("tag").toString();
-                    String success = jsonResponse.optString("success").toString();
-                    String error = jsonResponse.optString("error").toString();
-                    String error_msg = jsonResponse.optString("error_msg").toString();
-
                     //Close the progressDialog!
                     this.progressDialog.dismiss();
+
+                    //Check if fragment_login succeeded
                     if (jsonResponse.optString("success").toString().equals("1")) {
-                        super.onPostExecute(v);
-                        Intent intent = new Intent(Login.this, Welkom.class);
-                        intent.putExtra("Username", String.valueOf(Email.getText()));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getApplicationContext().startActivity(intent);
+                        WelcomeFragment wut = new WelcomeFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("username", String.valueOf(Email.getText()));
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                        // Replace whatever is in the fragment_container view with this fragment,
+                        // and add the transaction to the back stack
+
+                        transaction.replace(R.id.flRootLogin, wut);
+                        wut.setArguments(bundle);
+                        transaction.addToBackStack(null);
+
+                        // Commit the transaction
+                        transaction.commit();
                     }
                     else if(jsonResponse.optString("error").toString().equals("1")){
-                        Toast.makeText(getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -203,7 +201,7 @@ public class Login extends ActionBarActivity {
 
         @Override
         protected void onCancelled() {
-            Toast.makeText(getApplicationContext(), "Can't login", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Can't login", Toast.LENGTH_SHORT).show();
         }
     }
 
