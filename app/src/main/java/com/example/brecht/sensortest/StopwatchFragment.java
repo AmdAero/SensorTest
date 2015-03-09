@@ -133,12 +133,14 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     public void stopClick (){
         hideStopButton();
+        start=false;
         mHandler.removeCallbacks(startTimer);
         stopped = true;
     }
 
     public void resetClick (){
         stopped = false;
+        start=false;
         ((TextView)getView().findViewById(R.id.timer)).setText("00:00:00");
     }
 
