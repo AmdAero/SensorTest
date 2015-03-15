@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class RotationFragment extends Fragment implements SensorEventListener, View.OnClickListener {
 
@@ -38,6 +41,7 @@ public class RotationFragment extends Fragment implements SensorEventListener, V
     private double sampleRate;
 
     private FileWriter f;
+    private List<String> list = new ArrayList<String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,15 +76,6 @@ public class RotationFragment extends Fragment implements SensorEventListener, V
 
     private void Start()
     {
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null){
-            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_GAME);
-        }
-        else {
-            //DO SHIT
-        }
-
         f = new FileWriter("Rotation.txt", getActivity().getApplicationContext());
         startTime = (System.currentTimeMillis() / 1000.0);
 
@@ -89,6 +84,15 @@ public class RotationFragment extends Fragment implements SensorEventListener, V
         f.Write(getActivity().getApplicationContext(), "Pitch;");
         f.Write(getActivity().getApplicationContext(), "Roll;");
         f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
+
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null){
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+            mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_GAME);
+        }
+        else {
+            //DO SHIT
+        }
     }
 
     private void Stop()
@@ -99,6 +103,16 @@ public class RotationFragment extends Fragment implements SensorEventListener, V
         sampleRateText.setText("?");
         if (mSensorManager != null)
             mSensorManager.unregisterListener(this, mSensor);
+
+        int i = 0;
+        for(String s : list)
+        {
+            i++;
+            f.Write(getActivity().getApplicationContext(), s);
+
+            if (i % 4 == 0)
+                f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
+        }
     }
 
     @Override
@@ -122,11 +136,18 @@ public class RotationFragment extends Fragment implements SensorEventListener, V
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
         sampleRateText.setText(String.valueOf(sampleRate));
 
-        f.Write(getActivity().getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
+        /*f.Write(getActivity().getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
         f.Write(getActivity().getApplicationContext(), String.valueOf(orientation[0]).replace(".", ",") + ";");
         f.Write(getActivity().getApplicationContext(), String.valueOf(orientation[1]).replace(".", ",") + ";");
         f.Write(getActivity().getApplicationContext(), String.valueOf(orientation[2]).replace(".", ",") + ";");
         f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
+        */
+
+        list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
+        list.add(String.valueOf(orientation[0]).replace(".", ",") + ";");
+        list.add(String.valueOf(orientation[1]).replace(".", ",") + ";");
+        list.add(String.valueOf(orientation[2]).replace(".", ",") + ";");
+
         oldElapsedTime = elapsedTime;
     }
 }
