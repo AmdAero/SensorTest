@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class AcceleroFragment extends Fragment implements SensorEventListener,View.OnClickListener {
 
@@ -41,6 +44,7 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
     private Button stopButton;
 
     private FileWriter f;
+    private List<String> list = new ArrayList<String>();
 
     private View v;
 
@@ -66,6 +70,14 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
     }
     private void Start()
     {
+        f = new FileWriter("Accelerometer.txt", getActivity().getApplicationContext());
+
+        f.Write(v.getContext(), "Time;");
+        f.Write(v.getContext(), "X;");
+        f.Write(v.getContext(), "Y;");
+        f.Write(v.getContext(), "Z;");
+        f.Write(v.getContext(), System.getProperty("line.separator"));
+
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -75,16 +87,9 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
             //DO SHIT
         }
 
-        f = new FileWriter("Accelerometer.txt", getActivity().getApplicationContext());
-
-        f.Write(v.getContext(), "Time;");
-        f.Write(v.getContext(), "X;");
-        f.Write(v.getContext(), "Y;");
-        f.Write(v.getContext(), "Z;");
-        f.Write(v.getContext(), System.getProperty("line.separator"));
-
         startTime = System.currentTimeMillis() / 1000;
     }
+
     private void Stop()
     {
         X.setText("?");
@@ -98,6 +103,16 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
 
         if (mSensorManager != null)
             mSensorManager.unregisterListener(this, mSensor);
+
+        int i = 0;
+        for(String s : list)
+        {
+            i++;
+            f.Write(getActivity().getApplicationContext(), s);
+
+            if (i % 4 == 0)
+                f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
+        }
     }
 
     public void onClick(View v)
@@ -148,11 +163,10 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
 
-        f.Write(v.getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(gravity[0]).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(gravity[1]).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(gravity[2]).replace(".", ",") + ";");
-        f.Write(v.getContext(), System.getProperty("line.separator"));
+        list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
+        list.add(String.valueOf(gravity[0]).replace(".", ",") + ";");
+        list.add(String.valueOf(gravity[1]).replace(".", ",") + ";");
+        list.add(String.valueOf(gravity[2]).replace(".", ",") + ";");
         oldElapsedTime = elapsedTime;
 
     }

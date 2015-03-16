@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Arne on 24/02/2015.
  */
@@ -38,6 +41,7 @@ public class GravityFragment extends Fragment implements SensorEventListener , V
     private Button stopButton;
 
     private FileWriter f;
+    private List<String> list = new ArrayList<String>();
 
     private View v;
 
@@ -91,6 +95,16 @@ public class GravityFragment extends Fragment implements SensorEventListener , V
 
         if (mSensorManager != null)
             mSensorManager.unregisterListener(this, mSensor);
+
+        int i = 0;
+        for(String s : list)
+        {
+            i++;
+            f.Write(getActivity().getApplicationContext(), s);
+
+            if (i % 4 == 0)
+                f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
+        }
     }
 
     public void onClick(View v)
@@ -121,12 +135,10 @@ public class GravityFragment extends Fragment implements SensorEventListener , V
         Z.setText(String.valueOf(event.values[2]));
         sampleRateText.setText(String.valueOf(sampleRate));
 
-
-        f.Write(getView().getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
-        f.Write(getView().getContext(), String.valueOf(event.values[0]).replace(".", ",") + ";");
-        f.Write(getView().getContext(), String.valueOf(event.values[1]).replace(".", ",") + ";");
-        f.Write(getView().getContext(), String.valueOf(event.values[2]).replace(".", ",") + ";");
-        f.Write(getView().getContext(), System.getProperty("line.separator"));
+        list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[0]).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[1]).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[2]).replace(".", ",") + ";");
 
     }
 

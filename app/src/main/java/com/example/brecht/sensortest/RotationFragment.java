@@ -136,13 +136,6 @@ public class RotationFragment extends Fragment implements SensorEventListener, V
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
         sampleRateText.setText(String.valueOf(sampleRate));
 
-        /*f.Write(getActivity().getApplicationContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
-        f.Write(getActivity().getApplicationContext(), String.valueOf(orientation[0]).replace(".", ",") + ";");
-        f.Write(getActivity().getApplicationContext(), String.valueOf(orientation[1]).replace(".", ",") + ";");
-        f.Write(getActivity().getApplicationContext(), String.valueOf(orientation[2]).replace(".", ",") + ";");
-        f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
-        */
-
         list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
         list.add(String.valueOf(orientation[0]).replace(".", ",") + ";");
         list.add(String.valueOf(orientation[1]).replace(".", ",") + ";");

@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class GyroscopeFragment extends Fragment implements SensorEventListener ,View.OnClickListener{
 
@@ -37,6 +40,7 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener ,
     private Button stopButton;
 
     private FileWriter f;
+    private List<String> list = new ArrayList<String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -86,6 +90,16 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener ,
 
         if (mSensorManager != null)
             mSensorManager.unregisterListener(this, mSensor);
+
+        int i = 0;
+        for(String s : list)
+        {
+            i++;
+            f.Write(getActivity().getApplicationContext(), s);
+
+            if (i % 4 == 0)
+                f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
+        }
     }
 
     public void onClick(View v)
@@ -120,11 +134,11 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener ,
         Z.setText(String.valueOf(event.values[2] / Math.PI * 180) + " degrees/s");
         sampleRateText.setText(String.valueOf(sampleRate));
 
-        f.Write(v.getContext(), String.valueOf(elapsedTime).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(event.values[0]/Math.PI*180).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(event.values[1]/Math.PI*180).replace(".", ",") + ";");
-        f.Write(v.getContext(), String.valueOf(event.values[2]/Math.PI*180).replace(".", ",") + ";");
-        f.Write(v.getContext(), System.getProperty("line.separator"));
+
+        list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[0]/Math.PI*180).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[1]/Math.PI*180).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[2]/Math.PI*180).replace(".", ",") + ";");
 
         oldElapsedTime = elapsedTime;
     }
