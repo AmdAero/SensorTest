@@ -29,8 +29,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private long startTime;
     private long elapsedTime;
     private final int REFRESH_RATE = 100;
-    private String hours,minutes,seconds,milliseconds, currentmin, lastmin="00";
-    private long secs,mins,hrs,msecs;
+    private String hours,minutes,seconds,currentmin,lastmin="00";
+    private long secs,mins,hrs;
     private boolean stopped = false, start, stop, reset;
     private TextToSpeech SayTime;
 
@@ -119,8 +119,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         super.onSaveInstanceState(savedInstanceState);
     }
 
-
-
     @Override
     public void onClick(View v)
     {
@@ -189,9 +187,10 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 		 * and format to ensure it has
 		 * a leading zero when required
 		 */
+
         secs = secs % 60;
-        seconds=String.valueOf(secs);
-        if(secs == 0){
+            seconds=String.valueOf(secs);
+            if(secs == 0){
             seconds = "00";
         }
         if(secs <10 && secs > 0){
@@ -219,22 +218,12 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             hours = "0"+hours;
         }
 
-    	/* Although we are not using milliseconds on the timer in this example
-    	 * I included the code in the event that you wanted to include it on your own
-    	 */
-        milliseconds = String.valueOf((long)time);
-        if(milliseconds.length()==2){
-            milliseconds = "0"+milliseconds;
-        }
-        if(milliseconds.length()<=1){
-            milliseconds = "00";
-        }
-        milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-2);
-
 		/* Setting the timer text to the elapsed time */
         ((TextView) view.findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
 
 
+        //Check if we need to speak the minutes
+        //@ the moment it's every minute
         currentmin=String.valueOf(mins);
         if(lastmin!=currentmin) {
             speakText();
@@ -260,9 +249,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
 
             Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-
-             SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
-
+            SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         }
     }
 }
