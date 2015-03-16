@@ -25,6 +25,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     ActionBar.Tab GravityTab;
     ActionBar.Tab MagnetometerTab;
     ActionBar.Tab AccelerometerTab;
+    ActionBar.Tab GraphTab;
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -66,6 +67,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         AccelerometerTab.setIcon(R.drawable.accelerometer);
         AccelerometerTab.setTabListener(this);
 
+        GraphTab = actionbar.newTab();
+        GraphTab.setText("GRAPH");
+        GraphTab.setTabListener(this);
+
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionbar.addTab(StopwatchTab);
         actionbar.addTab(LoginTab);
@@ -74,6 +79,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         actionbar.addTab(GravityTab);
         actionbar.addTab(MagnetometerTab);
         actionbar.addTab(AccelerometerTab);
+        actionbar.addTab(GraphTab);
 
 
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {

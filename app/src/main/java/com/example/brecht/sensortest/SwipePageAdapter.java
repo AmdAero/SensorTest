@@ -29,6 +29,8 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
                 return new MagnetometerFragment();
             case 6:
                 return new AcceleroFragment();
+            case 7:
+                return new GraphFragment();
             default:
                 break;
         }
@@ -38,6 +40,6 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 7;
+        return 8;
     }
 }
