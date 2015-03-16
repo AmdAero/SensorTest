@@ -34,6 +34,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private boolean stopped = false, start, stop, reset;
     private TextToSpeech SayTime;
 
+
     @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_stopwatch, container, false);
@@ -44,11 +45,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         resetButton = (Button) view.findViewById(R.id.btnReset);
         resetButton.setOnClickListener(this);
 
-        SayTime=new TextToSpeech(getActivity().getApplicationContext(),
+        SayTime = new TextToSpeech(getActivity().getApplicationContext(),
                 new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int status) {
-                        if(status != TextToSpeech.ERROR){
+                        if (status != TextToSpeech.ERROR) {
                             SayTime.setLanguage(Locale.US);
                         }
                     }
@@ -60,14 +61,23 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             secs=savedInstanceState.getLong("secs");
             mins=savedInstanceState.getLong("mins");
             hrs=savedInstanceState.getLong("hrs");
+
+            lastmin=savedInstanceState.getString("lastmin");
+            currentmin=savedInstanceState.getString("currentstring");
             stopped=savedInstanceState.getBoolean("stopped");
             startTime=savedInstanceState.getLong("starttime");
+            elapsedTime=savedInstanceState.getLong("elapsedTime");
             start=savedInstanceState.getBoolean("START");
+            stop=savedInstanceState.getBoolean("STOP");
 
             if(savedInstanceState.getBoolean("START"))
             {
                 mHandler.removeCallbacks(startTimer);
                 mHandler.postDelayed(startTimer, 0);
+            }
+
+            if(savedInstanceState.getBoolean("STOP")) {
+                mHandler.removeCallbacks(startTimer);
             }
 
             startButton.setVisibility(savedInstanceState.getInt("start"));
@@ -76,6 +86,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     }
 
         return view;
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        mHandler.removeCallbacksAndMessages(null);
     }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState)
@@ -88,9 +103,14 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         savedInstanceState.putLong("mins",mins);
         savedInstanceState.putLong("hrs",hrs);
 
+        savedInstanceState.putString("lastmin", lastmin);
+        savedInstanceState.putString("currentmin", currentmin);
+
         savedInstanceState.putBoolean("stopped",stopped);
         savedInstanceState.putBoolean("START",start);
+        savedInstanceState.putBoolean("STOP",stop);
         savedInstanceState.putLong("starttime",startTime);
+        savedInstanceState.putLong("elapsedTime",elapsedTime);
 
         savedInstanceState.putInt("start",startButton.getVisibility());
         savedInstanceState.putInt("stop",stopButton.getVisibility());
@@ -121,6 +141,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     public void startClick (){
         showStopButton();
         start=true;
+        stop=false;
         if(stopped){
             startTime = System.currentTimeMillis() - elapsedTime;
         }
@@ -134,6 +155,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     public void stopClick (){
         hideStopButton();
         start=false;
+        stop=true;
         mHandler.removeCallbacks(startTimer);
         stopped = true;
     }
@@ -141,6 +163,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     public void resetClick (){
         stopped = false;
         start=false;
+        stop=false;
         ((TextView)getView().findViewById(R.id.timer)).setText("00:00:00");
     }
 
@@ -237,7 +260,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
 
             Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-            SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+
+             SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+
         }
     }
 }
