@@ -39,7 +39,7 @@ public class RegisterFragment extends Fragment {
 
     Button btnRegister;
 
-    EditText Email;
+    EditText Name;
     EditText Password;
     JSONObject jsonResponse;
     @Override
@@ -54,7 +54,7 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        Email = (EditText) view.findViewById(R.id.etEmail);
+        Name = (EditText) view.findViewById(R.id.etName);
         Password = (EditText) view.findViewById(R.id.etPassword);
 
         return view;
@@ -85,7 +85,7 @@ public class RegisterFragment extends Fragment {
                 // Set up HTTP post
                 List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
                 jsonArray.add(new BasicNameValuePair("tag", "register"));
-                jsonArray.add(new BasicNameValuePair("email", String.valueOf(Email.getText())));
+                jsonArray.add(new BasicNameValuePair("name", String.valueOf(Name.getText())));
                 jsonArray.add(new BasicNameValuePair("password", String.valueOf(Password.getText())));
 
                 HttpClient httpClient = new DefaultHttpClient();

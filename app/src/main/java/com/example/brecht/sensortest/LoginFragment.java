@@ -39,7 +39,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     Button btnLogin;
     Button btnRegister;
-    EditText Email;
+    EditText Name;
     EditText Password;
 
     JSONObject jsonResponse;
@@ -49,7 +49,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        Email = (EditText) view.findViewById(R.id.etEmail);
+        Name = (EditText) view.findViewById(R.id.etName);
         Password = (EditText) view.findViewById(R.id.etPassword);
         btnLogin = (Button) view.findViewById(R.id.btnLogin);
         btnRegister = (Button) view.findViewById(R.id.btnRegister);
@@ -130,7 +130,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     // Set up HTTP post
                     List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
                     jsonArray.add(new BasicNameValuePair("tag", "login"));
-                    jsonArray.add(new BasicNameValuePair("email", String.valueOf(Email.getText())));
+                    jsonArray.add(new BasicNameValuePair("name", String.valueOf(Name.getText())));
                     jsonArray.add(new BasicNameValuePair("password", String.valueOf(Password.getText())));
 
                     HttpClient httpClient = new DefaultHttpClient();
@@ -178,7 +178,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     if (jsonResponse.optString("success").toString().equals("1")) {
                         WelcomeFragment wut = new WelcomeFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("username", String.valueOf(Email.getText()));
+                        bundle.putString("username", String.valueOf(Name.getText()));
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                         // Replace whatever is in the fragment_container view with this fragment,
