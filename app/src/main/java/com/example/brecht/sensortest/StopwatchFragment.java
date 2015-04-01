@@ -83,6 +83,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             startButton.setVisibility(savedInstanceState.getInt("start"));
             stopButton.setVisibility(savedInstanceState.getInt("stop"));
             resetButton.setVisibility(savedInstanceState.getInt("reset"));
+
+            ((TextView) view.findViewById(R.id.Height)).setVisibility(savedInstanceState.getInt("height"));
+            ((TextView) view.findViewById(R.id.Height)).setText(savedInstanceState.getCharSequence("heightString"));
     }
 
         return view;
@@ -92,6 +95,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         super.onStop();
         mHandler.removeCallbacksAndMessages(null);
     }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState)
     {
@@ -116,6 +120,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         savedInstanceState.putInt("stop",stopButton.getVisibility());
         savedInstanceState.putInt("reset",resetButton.getVisibility());
 
+        savedInstanceState.putInt("height",((TextView) view.findViewById(R.id.Height)).getVisibility());
+        savedInstanceState.putCharSequence("heightString", ((TextView) view.findViewById(R.id.Height)).getText());
+
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -138,6 +145,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     public void startClick (){
         showStopButton();
+        ((TextView) view.findViewById(R.id.Height)).setVisibility(View.VISIBLE);
         start=true;
         stop=false;
         if(stopped){
@@ -163,6 +171,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         start=false;
         stop=false;
         ((TextView)getView().findViewById(R.id.timer)).setText("00:00:00");
+        ((TextView) view.findViewById(R.id.Height)).setVisibility(View.GONE);
     }
 
     private void showStopButton(){
@@ -220,6 +229,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
 		/* Setting the timer text to the elapsed time */
         ((TextView) view.findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
+        ((TextView) view.findViewById(R.id.Height)).setText("Current Height:"+ System.getProperty("line.separator")+"meter");
 
 
         //Check if we need to speak the minutes
