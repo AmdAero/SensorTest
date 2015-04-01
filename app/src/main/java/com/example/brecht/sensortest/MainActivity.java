@@ -21,9 +21,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     ActionBar.Tab StopwatchTab;
     ActionBar.Tab RotationTab;
     ActionBar.Tab LoginTab;
-    ActionBar.Tab GyroscopeTab;
-    ActionBar.Tab GravityTab;
-    ActionBar.Tab MagnetometerTab;
     ActionBar.Tab AccelerometerTab;
     ActionBar.Tab GraphTab;
 
@@ -51,18 +48,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         RotationTab.setIcon(R.drawable.rotation);
         RotationTab.setTabListener(this);
 
-        GyroscopeTab=actionbar.newTab();
-        GyroscopeTab.setIcon(R.drawable.gyroscope);
-        GyroscopeTab.setTabListener(this);
-
-        GravityTab=actionbar.newTab();
-        GravityTab.setIcon(R.drawable.gravity);
-        GravityTab.setTabListener(this);
-
-        MagnetometerTab=actionbar.newTab();
-        MagnetometerTab.setIcon(R.drawable.magneet);
-        MagnetometerTab.setTabListener(this);
-
         AccelerometerTab=actionbar.newTab();
         AccelerometerTab.setIcon(R.drawable.accelerometer);
         AccelerometerTab.setTabListener(this);
@@ -75,9 +60,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         actionbar.addTab(StopwatchTab);
         actionbar.addTab(LoginTab);
         actionbar.addTab(RotationTab);
-        actionbar.addTab(GyroscopeTab);
-        actionbar.addTab(GravityTab);
-        actionbar.addTab(MagnetometerTab);
         actionbar.addTab(AccelerometerTab);
         actionbar.addTab(GraphTab);
 
@@ -115,7 +97,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
     private void makeActionOverflowMenuShown() {
-        //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        //Devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        //This code adds the overflow menu manually
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
@@ -127,20 +110,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             Log.d(TAG, e.getLocalizedMessage());
         }
     }
+
+    /*
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            GyroscopeFragment.OnKeyDown(keyCode);
-            MagnetometerFragment.OnKeyDown(keyCode);
-            GravityFragment.OnKeyDown(keyCode);
             AcceleroFragment.OnKeyDown(keyCode);
 
             //and so on...
         }
         return super.onKeyDown(keyCode, event);
     }
-
+*/
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {

@@ -22,14 +22,8 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
             case 2:
                 return new RotationFragment();
             case 3:
-                return new GyroscopeFragment();
-            case 4:
-                return new GravityFragment();
-            case 5:
-                return new MagnetometerFragment();
-            case 6:
                 return new AcceleroFragment();
-            case 7:
+            case 4:
                 return new GraphFragment();
             default:
                 break;
@@ -40,6 +34,6 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 8;
+        return 5;
     }
 }
