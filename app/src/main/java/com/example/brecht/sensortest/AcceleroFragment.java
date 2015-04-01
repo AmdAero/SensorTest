@@ -55,9 +55,6 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
         X = (TextView) v.findViewById(R.id.tvX);
         Y = (TextView) v.findViewById(R.id.tvY);
         Z = (TextView) v.findViewById(R.id.tvZ);
-        X2 = (TextView) v.findViewById(R.id.x2);
-        Y2 = (TextView) v.findViewById(R.id.y2);
-        Z2 = (TextView) v.findViewById(R.id.z2);
 
         sampleRateText = (TextView) v.findViewById(R.id.tvSampleRate);
 
@@ -79,8 +76,8 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
         f.Write(v.getContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
-            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null){
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
             mSensorManager.registerListener(this, mSensor,  mSensorManager.SENSOR_DELAY_GAME);
         }
         else {
@@ -95,9 +92,6 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
         X.setText("?");
         Y.setText("?");
         Z.setText("?");
-        X2.setText("?");
-        Y2.setText("?");
-        Z2.setText("?");
 
         sampleRateText.setText("?");
 
@@ -140,33 +134,18 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
         // with t, the low-pass filter's time-constant
         // and dT, the event delivery rate
 
-        final float alpha = 0.8f;
-
-        gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-        gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-        gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
-
-        linear_acceleration[0] = event.values[0] - gravity[0];
-        linear_acceleration[1] = event.values[1] - gravity[1];
-        linear_acceleration[2] = event.values[2] - gravity[2];
-
-        X.setText(String.valueOf(gravity[0]));
-        Y.setText(String.valueOf(gravity[1]));
-        Z.setText(String.valueOf(gravity[2]));
-
-        X2.setText(String.valueOf(linear_acceleration[0]));
-        Y2.setText(String.valueOf(linear_acceleration[1]));
-        Z2.setText(String.valueOf(linear_acceleration[2]));
-
-        sampleRateText.setText(String.valueOf(sampleRate));
+        X.setText(String.valueOf(event.values[0]));
+        Y.setText(String.valueOf(event.values[1]));
+        Z.setText(String.valueOf(event.values[2]));
 
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
+        sampleRateText.setText(String.valueOf(sampleRate));
 
         list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
-        list.add(String.valueOf(gravity[0]).replace(".", ",") + ";");
-        list.add(String.valueOf(gravity[1]).replace(".", ",") + ";");
-        list.add(String.valueOf(gravity[2]).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[0]).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[1]).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[2]).replace(".", ",") + ";");
         oldElapsedTime = elapsedTime;
 
     }
