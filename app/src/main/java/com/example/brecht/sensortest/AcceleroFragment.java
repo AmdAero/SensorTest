@@ -24,8 +24,10 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
-    private float gravity[] = new float[3];
-    private float linear_acceleration[] = new float[3];
+
+    private AcceleroFilter xFilter = new AcceleroFilter();
+    private AcceleroFilter yFilter = new AcceleroFilter();
+    private AcceleroFilter zFilter = new AcceleroFilter();
 
     private double startTime;
     private double elapsedTime;
@@ -35,9 +37,7 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
     private TextView X;
     private TextView Y;
     private TextView Z;
-    private TextView X2;
-    private TextView Y2;
-    private TextView Z2;
+
     private TextView sampleRateText;
 
     private Button startButton;
@@ -130,13 +130,13 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
 
     public void onSensorChanged(SensorEvent event)
     {
-        // alpha is calculated as t / (t + dT)
-        // with t, the low-pass filter's time-constant
-        // and dT, the event delivery rate
+        double xFiltered = xFilter.Filter(event.values[0]);
+        double yFiltered = yFilter.Filter(event.values[1]);
+        double zFiltered = zFilter.Filter(event.values[2]);
 
-        X.setText(String.valueOf(event.values[0]));
-        Y.setText(String.valueOf(event.values[1]));
-        Z.setText(String.valueOf(event.values[2]));
+        X.setText(String.valueOf(xFiltered));
+        Y.setText(String.valueOf(yFiltered));
+        Z.setText(String.valueOf(zFiltered));
 
         elapsedTime = (System.currentTimeMillis() /1000.0) - startTime ;
         sampleRate = 1 / (elapsedTime - oldElapsedTime);
@@ -148,12 +148,6 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
         list.add(String.valueOf(event.values[2]).replace(".", ",") + ";");
         oldElapsedTime = elapsedTime;
 
-    }
-
-    public static void OnKeyDown(int keyCode)
-    {
-        if(keyCode== KeyEvent.KEYCODE_BACK){
-            android.os.Process.killProcess(android.os.Process.myPid());}
     }
 
 
