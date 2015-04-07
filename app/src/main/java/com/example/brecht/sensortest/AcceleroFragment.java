@@ -143,9 +143,9 @@ public class AcceleroFragment extends Fragment implements SensorEventListener,Vi
         sampleRateText.setText(String.valueOf(sampleRate));
 
         list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
-        list.add(String.valueOf(event.values[0]).replace(".", ",") + ";");
-        list.add(String.valueOf(event.values[1]).replace(".", ",") + ";");
-        list.add(String.valueOf(event.values[2]).replace(".", ",") + ";");
+        list.add(String.valueOf(xFiltered).replace(".", ",") + ";");
+        list.add(String.valueOf(yFiltered).replace(".", ",") + ";");
+        list.add(String.valueOf(zFiltered).replace(".", ",") + ";");
         oldElapsedTime = elapsedTime;
 
     }
