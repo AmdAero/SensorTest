@@ -3,13 +3,16 @@
     <string name="action_settings">Settings</string>
 
     <string name="accelero_head">Accelerometer</string>
+    <string name="accelorient_head">Accelero + Orient</string>
     <string name="gravity_raw_head">Gravity (RAW)</string>
     <string name="rotation_head">Rotation</string>
 
 
-    <string name="sensor_x">x</string>
-    <string name="sensor_y">y</string>
-    <string name="sensor_z">z</string>
+    <string name="sensor_x">X</string>
+    <string name="sensor_y">Y</string>
+    <string name="sensor_z">Z</string>
+    <string name="sensor_ax">aX</string>
+    <string name="sensor_ay">aY</string>
     <string name="sensor_samplerate">Sample rate</string>
 
     <string name="user_tag">Name</string>
