@@ -21,6 +21,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     private View view;
 
+    private Boolean AddedTTS = false;
+
     private Button startButton;
     private Button stopButton;
     private Button resetButton;
@@ -29,8 +31,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private long startTime;
     private long elapsedTime;
     private final int REFRESH_RATE = 100;
-    private String hours,minutes,seconds,currentmin,lastmin="00";
-    private long secs,mins,hrs;
+    private String hours,minutes,seconds,currentmin="00";
+    private long secs,mins,hrs, lastmin;
     private boolean stopped = false, start, stop, reset;
     private TextToSpeech SayTime;
 
@@ -45,16 +47,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         resetButton = (Button) view.findViewById(R.id.btnReset);
         resetButton.setOnClickListener(this);
 
-        SayTime = new TextToSpeech(getActivity().getApplicationContext(),
-                new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status != TextToSpeech.ERROR) {
-                            SayTime.setLanguage(Locale.US);
-                        }
-                    }
-                });
-
         if (savedInstanceState != null)   {
             ((TextView) view.findViewById(R.id.timer)).setText(savedInstanceState.getCharSequence("hours") + ":" + savedInstanceState.getCharSequence("minutes") + ":" + savedInstanceState.getCharSequence("seconds"));
 
@@ -62,7 +54,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             mins=savedInstanceState.getLong("mins");
             hrs=savedInstanceState.getLong("hrs");
 
-            lastmin=savedInstanceState.getString("lastmin");
+            lastmin=savedInstanceState.getLong("lastmin");
             currentmin=savedInstanceState.getString("currentstring");
             stopped=savedInstanceState.getBoolean("stopped");
             startTime=savedInstanceState.getLong("starttime");
@@ -86,15 +78,34 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
             ((TextView) view.findViewById(R.id.Height)).setVisibility(savedInstanceState.getInt("height"));
             ((TextView) view.findViewById(R.id.Height)).setText(savedInstanceState.getCharSequence("heightString"));
-    }
+
+            AddedTTS = savedInstanceState.getBoolean("AddedTTS");
+        }
+
+        if (AddedTTS != true) {
+            SayTime = new TextToSpeech(getActivity().getApplicationContext(),
+                    new TextToSpeech.OnInitListener() {
+                        @Override
+                        public void onInit(int status) {
+                            if (status != TextToSpeech.ERROR) {
+                                SayTime.setLanguage(Locale.US);
+                                AddedTTS = true;
+                            }
+                        }
+                    });
+        }
 
         return view;
     }
+
+    //This broke our stopwatch why was this here?
+    /*
     @Override
     public void onStop(){
         super.onStop();
         mHandler.removeCallbacksAndMessages(null);
     }
+    */
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState)
@@ -107,7 +118,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         savedInstanceState.putLong("mins",mins);
         savedInstanceState.putLong("hrs",hrs);
 
-        savedInstanceState.putString("lastmin", lastmin);
+        savedInstanceState.putLong("lastmin", lastmin);
         savedInstanceState.putString("currentmin", currentmin);
 
         savedInstanceState.putBoolean("stopped",stopped);
@@ -123,6 +134,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         savedInstanceState.putInt("height",((TextView) view.findViewById(R.id.Height)).getVisibility());
         savedInstanceState.putCharSequence("heightString", ((TextView) view.findViewById(R.id.Height)).getText());
 
+        savedInstanceState.putBoolean("AddedTTS", AddedTTS);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -234,11 +246,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
         //Check if we need to speak the minutes
         //@ the moment it's every minute
-        currentmin=String.valueOf(mins);
-        if(lastmin!=currentmin) {
+        if(lastmin!=mins) {
             speakText();
+            lastmin=mins;
         }
-        lastmin=currentmin;
+
     }
 
 
@@ -258,7 +270,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             else
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
 
-            Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
             SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         }
     }
