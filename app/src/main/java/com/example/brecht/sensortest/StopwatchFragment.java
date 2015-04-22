@@ -29,11 +29,10 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private long startTime;
     private long elapsedTime;
     private final int REFRESH_RATE = 100;
-    private String hours,minutes,seconds,currentmin,lastmin="00";
-    private long secs,mins,hrs;
-    private boolean stopped = false, start, stop, reset;
+    private String hours,minutes,seconds="00";
+    private long secs,mins,hrs, lastmin;
+    private boolean stopped, start,stop,reset = false;
     private TextToSpeech SayTime;
-
 
     @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,85 +44,18 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         resetButton = (Button) view.findViewById(R.id.btnReset);
         resetButton.setOnClickListener(this);
 
-        SayTime = new TextToSpeech(getActivity().getApplicationContext(),
-                new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status != TextToSpeech.ERROR) {
-                            SayTime.setLanguage(Locale.US);
+            SayTime = new TextToSpeech(getActivity().getApplicationContext(),
+                    new TextToSpeech.OnInitListener() {
+                        @Override
+                        public void onInit(int status) {
+                            if (status != TextToSpeech.ERROR) {
+                                SayTime.setLanguage(Locale.US);
+                            }
                         }
-                    }
-                });
+                    });
 
-        if (savedInstanceState != null)   {
-            ((TextView) view.findViewById(R.id.timer)).setText(savedInstanceState.getCharSequence("hours") + ":" + savedInstanceState.getCharSequence("minutes") + ":" + savedInstanceState.getCharSequence("seconds"));
-
-            secs=savedInstanceState.getLong("secs");
-            mins=savedInstanceState.getLong("mins");
-            hrs=savedInstanceState.getLong("hrs");
-
-            lastmin=savedInstanceState.getString("lastmin");
-            currentmin=savedInstanceState.getString("currentstring");
-            stopped=savedInstanceState.getBoolean("stopped");
-            startTime=savedInstanceState.getLong("starttime");
-            elapsedTime=savedInstanceState.getLong("elapsedTime");
-            start=savedInstanceState.getBoolean("START");
-            stop=savedInstanceState.getBoolean("STOP");
-
-            if(savedInstanceState.getBoolean("START"))
-            {
-                mHandler.removeCallbacks(startTimer);
-                mHandler.postDelayed(startTimer, 0);
-            }
-
-            if(savedInstanceState.getBoolean("STOP")) {
-                mHandler.removeCallbacks(startTimer);
-            }
-
-            startButton.setVisibility(savedInstanceState.getInt("start"));
-            stopButton.setVisibility(savedInstanceState.getInt("stop"));
-            resetButton.setVisibility(savedInstanceState.getInt("reset"));
-
-            ((TextView) view.findViewById(R.id.Height)).setVisibility(savedInstanceState.getInt("height"));
-            ((TextView) view.findViewById(R.id.Height)).setText(savedInstanceState.getCharSequence("heightString"));
-    }
 
         return view;
-    }
-    @Override
-    public void onStop(){
-        super.onStop();
-        mHandler.removeCallbacksAndMessages(null);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState)
-    {
-        savedInstanceState.putCharSequence("minutes",minutes);
-        savedInstanceState.putCharSequence("seconds",seconds);
-        savedInstanceState.putCharSequence("hours",hours);
-
-        savedInstanceState.putLong("secs",secs);
-        savedInstanceState.putLong("mins",mins);
-        savedInstanceState.putLong("hrs",hrs);
-
-        savedInstanceState.putString("lastmin", lastmin);
-        savedInstanceState.putString("currentmin", currentmin);
-
-        savedInstanceState.putBoolean("stopped",stopped);
-        savedInstanceState.putBoolean("START",start);
-        savedInstanceState.putBoolean("STOP",stop);
-        savedInstanceState.putLong("starttime",startTime);
-        savedInstanceState.putLong("elapsedTime",elapsedTime);
-
-        savedInstanceState.putInt("start",startButton.getVisibility());
-        savedInstanceState.putInt("stop",stopButton.getVisibility());
-        savedInstanceState.putInt("reset",resetButton.getVisibility());
-
-        savedInstanceState.putInt("height",((TextView) view.findViewById(R.id.Height)).getVisibility());
-        savedInstanceState.putCharSequence("heightString", ((TextView) view.findViewById(R.id.Height)).getText());
-
-        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -145,7 +77,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     public void startClick (){
         showStopButton();
-        ((TextView) view.findViewById(R.id.Height)).setVisibility(View.VISIBLE);
+        (view.findViewById(R.id.Height)).setVisibility(View.VISIBLE);
         start=true;
         stop=false;
         if(stopped){
@@ -185,7 +117,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         resetButton.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.GONE);
     }
-
 
     private void updateTimer (float time){
         secs = (long)(time/1000);
@@ -234,11 +165,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
         //Check if we need to speak the minutes
         //@ the moment it's every minute
-        currentmin=String.valueOf(mins);
-        if(lastmin!=currentmin) {
+        if(lastmin!=mins) {
             speakText();
+            lastmin=mins;
         }
-        lastmin=currentmin;
+
     }
 
 
@@ -258,7 +189,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             else
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
 
-            Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
             SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         }
     }

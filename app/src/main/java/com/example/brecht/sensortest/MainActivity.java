@@ -22,6 +22,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     ActionBar.Tab RotationTab;
     ActionBar.Tab LoginTab;
     ActionBar.Tab AccelerometerTab;
+    ActionBar.Tab AcceleroOrientTab;
     ActionBar.Tab GraphTab;
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -52,6 +53,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         AccelerometerTab.setIcon(R.drawable.accelerometer);
         AccelerometerTab.setTabListener(this);
 
+        AcceleroOrientTab=actionbar.newTab();
+        AcceleroOrientTab.setIcon(R.drawable.accelerometer);
+        AcceleroOrientTab.setTabListener(this);
+
         GraphTab = actionbar.newTab();
         GraphTab.setText("GRAPH");
         GraphTab.setTabListener(this);
@@ -61,8 +66,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         actionbar.addTab(LoginTab);
         actionbar.addTab(RotationTab);
         actionbar.addTab(AccelerometerTab);
+        actionbar.addTab(AcceleroOrientTab);
         actionbar.addTab(GraphTab);
-
 
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
