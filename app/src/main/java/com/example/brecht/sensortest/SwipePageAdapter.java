@@ -20,7 +20,7 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
             case 1:
                 return new RootLoginFragment();
             case 2:
-                return new RotationFragment();
+                return new HeightFragment();
             case 3:
                 return new AcceleroFragment();
             case 4:
