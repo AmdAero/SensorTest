@@ -5,7 +5,7 @@
     <string name="accelero_head">Accelerometer</string>
     <string name="accelorient_head">Accelero + Orient</string>
     <string name="gravity_raw_head">Gravity (RAW)</string>
-    <string name="rotation_head">Rotation</string>
+    <string name="height_head">Velocity + Height</string>
 
 
     <string name="sensor_x">X</string>
@@ -13,6 +13,8 @@
     <string name="sensor_z">Z</string>
     <string name="sensor_ax">aX</string>
     <string name="sensor_ay">aY</string>
+    <string name="sensor_velocity">Velocity</string>
+    <string name="sensor_height">Height</string>
     <string name="sensor_samplerate">Sample rate</string>
 
     <string name="user_tag">Name</string>
