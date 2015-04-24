@@ -45,8 +45,8 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
     double[] arrayDist = new double[50];
     int pointer = 0;
 
-    private TextView aX;
-    private TextView aY;
+    private TextView velocity;
+    private TextView height;
 
     private TextView sampleRateText;
 
@@ -60,23 +60,23 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v=inflater.inflate(R.layout.fragment_accelorient,container,false);
+        v=inflater.inflate(R.layout.fragment_height,container,false);
 
-        aX = (TextView) v.findViewById(R.id.tvaX);
-        aY = (TextView) v.findViewById(R.id.tvaY);
+        velocity = (TextView) v.findViewById(R.id.tvVelocity);
+        height = (TextView) v.findViewById(R.id.tvHeight);
 
         sampleRateText = (TextView) v.findViewById(R.id.tvSampleRate);
 
-        startButton = (Button) v.findViewById(R.id.btnStartA);
+        startButton = (Button) v.findViewById(R.id.btnStart);
         startButton.setOnClickListener(this);
-        stopButton = (Button) v.findViewById(R.id.btnStopA);
+        stopButton = (Button) v.findViewById(R.id.btnStop);
         stopButton.setOnClickListener(this);
 
         return v;
     }
     private void Start()
     {
-        f = new FileWriter("AccelerometerOrientation.txt", getActivity().getApplicationContext());
+        f = new FileWriter("Height.txt", getActivity().getApplicationContext());
 
         f.Write(v.getContext(), "Time;");
         f.Write(v.getContext(), "Height;");
@@ -96,8 +96,8 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
 
     private void Stop()
     {
-        aX.setText("?");
-        aY.setText("?");
+        velocity.setText("?");
+        height.setText("?");
         sampleRateText.setText("?");
 
         if (mSensorManager != null) {
@@ -118,16 +118,14 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
 
     public void onClick(View v)
     {
-
         switch (v.getId()) {
-            case R.id.btnStartA:
+            case R.id.btnStart:
                 Start();
                 break;
-            case R.id.btnStopA:
+            case R.id.btnStop:
                 Stop();
                 break;
         }
-
     }
 
     @Override
@@ -157,8 +155,8 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             double ax = xFiltered * Math.cos(roll) + zFiltered * Math.cos(90 - roll);
             //double ay = yFiltered * Math.cos(90 - pitch) + xFiltered * Math.cos(90 - roll) + zFiltered * Math.cos(pitch) * Math.cos(roll);
 
-            aX.setText(String.valueOf(ax));
-            //aY.setText(String.valueOf(ay));
+            //velocity.setText(String.valueOf(ax));
+            //height.setText(String.valueOf(ay));
 
             elapsedTime = (System.currentTimeMillis() / 1000.0) - startTime;
             sampleRate = 1 / (elapsedTime - oldElapsedTime);
