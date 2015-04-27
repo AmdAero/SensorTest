@@ -73,6 +73,12 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
         f = new FileWriter("AccelerometerOrientation.txt", getActivity().getApplicationContext());
 
         f.Write(v.getContext(), "Time;");
+        f.Write(v.getContext(), "xFiltered;");
+        f.Write(v.getContext(), "yFiltered;");
+        f.Write(v.getContext(), "zFiltered;");
+        f.Write(v.getContext(), "Azimuth;");
+        f.Write(v.getContext(), "Pitch;");
+        f.Write(v.getContext(), "Roll;");
         f.Write(v.getContext(), "aX;");
         f.Write(v.getContext(), "aY;");
         f.Write(v.getContext(), System.getProperty("line.separator"));
@@ -106,7 +112,7 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
             i++;
             f.Write(getActivity().getApplicationContext(), s);
 
-            if (i % 3 == 0)
+            if (i % 9 == 0)
                 f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
         }
     }
@@ -162,6 +168,12 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
             oldElapsedTime = elapsedTime;
 
             list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
+            list.add(String.valueOf(xFiltered).replace(".", ",") + ";");
+            list.add(String.valueOf(yFiltered).replace(".", ",") + ";");
+            list.add(String.valueOf(zFiltered).replace(".", ",") + ";");
+            list.add(String.valueOf(azimuth).replace(".", ",") + ";");
+            list.add(String.valueOf(pitch).replace(".", ",") + ";");
+            list.add(String.valueOf(roll).replace(".", ",") + ";");
             list.add(String.valueOf(ax).replace(".", ",") + ";");
             list.add(String.valueOf(ay).replace(".", ",") + ";");
         }
