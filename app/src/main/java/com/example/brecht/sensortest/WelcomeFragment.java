@@ -1,16 +1,19 @@
 package com.example.brecht.sensortest;
 
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class WelcomeFragment extends Fragment{
 
@@ -20,6 +23,8 @@ public class WelcomeFragment extends Fragment{
     String Username;
     TextView Welkom;
     TextView UsernameTextView;
+    JSONObject jsonObject;
+    JSONArray test;
 
     private Handler mHandler = new Handler();
     int i = 1;
@@ -29,7 +34,21 @@ public class WelcomeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_welkom, container, false);
 
-        Username = this.getArguments().getString("username");
+        String test = this.getArguments().getString("jsonobject");
+
+        try {
+            jsonObject = new JSONObject(test);
+
+
+            Username = jsonObject.getJSONObject("user").getString("name");
+
+
+
+
+        } catch (JSONException e) {
+            //some exception handler code.
+        }
+
         Welkom = (TextView) view.findViewById(R.id.tvWelcome);
         UsernameTextView = (TextView) view.findViewById(R.id.tvUsername);
 

@@ -176,9 +176,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
                     //Check if fragment_login succeeded
                     if (jsonResponse.optString("success").toString().equals("1")) {
+
+
+
                         WelcomeFragment wut = new WelcomeFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("username", String.valueOf(etName.getText()));
+                        String test = jsonResponse.toString();
+                        bundle.putString("jsonobject", test);
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                         // Replace whatever is in the fragment_container view with this fragment,
