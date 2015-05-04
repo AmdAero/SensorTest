@@ -39,8 +39,19 @@
                 android:id="@+id/btnStop"/>
         </RelativeLayout>
 
+        <TextView android:text="@string/sensor_ay" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvaY"
+            android:textColor="#ffff0000"
+            />
+
         <TextView android:text="@string/sensor_velocity" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" android:layout_marginTop="40dp" />
 
         <TextView
             android:layout_width="fill_parent"

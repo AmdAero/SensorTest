@@ -76,6 +76,9 @@ public class AcceleroFragment extends Fragment implements SensorEventListener, V
         f.Write(v.getContext(), "X;");
         f.Write(v.getContext(), "Y;");
         f.Write(v.getContext(), "Z;");
+        f.Write(v.getContext(), "xFiltered;");
+        f.Write(v.getContext(), "yFiltered;");
+        f.Write(v.getContext(), "zFiltered;");
         f.Write(v.getContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -105,7 +108,7 @@ public class AcceleroFragment extends Fragment implements SensorEventListener, V
             i++;
             f.Write(getActivity().getApplicationContext(), s);
 
-            if (i % 4 == 0)
+            if (i % 7 == 0)
                 f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
         }
     }
@@ -134,6 +137,10 @@ public class AcceleroFragment extends Fragment implements SensorEventListener, V
         yFiltered = yFilter.Filter(event.values[1]);
         zFiltered = zFilter.Filter(event.values[2]);
 
+        //xFiltered = event.values[0];
+        //yFiltered = event.values[1];
+        //zFiltered = event.values[2];
+
         X.setText(String.valueOf(xFiltered));
         Y.setText(String.valueOf(yFiltered));
         Z.setText(String.valueOf(zFiltered));
@@ -144,6 +151,9 @@ public class AcceleroFragment extends Fragment implements SensorEventListener, V
         oldElapsedTime = elapsedTime;
 
         list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[0]).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[1]).replace(".", ",") + ";");
+        list.add(String.valueOf(event.values[2]).replace(".", ",") + ";");
         list.add(String.valueOf(xFiltered).replace(".", ",") + ";");
         list.add(String.valueOf(yFiltered).replace(".", ",") + ";");
         list.add(String.valueOf(zFiltered).replace(".", ",") + ";");

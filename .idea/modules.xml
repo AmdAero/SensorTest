@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-<<<<<<< Updated upstream
-      <module fileurl="file://$PROJECT_DIR$/MyApplication.iml" filepath="$PROJECT_DIR$/MyApplication.iml" />
-=======
->>>>>>> Stashed changes
-      <module fileurl="file://$PROJECT_DIR$/SensorTest.git.iml" filepath="$PROJECT_DIR$/SensorTest.git.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DevTool.iml" filepath="$PROJECT_DIR$/DevTool.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
-

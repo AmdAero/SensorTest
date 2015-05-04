@@ -67,7 +67,7 @@ public class AcceleroFilter {
     {
         //Section 1:
         //Block 1
-        S1B1_Output = (Input * S1_Gain0) + (S1B1_Unit1 * S1_Gain2) + (S1B1_Unit2);
+        S1B1_Output = (Input * S1_Gain0) + (S1B1_Unit1 * S1_Gain2) + (S1B1_Unit2 * S1_Gain3);
         S1B1_Unit1 = S1B1_Unit2;
         S1B1_Unit2 = S1B1_Output;
         //Block 2
@@ -109,7 +109,7 @@ public class AcceleroFilter {
     {
         //Section 3:
         //Block 1
-        S3B1_Output = (S2_Output * S3_Gain0)  + (S3B1_Unit2 * S3_Gain3);
+        S3B1_Output = (S2_Output * S3_Gain0) + (S3B1_Unit2 * S3_Gain3);
         S3B1_Unit1 = S3B1_Unit2;
         S3B1_Unit2 = S3B1_Output;
         //Block 2

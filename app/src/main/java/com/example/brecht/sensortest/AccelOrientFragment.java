@@ -27,6 +27,10 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
     private AcceleroFilter yFilter = new AcceleroFilter();
     private AcceleroFilter zFilter = new AcceleroFilter();
 
+    private float x;
+    private float y;
+    private float z;
+
     private double xFiltered;
     private double yFiltered;
     private double zFiltered;
@@ -73,6 +77,9 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
         f = new FileWriter("AccelerometerOrientation.txt", getActivity().getApplicationContext());
 
         f.Write(v.getContext(), "Time;");
+        f.Write(v.getContext(), "x;");
+        f.Write(v.getContext(), "y;");
+        f.Write(v.getContext(), "z;");
         f.Write(v.getContext(), "xFiltered;");
         f.Write(v.getContext(), "yFiltered;");
         f.Write(v.getContext(), "zFiltered;");
@@ -112,7 +119,7 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
             i++;
             f.Write(getActivity().getApplicationContext(), s);
 
-            if (i % 9 == 0)
+            if (i % 12 == 0)
                 f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
         }
     }
@@ -140,12 +147,13 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
     {
         mSensor = event.sensor;
 
-
-
         if (mSensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-            xFiltered = xFilter.Filter(event.values[0]);
-            yFiltered = yFilter.Filter(event.values[1]);
-            zFiltered = zFilter.Filter(event.values[2]);
+            x = event.values[0];
+            y = event.values[1];
+            z = event.values[2];
+            xFiltered = xFilter.Filter(x);
+            yFiltered = yFilter.Filter(y);
+            zFiltered = zFilter.Filter(z);
         }
 
         else if(mSensor.getType() == Sensor.TYPE_ROTATION_VECTOR)
@@ -156,8 +164,8 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
             double pitch = Math.toDegrees(orientationValues[1]);
             double roll = Math.toDegrees(orientationValues[2]);
 
-            double ax = xFiltered * Math.cos(roll) + zFiltered * Math.cos(90 - roll);
-            double ay = yFiltered * Math.cos(90 - pitch) + xFiltered * Math.cos(90 - roll) + zFiltered * Math.cos(pitch) * Math.cos(roll);
+            double ax = xFiltered * Math.cos(Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll));
+            double ay = yFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(pitch)) + xFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(pitch)) * Math.cos(Math.toRadians(roll));
 
             aX.setText(String.valueOf(ax));
             aY.setText(String.valueOf(ay));
@@ -168,6 +176,9 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
             oldElapsedTime = elapsedTime;
 
             list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
+            list.add(String.valueOf(x).replace(".", ",") + ";");
+            list.add(String.valueOf(y).replace(".", ",") + ";");
+            list.add(String.valueOf(z).replace(".", ",") + ";");
             list.add(String.valueOf(xFiltered).replace(".", ",") + ";");
             list.add(String.valueOf(yFiltered).replace(".", ",") + ";");
             list.add(String.valueOf(zFiltered).replace(".", ",") + ";");
