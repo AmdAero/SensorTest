@@ -44,6 +44,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
 
     private double velocity = 0;
     private double oldVelocity = 0;
+    private double noVelocityCounter = 0;
 
     private double height;
 
@@ -93,6 +94,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
         f.Write(v.getContext(), "aX;");
         f.Write(v.getContext(), "aY;");
         f.Write(v.getContext(), "Velocity;");
+        f.Write(v.getContext(), "NoVelocityCounter;");
         f.Write(v.getContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -125,7 +127,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             i++;
             f.Write(getActivity().getApplicationContext(), s);
 
-            if (i % 10 == 0)
+            if (i % 11 == 0)
                 f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
         }
     }
@@ -177,6 +179,11 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
 
             velocity = oldVelocity + (ay * (elapsedTime - oldElapsedTime));
 
+            if(ay < 0.6 && ay > -0.6 && velocity != 0)
+                noVelocityCounter++;
+            else
+                noVelocityCounter = 0;
+
             oldElapsedTime = elapsedTime;
             oldVelocity = velocity;
 
@@ -192,6 +199,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             list.add(String.valueOf(ax).replace(".", ",") + ";");
             list.add(String.valueOf(ay).replace(".", ",") + ";");
             list.add(String.valueOf(velocity).replace(".", ",") + ";");
+            list.add(String.valueOf(noVelocityCounter).replace(".", ",") + ";");
 
             pointer ++;
         }
