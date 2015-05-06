@@ -39,15 +39,19 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
     private double oldElapsedTime;
     private double sampleRate;
 
-    double[] arrayAccel = new double[50];
-    double[] arrayTime = new double[50];
     double[] arrayVelo = new double[50];
     double[] arrayDist = new double[50];
+
+    private double velocity = 0;
+    private double oldVelocity = 0;
+
+    private double height;
+
     int pointer = 0;
 
     private TextView tvaY;
-    private TextView velocity;
-    private TextView height;
+    private TextView tvVelocity;
+    private TextView tvHeight;
 
     private TextView sampleRateText;
 
@@ -64,8 +68,8 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
         v=inflater.inflate(R.layout.fragment_height,container,false);
 
         tvaY = (TextView) v.findViewById(R.id.tvaY);
-        velocity = (TextView) v.findViewById(R.id.tvVelocity);
-        height = (TextView) v.findViewById(R.id.tvHeight);
+        tvVelocity = (TextView) v.findViewById(R.id.tvVelocity);
+        tvHeight = (TextView) v.findViewById(R.id.tvHeight);
 
         sampleRateText = (TextView) v.findViewById(R.id.tvSampleRate);
 
@@ -79,9 +83,16 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
     private void Start()
     {
         f = new FileWriter("Height.txt", getActivity().getApplicationContext());
-
+        f.Write(v.getContext(), "Time;");
+        f.Write(v.getContext(), "xFiltered;");
+        f.Write(v.getContext(), "yFiltered;");
+        f.Write(v.getContext(), "zFiltered;");
+        f.Write(v.getContext(), "Azimuth;");
+        f.Write(v.getContext(), "Pitch;");
+        f.Write(v.getContext(), "Roll;");
+        f.Write(v.getContext(), "aX;");
+        f.Write(v.getContext(), "aY;");
         f.Write(v.getContext(), "Velocity;");
-        f.Write(v.getContext(), "Height;");
         f.Write(v.getContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -99,8 +110,8 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
     private void Stop()
     {
         tvaY.setText("?");
-        velocity.setText("?");
-        height.setText("?");
+        tvVelocity.setText("?");
+        tvHeight.setText("?");
         sampleRateText.setText("?");
 
         if (mSensorManager != null) {
@@ -114,7 +125,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             i++;
             f.Write(getActivity().getApplicationContext(), s);
 
-            if (i % 2 == 0)
+            if (i % 10 == 0)
                 f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
         }
     }
@@ -155,70 +166,34 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             double pitch = Math.toDegrees(orientationValues[1]);
             double roll = Math.toDegrees(orientationValues[2]);
 
-            //double ax = xFiltered * Math.cos(Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll));
-            double ay = yFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(pitch)) + xFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(pitch)) * Math.cos(Math.toRadians(roll));
+            double ax = xFiltered * Math.cos(Math.toRadians(roll)) + yFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll));
+            double ay = yFiltered * Math.cos(Math.toRadians(90) + Math.toRadians(pitch)) + xFiltered * Math.cos(Math.toRadians(90) + Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(pitch)) * Math.cos(Math.toRadians(roll));
 
             tvaY.setText(String.valueOf(ay));
-            //velocity.setText(String.valueOf(ax));
 
             elapsedTime = (System.currentTimeMillis() / 1000.0) - startTime;
             sampleRate = 1 / (elapsedTime - oldElapsedTime);
             sampleRateText.setText(String.valueOf(sampleRate));
+
+            velocity = oldVelocity + (ay * (elapsedTime - oldElapsedTime));
+
             oldElapsedTime = elapsedTime;
+            oldVelocity = velocity;
 
-            //list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
-            //list.add(String.valueOf(ax).replace(".", ",") + ";");
-            //list.add(String.valueOf(ay).replace(".", ",") + ";");
+            tvVelocity.setText(String.valueOf(velocity));
 
-            arrayAccel[pointer] = ay;
-            arrayTime[pointer] = elapsedTime;
+            list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
+            list.add(String.valueOf(xFiltered).replace(".", ",") + ";");
+            list.add(String.valueOf(yFiltered).replace(".", ",") + ";");
+            list.add(String.valueOf(zFiltered).replace(".", ",") + ";");
+            list.add(String.valueOf(azimuth).replace(".", ",") + ";");
+            list.add(String.valueOf(pitch).replace(".", ",") + ";");
+            list.add(String.valueOf(roll).replace(".", ",") + ";");
+            list.add(String.valueOf(ax).replace(".", ",") + ";");
+            list.add(String.valueOf(ay).replace(".", ",") + ";");
+            list.add(String.valueOf(velocity).replace(".", ",") + ";");
+
             pointer ++;
-        }
-
-        if (pointer == 50)
-        {
-            double noAccelerationCount = 0;
-            for (int i = 8; i < arrayTime.length - 2; i++) {
-                /*
-                if (arrayAccel[i] < 0.6 && arrayAccel[i] > -0.6) {
-                    noAccelerationCount += 1;
-                }
-                else
-                {
-                    noAccelerationCount = 0;
-                }*/
-
-                /*
-                if(noAccelerationCount >= 3 && Math.abs(arrayVelo[i - 2]) < 0.2 || noAccelerationCount >= 3 && Math.abs(arrayVelo[i-2]) > -0.2)
-                {
-                    for (int u = 1; u < noAccelerationCount + 5; u++)
-                    {
-                        arrayVelo[i - u] = 0;
-                    }
-                    arrayVelo[i] = 0;
-                    arrayVelo[i - 1] = 0;
-                    noAccelerationCount = 0;
-                }
-                else{
-                    arrayVelo[i] = arrayVelo[i - 1] + ((arrayAccel[i - 1] + ((arrayAccel[i] - arrayAccel[i-1]) / 2.0)) * (arrayTime[i] - arrayTime[i - 1])) * 1.2;
-                }*/
-
-                arrayVelo[i] = arrayVelo[i - 1] + ((arrayAccel[i - 1] + ((arrayAccel[i] - arrayAccel[i-1]) / 2.0)) * (arrayTime[i] - arrayTime[i - 1])) * 1.2;
-
-            }
-
-            velocity.setText(String.valueOf(arrayVelo[47]));
-            list.add(String.valueOf(arrayVelo[47]).replace(".", ",") + ";");
-
-            for(int u = 2; u < arrayTime.length; u++)
-            {
-                arrayDist[u] = arrayDist[u - 1] + (arrayVelo[u] * (arrayTime[u] - arrayTime[u - 1]));
-            }
-
-            height.setText(String.valueOf(arrayDist[47]));
-            list.add(String.valueOf(arrayDist[47]).replace(".", ",") + ";");
-
-            pointer = 0;
         }
     }
 }
