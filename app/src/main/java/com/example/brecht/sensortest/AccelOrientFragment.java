@@ -164,8 +164,8 @@ public class AccelOrientFragment extends Fragment implements SensorEventListener
             double pitch = Math.toDegrees(orientationValues[1]);
             double roll = Math.toDegrees(orientationValues[2]);
 
-            double ax = xFiltered * Math.cos(Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll));
-            double ay = yFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(pitch)) + xFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(pitch)) * Math.cos(Math.toRadians(roll));
+            double ax = xFiltered * Math.cos(Math.toRadians(roll)) + yFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll));
+            double ay = yFiltered * Math.cos(Math.toRadians(90) + Math.toRadians(pitch)) + xFiltered * Math.cos(Math.toRadians(90) + Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(pitch)) * Math.cos(Math.toRadians(roll));
 
             aX.setText(String.valueOf(ax));
             aY.setText(String.valueOf(ay));
