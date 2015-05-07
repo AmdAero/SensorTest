@@ -46,6 +46,10 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
     private double oldVelocity = 0;
     private double noVelocityCounter = 0;
 
+    private double correctedVelocity;
+    private double oldCorrectedVelocity = Double.NaN;
+    private double oldOldCorrectedVelocity = Double.NaN;
+
     private double height;
 
     int pointer = 0;
@@ -95,6 +99,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
         f.Write(v.getContext(), "aY;");
         f.Write(v.getContext(), "Velocity;");
         f.Write(v.getContext(), "NoVelocityCounter;");
+        f.Write(v.getContext(), "VelocityCorrected;");
         f.Write(v.getContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -127,7 +132,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             i++;
             f.Write(getActivity().getApplicationContext(), s);
 
-            if (i % 11 == 0)
+            if (i % 12 == 0)
                 f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
         }
     }
@@ -184,8 +189,16 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             else
                 noVelocityCounter = 0;
 
+            if((noVelocityCounter > 2 && oldOldCorrectedVelocity < 0.3 && oldOldCorrectedVelocity > -0.3) || Double.isNaN(oldOldCorrectedVelocity))
+                correctedVelocity = 0;
+            else
+                correctedVelocity = oldCorrectedVelocity + (ay * (elapsedTime - oldElapsedTime)) * 1.2;
+
+
             oldElapsedTime = elapsedTime;
             oldVelocity = velocity;
+            oldOldCorrectedVelocity = oldCorrectedVelocity;
+            oldCorrectedVelocity = correctedVelocity;
 
             tvVelocity.setText(String.valueOf(velocity));
 
@@ -200,6 +213,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             list.add(String.valueOf(ay).replace(".", ",") + ";");
             list.add(String.valueOf(velocity).replace(".", ",") + ";");
             list.add(String.valueOf(noVelocityCounter).replace(".", ",") + ";");
+            list.add(String.valueOf(correctedVelocity).replace(".", ",") + ";");
 
             pointer ++;
         }
