@@ -51,6 +51,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
     private double oldOldCorrectedVelocity = Double.NaN;
 
     private double height;
+    private double oldHeight;
 
     int pointer = 0;
 
@@ -100,6 +101,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
         f.Write(v.getContext(), "Velocity;");
         f.Write(v.getContext(), "NoVelocityCounter;");
         f.Write(v.getContext(), "VelocityCorrected;");
+        f.Write(v.getContext(), "Height;");
         f.Write(v.getContext(), System.getProperty("line.separator"));
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -132,7 +134,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             i++;
             f.Write(getActivity().getApplicationContext(), s);
 
-            if (i % 12 == 0)
+            if (i % 13 == 0)
                 f.Write(getActivity().getApplicationContext(), System.getProperty("line.separator"));
         }
     }
@@ -194,13 +196,16 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             else
                 correctedVelocity = oldCorrectedVelocity + (ay * (elapsedTime - oldElapsedTime)) * 1.2;
 
+            height = oldHeight + (correctedVelocity * (elapsedTime - oldElapsedTime));
 
             oldElapsedTime = elapsedTime;
             oldVelocity = velocity;
             oldOldCorrectedVelocity = oldCorrectedVelocity;
             oldCorrectedVelocity = correctedVelocity;
+            oldHeight= height;
 
             tvVelocity.setText(String.valueOf(velocity));
+            tvHeight.setText(String.valueOf(height));
 
             list.add(String.valueOf(elapsedTime).replace(".", ",") + ";");
             list.add(String.valueOf(xFiltered).replace(".", ",") + ";");
@@ -214,8 +219,7 @@ public class HeightFragment extends Fragment implements SensorEventListener, Vie
             list.add(String.valueOf(velocity).replace(".", ",") + ";");
             list.add(String.valueOf(noVelocityCounter).replace(".", ",") + ";");
             list.add(String.valueOf(correctedVelocity).replace(".", ",") + ";");
-
-            pointer ++;
+            list.add(String.valueOf(height).replace(".", ",") + ";");
         }
     }
 }
